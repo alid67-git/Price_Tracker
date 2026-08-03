@@ -9,9 +9,15 @@ if not exist node_modules (
     echo [pricetracker] Bagimliliklar kuruluyor, bu ilk calistirmada biraz surebilir...
     call npm install
     if errorlevel 1 goto :error
-    call npx playwright install chromium
-    if errorlevel 1 goto :error
 )
+
+REM Playwright'in tarayici dosyalari node_modules'tan bagimsiz, ayri bir klasorde
+REM (ms-playwright) tutuluyor ve npm install onlari kurmuyor. Bu yuzden node_modules
+REM var olsa bile her calistirmada kontrol edilir -- zaten kuruluysa saniyeler
+REM icinde hicbir sey yapmadan gecer, eksikse indirir.
+echo [pricetracker] Playwright tarayicisi kontrol ediliyor...
+call npx playwright install chromium
+if errorlevel 1 goto :error
 
 echo.
 echo [pricetracker] Fiyat taramasi basliyor...
