@@ -1,0 +1,73 @@
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --row-hover: #f3f4f6;
+  --accent: #2563eb;
+  --danger-bg: #fee2e2;
+  --danger-fg: #991b1b;
+  --warn-bg: #fef9c3;
+  --warn-fg: #854d0e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --fg: #e5e7eb;
+    --muted: #9ca3af;
+    --border: #2a2e37;
+    --row-hover: #1a1d24;
+    --accent: #60a5fa;
+    --danger-bg: #3f1d1d;
+    --danger-fg: #fca5a5;
+    --warn-bg: #3f3510;
+    --warn-fg: #fde68a;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 1.5rem;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+.page-header h1 { margin-bottom: 0.25rem; font-size: 1.5rem; }
+.muted { color: var(--muted); font-size: 0.9rem; }
+
+section { margin-top: 2rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+h3 { font-size: 1rem; }
+
+.table-scroll { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: var(--row-hover); }
+
+.spread-high { background: var(--danger-bg); color: var(--danger-fg); }
+.seller-new { background: var(--warn-bg); color: var(--warn-fg); }
+
+.trend-up::before { content: "▲ "; color: #dc2626; }
+.trend-down::before { content: "▼ "; color: #16a34a; }
+.trend-flat::before { content: "→ "; color: var(--muted); }
+
+.alerts { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+.alert { padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; }
+.alert-danger { background: var(--danger-bg); color: var(--danger-fg); }
+.alert-warn { background: var(--warn-bg); color: var(--warn-fg); }
+
+.detail-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; align-items: start; }
+@media (max-width: 800px) { .detail-grid { grid-template-columns: 1fr; } }
+
+a { color: var(--accent); }
+code { background: var(--row-hover); padding: 0.1rem 0.35rem; border-radius: 4px; }

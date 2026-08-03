@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fiyat Araştırma Sistemi</title>
+<link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>Fiyat Araştırma &amp; Rekabet Takip Sistemi</h1>
+    <p id="generated-at" class="muted"></p>
+  </header>
+
+  <main>
+    <section id="summary-section">
+      <h2>Rekabet Yoğunluğu Özeti</h2>
+      <div class="table-scroll">
+        <table id="summary-table">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Ürün</th>
+              <th>Teklif Sayısı</th>
+              <th>En Düşük</th>
+              <th>En Yüksek</th>
+              <th>Spread %</th>
+              <th>Trend</th>
+            </tr>
+          </thead>
+          <tbody id="summary-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="detail-section" hidden>
+      <h2 id="detail-title">Ürün Detayı</h2>
+      <div id="alerts" class="alerts"></div>
+
+      <div class="detail-grid">
+        <div>
+          <h3>Tüm Teklifler (fiyata göre sıralı)</h3>
+          <div class="table-scroll">
+            <table id="offers-table">
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Satıcı</th>
+                  <th>Fiyat</th>
+                  <th>Stok</th>
+                  <th>Kargo</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody id="offers-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <h3>Son 30 Gün Fiyat Trendi</h3>
+          <canvas id="history-chart" height="220"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <p id="empty-state" class="muted" hidden>
+      Henüz veri yok. Önce <code>npm run scrape</code> sonra <code>npm run build-dashboard</code> çalıştırın.
+    </p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

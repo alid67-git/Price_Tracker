@@ -1,0 +1,21 @@
+[
+  {
+    "sku": "CUDY-WR300",
+    "name": "Cudy WR300 300Mbps Router",
+    "marketplaces": {
+      "n11": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+      "amazon_tr": "https://www.amazon.com.tr/Cudy-WR300-300Mbps-WireGuard-VPNClient/dp/B07QZXNCZK"
+    },
+    "aggregatorQuery": "cudy wr300 router",
+    "standalone": []
+  },
+  {
+    "sku": "CUDY-AP3000-OUTDOOR",
+    "name": "Cudy AP3000 Outdoor Wi-Fi 6 Access Point",
+    "marketplaces": {
+      "trendyol": "https://www.trendyol.com/universal/cudy-ap3000-outdoor-wi-fi-6-ax3000-1port-2-anten-2-4-ghz-5-ghz-access-point-p-1168158712?boutiqueId=61&merchantId=497121"
+    },
+    "aggregatorQuery": "cudy ap3000 outdoor access point",
+    "standalone": []
+  }
+]

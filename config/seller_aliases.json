@@ -1,0 +1,10 @@
+{
+  "_ornek": "Ayni saticinin farkli platformlarda farkli gorunen adlarini kanonik bir isimde birlestirmek icin kullanilir. 'raw' -> 'canonical'. Dashboard bilinmeyen (bu listede olmayan) yeni saticilari sari renkte vurgular.",
+  "aliases": {
+    "netsiparis": "Netsiparis",
+    "Netsiparis": "Netsiparis",
+    "onlinealisverisyap": "Online Alisveris Yap",
+    "teknoraks": "Teknoraks",
+    "mytechno": "MyTechno"
+  }
+}

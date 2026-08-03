@@ -1,0 +1,17 @@
+{
+  "name": "fiyat-arastirma-sistemi",
+  "version": "1.0.0",
+  "description": "Pazaryerlerinde alt satici derinligi, fiyat karsilastirma siteleri ve bagimsiz satici siteleri icin fiyat/rekabet takip sistemi",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "scrape": "node src/run-scrape.js",
+    "build-dashboard": "node src/build-dashboard-data.js",
+    "add-product": "node src/add-product.js",
+    "test": "node --test src/core/*.test.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "playwright": "^1.48.0"
+  }
+}

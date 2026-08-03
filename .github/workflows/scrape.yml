@@ -1,0 +1,48 @@
+name: Fiyat Tarama
+
+on:
+  schedule:
+    # Her gun TR saatiyle ~09:00 (UTC+3 -> 06:00 UTC). Siteleri yormamak icin
+    # gunde birden fazla calistirmaktan kacinilir.
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Bagimliliklari kur
+        run: npm ci
+
+      - name: Playwright (chromium) kur
+        run: npx playwright install --with-deps chromium
+
+      - name: Fiyat taramasini calistir
+        run: npm run scrape
+
+      - name: Dashboard verisini olustur
+        run: npm run build-dashboard
+
+      - name: Sonuclari commit + push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ dashboard/summary.json
+          if git diff --cached --quiet; then
+            echo "Degisiklik yok, commit atlanacak."
+          else
+            git commit -m "chore: gunluk fiyat taramasi ($(date -u +%Y-%m-%d))"
+            git push
+          fi
