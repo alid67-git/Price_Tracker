@@ -7,15 +7,17 @@
 <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-  <header class="page-header">
-    <h1>Fiyat Araştırma &amp; Rekabet Takip Sistemi</h1>
-    <p id="generated-at" class="muted"></p>
-  </header>
+  <div class="page">
+    <header class="page-header">
+      <h1>Fiyat Araştırma &amp; Rekabet Takip Sistemi</h1>
+      <p id="generated-at" class="muted"></p>
+    </header>
 
-  <main>
+    <div id="kpi-row" class="kpi-row"></div>
+
     <section id="summary-section">
       <h2>Rekabet Yoğunluğu Özeti</h2>
-      <div class="table-scroll">
+      <div class="card table-scroll">
         <table id="summary-table">
           <thead>
             <tr>
@@ -24,7 +26,7 @@
               <th>Teklif Sayısı</th>
               <th>En Düşük</th>
               <th>En Yüksek</th>
-              <th>Spread %</th>
+              <th>Spread</th>
               <th>Trend</th>
             </tr>
           </thead>
@@ -33,12 +35,12 @@
       </div>
     </section>
 
-    <section id="detail-section" hidden>
+    <section id="detail-section">
       <h2 id="detail-title">Ürün Detayı</h2>
       <div id="alerts" class="alerts"></div>
 
       <div class="detail-grid">
-        <div>
+        <div class="card">
           <h3>Tüm Teklifler (fiyata göre sıralı)</h3>
           <div class="table-scroll">
             <table id="offers-table">
@@ -49,16 +51,38 @@
                   <th>Fiyat</th>
                   <th>Stok</th>
                   <th>Kargo</th>
-                  <th>Link</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="offers-body"></tbody>
             </table>
           </div>
         </div>
+
         <div>
-          <h3>Son 30 Gün Fiyat Trendi</h3>
-          <canvas id="history-chart" height="220"></canvas>
+          <div class="card chart-card">
+            <h3>Fiyat Trendi (min–maks aralığı ve medyan)</h3>
+            <canvas id="price-chart" height="160"></canvas>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="legend-swatch-band"></span> Min–Maks aralığı</span>
+              <span class="legend-item"><span class="legend-swatch-line"></span> Medyan</span>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <h3>Teklif Sayısı Trendi</h3>
+            <canvas id="seller-count-chart" height="110"></canvas>
+          </div>
+          <button id="toggle-history-table" class="table-toggle" type="button">Tabloyu göster</button>
+          <div id="history-table-wrap" class="history-table-wrap" hidden>
+            <div class="table-scroll">
+              <table id="history-table">
+                <thead>
+                  <tr><th>Tarih</th><th>Teklif</th><th>Min</th><th>Medyan</th><th>Max</th></tr>
+                </thead>
+                <tbody id="history-body"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -66,7 +90,7 @@
     <p id="empty-state" class="muted" hidden>
       Henüz veri yok. Önce <code>npm run scrape</code> sonra <code>npm run build-dashboard</code> çalıştırın.
     </p>
-  </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script src="dashboard.js"></script>
