@@ -1,7 +1,8 @@
 import { readFile, writeFile, readdir, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { computeAggregates, detectChanges, computeTrend } from "./core/metrics.js";
+import { computeAggregates, detectChanges, computeTrend, markOutlierOffers } from "./core/metrics.js";
+import { dedupeOffers } from "./core/search-session.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -21,24 +22,6 @@ async function readJson(filePath, fallback) {
 
 function applyAliases(offers, aliasMap) {
   return offers.map((o) => ({ ...o, seller_name: aliasMap[o.seller_name] ?? o.seller_name }));
-}
-
-/**
- * Ayni platform+satici+fiyat kombinasyonu birden fazla kaynaktan (ornegin
- * akakce'nin ayni urunu farkli bir arama sonucunda tekrar listelemesi) mukerrer
- * gelebiliyor -- rekabet metriklerini (seller_count, spread) sismemesi icin
- * gunluk teklif listesinden mukerrerler ayiklanir.
- */
-function dedupeOffers(offers) {
-  const seen = new Set();
-  const result = [];
-  for (const o of offers) {
-    const key = `${o.platform}::${o.seller_name}::${o.price}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    result.push(o);
-  }
-  return result;
 }
 
 /** data/YYYY-MM-DD/<sku>.json dosyalarinin tamamini SKU bazinda gruplayarak okur. */
@@ -74,7 +57,7 @@ function buildProductSummary(sku, name, dailyEntries, aliasMap) {
   const latest = normalized[normalized.length - 1];
   const previous = normalized.length > 1 ? normalized[normalized.length - 2] : null;
 
-  const latestOffers = [...latest.offers].sort((a, b) => a.price - b.price);
+  const latestOffers = markOutlierOffers(latest.offers).sort((a, b) => a.price - b.price);
   const aggregate = computeAggregates(latest.offers);
   const changes = previous ? detectChanges(previous.offers, latest.offers) : { newSellers: [], removedSellers: [], priceChanges: [] };
   const history = recentHistory.map((e) => ({ date: e.date, ...computeAggregates(e.offers) }));

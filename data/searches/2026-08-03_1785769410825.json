@@ -1,0 +1,19 @@
+{
+  "id": "2026-08-03_1785769410825",
+  "query": "WR300",
+  "sku": "SEARCH-WR300",
+  "generatedAt": "2026-08-03T15:03:30.825Z",
+  "date": "2026-08-03",
+  "marketplaceUrls": [],
+  "offers": [],
+  "aggregate": {
+    "seller_count": 0,
+    "min_price": null,
+    "max_price": null,
+    "price_spread": null,
+    "price_spread_pct": null,
+    "median_price": null,
+    "outlier_count": 0
+  },
+  "platforms": []
+}

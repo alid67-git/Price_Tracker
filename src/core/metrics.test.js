@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { computeAggregates, detectChanges, computeTrend, isHighSpread } from "./metrics.js";
+import { computeAggregates, detectChanges, computeTrend, isHighSpread, detectOutlierPrices, markOutlierOffers } from "./metrics.js";
 
 function offer(overrides) {
   return {
@@ -24,6 +24,7 @@ test("computeAggregates: bos liste", () => {
   const result = computeAggregates([]);
   assert.equal(result.seller_count, 0);
   assert.equal(result.min_price, null);
+  assert.equal(result.outlier_count, 0);
 });
 
 test("computeAggregates: spread ve medyan dogru hesaplanir", () => {
@@ -35,6 +36,38 @@ test("computeAggregates: spread ve medyan dogru hesaplanir", () => {
   assert.equal(result.price_spread, 50);
   assert.equal(result.price_spread_pct, 50);
   assert.equal(result.median_price, 120);
+  assert.equal(result.outlier_count, 0);
+});
+
+test("detectOutlierPrices: ekstrem fiyatlar IQR ile isaretlenir", () => {
+  const prices = [4859, 5127, 5159, 5370, 5618, 5699, 5720, 6424, 8768, 17297, 27869];
+  const outliers = detectOutlierPrices(prices);
+  assert.equal(outliers.has(27869), true);
+  assert.equal(outliers.has(17297), true);
+  assert.equal(outliers.has(4859), false);
+  assert.equal(outliers.has(8768), false);
+});
+
+test("computeAggregates: outlier haric spread hesaplanir", () => {
+  const prices = [4859, 5127, 5159, 5370, 5618, 5699, 5720, 6424, 8768, 17297, 27869];
+  const offers = prices.map((price, i) => offer({ price, seller_name: `S${i}` }));
+  const cleaned = computeAggregates(offers);
+  assert.equal(cleaned.outlier_count, 2);
+  assert.equal(cleaned.seller_count, 11);
+  assert.equal(cleaned.min_price, 4859);
+  assert.equal(cleaned.max_price, 8768);
+  assert.ok(cleaned.price_spread_pct < 100);
+
+  const raw = computeAggregates(offers, { excludeOutliers: false });
+  assert.equal(raw.max_price, 27869);
+  assert.ok(raw.price_spread_pct > 400);
+});
+
+test("markOutlierOffers: is_outlier bayragi set edilir", () => {
+  const offers = [5000, 5100, 5200, 5300, 5400, 25000].map((price, i) => offer({ price, seller_name: `S${i}` }));
+  const marked = markOutlierOffers(offers);
+  assert.equal(marked.filter((o) => o.is_outlier).length >= 1, true);
+  assert.equal(marked.find((o) => o.price === 25000).is_outlier, true);
 });
 
 test("detectChanges: yeni satici tespit edilir", () => {

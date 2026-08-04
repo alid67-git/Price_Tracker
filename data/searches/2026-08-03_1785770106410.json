@@ -1,0 +1,150 @@
+{
+  "id": "2026-08-03_1785770106410",
+  "query": "844n",
+  "sku": "SEARCH-844N",
+  "generatedAt": "2026-08-03T15:15:06.410Z",
+  "date": "2026-08-03",
+  "marketplaceUrls": [],
+  "offers": [
+    {
+      "sku": "SEARCH-844N",
+      "source_type": "aggregator",
+      "platform": "cimri",
+      "seller_name": "TeknikDükkan",
+      "price": 1675.08,
+      "currency": "TRY",
+      "stock_status": "unknown",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.cimri.com/freze/en-ucuz-zps-din-844n-hssco8-12-mm-4-agiz-uzun-parmak-freze-fiyatlari,2425867975",
+      "date": "2026-08-03",
+      "scraped_at": "2026-08-03T15:15:01.882Z",
+      "is_outlier": false
+    },
+    {
+      "sku": "SEARCH-844N",
+      "source_type": "aggregator",
+      "platform": "cimri",
+      "seller_name": "Dükkan",
+      "price": 1675.08,
+      "currency": "TRY",
+      "stock_status": "unknown",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.cimri.com/freze/en-ucuz-zps-din-844n-hssco8-12-mm-4-agiz-uzun-parmak-freze-fiyatlari,2425867975",
+      "date": "2026-08-03",
+      "scraped_at": "2026-08-03T15:15:01.882Z",
+      "is_outlier": false
+    },
+    {
+      "sku": "SEARCH-844N",
+      "source_type": "aggregator",
+      "platform": "akakce",
+      "seller_name": "Teknikdukkanshop.com",
+      "price": 1987.12,
+      "currency": "TRY",
+      "stock_status": "in_stock",
+      "shipping_info": null,
+      "is_platform_official": false,
+      "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+      "date": "2026-08-03",
+      "scraped_at": "2026-08-03T15:15:00.457Z",
+      "is_outlier": false
+    },
+    {
+      "sku": "SEARCH-844N",
+      "source_type": "aggregator",
+      "platform": "cimri",
+      "seller_name": "kaledijitalpazarlama",
+      "price": 2130.9,
+      "currency": "TRY",
+      "stock_status": "unknown",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.cimri.com/freze/en-ucuz-zps-din-844n-hssco8-12-mm-4-agiz-uzun-parmak-freze-fiyatlari,2425867975",
+      "date": "2026-08-03",
+      "scraped_at": "2026-08-03T15:15:01.882Z",
+      "is_outlier": false
+    },
+    {
+      "sku": "SEARCH-844N",
+      "source_type": "aggregator",
+      "platform": "akakce",
+      "seller_name": "Hepsiburada (Teknik Dükkan)",
+      "price": 2560.16,
+      "currency": "TRY",
+      "stock_status": "in_stock",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+      "date": "2026-08-03",
+      "scraped_at": "2026-08-03T15:15:00.457Z",
+      "is_outlier": false
+    },
+    {
+      "sku": "SEARCH-844N",
+      "source_type": "aggregator",
+      "platform": "akakce",
+      "seller_name": "Pttavm (TeknikDükkan)",
+      "price": 2560.16,
+      "currency": "TRY",
+      "stock_status": "in_stock",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+      "date": "2026-08-03",
+      "scraped_at": "2026-08-03T15:15:00.457Z",
+      "is_outlier": false
+    },
+    {
+      "sku": "SEARCH-844N",
+      "source_type": "aggregator",
+      "platform": "akakce",
+      "seller_name": "Pazarama (KALE DİJİTAL PAZARLAMA)",
+      "price": 3210.15,
+      "currency": "TRY",
+      "stock_status": "in_stock",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+      "date": "2026-08-03",
+      "scraped_at": "2026-08-03T15:15:00.457Z",
+      "is_outlier": false
+    },
+    {
+      "sku": "SEARCH-844N",
+      "source_type": "aggregator",
+      "platform": "akakce",
+      "seller_name": "Pttavm (kaledijitalpazarlama)",
+      "price": 3287.9,
+      "currency": "TRY",
+      "stock_status": "in_stock",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+      "date": "2026-08-03",
+      "scraped_at": "2026-08-03T15:15:00.457Z",
+      "is_outlier": false
+    }
+  ],
+  "aggregate": {
+    "seller_count": 8,
+    "min_price": 1675.08,
+    "max_price": 3287.9,
+    "price_spread": 1612.82,
+    "price_spread_pct": 96.28,
+    "median_price": 2345.5299999999997,
+    "outlier_count": 0
+  },
+  "platforms": [
+    {
+      "platform": "akakce",
+      "count": 5
+    },
+    {
+      "platform": "cimri",
+      "count": 3
+    }
+  ],
+  "warnings": []
+}

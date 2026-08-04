@@ -136,3 +136,41 @@ export async function fetchOffers({ sku, url }) {
   await randomDelay();
   return offers;
 }
+
+/**
+ * Serbest metinle Trendyol'da arar, ilk urun sayfasi URL'sini dondurur.
+ * @param {string} query
+ * @returns {Promise<string|null>}
+ */
+export async function searchFirstProductUrl(query) {
+  const context = await newContext();
+  try {
+    const page = await context.newPage();
+    const searchUrl = `https://www.trendyol.com/sr?q=${encodeURIComponent(query)}`;
+    await withRetry(
+      async () => {
+        await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 20000 });
+        await page.waitForSelector('a[href*="-p-"]', { timeout: 10000 });
+      },
+      { label: "trendyol-search" }
+    );
+    const href = await page.evaluate(() => {
+      const links = [...document.querySelectorAll('a[href*="-p-"]')];
+      for (const a of links) {
+        try {
+          const u = new URL(a.href, location.origin);
+          if (!/trendyol\.com$/i.test(u.hostname)) continue;
+          if (!/-p-\d+/i.test(u.pathname)) continue;
+          if (u.pathname.includes("/sr")) continue;
+          return `${u.origin}${u.pathname}`;
+        } catch {
+          /* skip */
+        }
+      }
+      return null;
+    });
+    return href;
+  } finally {
+    await context.close();
+  }
+}

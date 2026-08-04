@@ -62,7 +62,8 @@ async function extractListingsFromDetailPage(page, detailUrl) {
       price: typeof entry.price === "number" ? entry.price : null,
       shipPrice: entry.shipPrice ?? 0,
       stock: entry.stock ?? null,
-      product_url: detailUrl,
+      // Magaza ozel URL varsa onu kullan; yoksa urun detay sayfasina dus.
+      product_url: typeof entry.url === "string" && entry.url.startsWith("http") ? entry.url : detailUrl,
     }))
     .filter((e) => e.store_name && e.price !== null);
 }
@@ -110,7 +111,8 @@ export async function search({ sku, query, limit = 1 }) {
               platform,
               seller_name: listing.seller_nick ? `${listing.store_name} (${listing.seller_nick})` : listing.store_name,
               price: listing.price,
-              stock_status: listing.stock === 0 ? "out_of_stock" : "unknown",
+              stock_status:
+                listing.stock === 0 ? "out_of_stock" : typeof listing.stock === "number" && listing.stock > 0 ? "in_stock" : "unknown",
               shipping_info: listing.shipPrice > 0 ? null : "Ücretsiz Kargo",
               product_url: listing.product_url,
               date,

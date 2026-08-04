@@ -3,6 +3,11 @@
 // tum platformlardaki (pazaryeri+aggregator+standalone) birlesik teklifleri de olabilir --
 // bu fonksiyonlar hangi gruplamayla cagrildigini bilmez, sadece verilen listeyi ozetler.
 
+/** Tukey IQR carpani: fiyat > Q3 + k*IQR veya < Q1 - k*IQR ise outlier. */
+const OUTLIER_IQR_FENCE = 1.5;
+/** IQR icin minimum teklif sayisi; altinda outlier isaretlenmez. */
+const OUTLIER_MIN_SAMPLES = 4;
+
 function median(sortedNumbers) {
   const n = sortedNumbers.length;
   if (n === 0) return null;
@@ -10,21 +15,77 @@ function median(sortedNumbers) {
   return n % 2 === 0 ? (sortedNumbers[mid - 1] + sortedNumbers[mid]) / 2 : sortedNumbers[mid];
 }
 
+function quantile(sortedNumbers, q) {
+  const n = sortedNumbers.length;
+  if (n === 0) return null;
+  if (n === 1) return sortedNumbers[0];
+  const pos = (n - 1) * q;
+  const base = Math.floor(pos);
+  const rest = pos - base;
+  const next = sortedNumbers[Math.min(base + 1, n - 1)];
+  return sortedNumbers[base] + rest * (next - sortedNumbers[base]);
+}
+
+/**
+ * Tukey IQR ile aykiri fiyatlari bulur. Az ornekte (n < 4) hicbirini isaretlemez.
+ * @param {number[]} prices
+ * @param {{fence?: number}} [opts]
+ * @returns {Set<number>} Aykiri fiyat degerleri (ayni fiyat birden fazla teklifte olabilir)
+ */
+export function detectOutlierPrices(prices, opts = {}) {
+  const fence = opts.fence ?? OUTLIER_IQR_FENCE;
+  const sorted = [...(prices ?? [])].filter((p) => Number.isFinite(p)).sort((a, b) => a - b);
+  const outliers = new Set();
+  if (sorted.length < OUTLIER_MIN_SAMPLES) return outliers;
+
+  const q1 = quantile(sorted, 0.25);
+  const q3 = quantile(sorted, 0.75);
+  const iqr = q3 - q1;
+  if (iqr <= 0) return outliers;
+
+  const lower = q1 - fence * iqr;
+  const upper = q3 + fence * iqr;
+  for (const p of sorted) {
+    if (p < lower || p > upper) outliers.add(p);
+  }
+  return outliers;
+}
+
 /**
  * @param {import("./offer.js").Offer[]} offers
+ * @returns {import("./offer.js").Offer[]} is_outlier alanli kopyalar
  */
-export function computeAggregates(offers) {
-  if (!offers || offers.length === 0) {
-    return {
-      seller_count: 0,
-      min_price: null,
-      max_price: null,
-      price_spread: null,
-      price_spread_pct: null,
-      median_price: null,
-    };
+export function markOutlierOffers(offers) {
+  const list = offers ?? [];
+  const outlierPrices = detectOutlierPrices(list.map((o) => o.price));
+  return list.map((o) => ({ ...o, is_outlier: outlierPrices.has(o.price) }));
+}
+
+/**
+ * @param {import("./offer.js").Offer[]} offers
+ * @param {{excludeOutliers?: boolean}} [opts]
+ */
+export function computeAggregates(offers, opts = {}) {
+  const { excludeOutliers = true } = opts;
+  const empty = {
+    seller_count: 0,
+    min_price: null,
+    max_price: null,
+    price_spread: null,
+    price_spread_pct: null,
+    median_price: null,
+    outlier_count: 0,
+  };
+  if (!offers || offers.length === 0) return empty;
+
+  const marked = markOutlierOffers(offers);
+  const outlier_count = marked.filter((o) => o.is_outlier).length;
+  const used = excludeOutliers ? marked.filter((o) => !o.is_outlier) : marked;
+  if (used.length === 0) {
+    return { ...empty, outlier_count, seller_count: offers.length };
   }
-  const prices = offers.map((o) => o.price).sort((a, b) => a - b);
+
+  const prices = used.map((o) => o.price).sort((a, b) => a - b);
   const min_price = prices[0];
   const max_price = prices[prices.length - 1];
   const price_spread = Number((max_price - min_price).toFixed(2));
@@ -37,6 +98,7 @@ export function computeAggregates(offers) {
     price_spread,
     price_spread_pct,
     median_price: median(prices),
+    outlier_count,
   };
 }
 

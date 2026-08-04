@@ -1,7 +1,7 @@
 @echo off
-REM Fiyat Arastirma Sistemi - baslangic scripti
-REM Bagimliliklari (ilk calistirmada) kurar, fiyat taramasini yapar,
-REM dashboard verisini olusturur ve dashboard'u tarayicida acar.
+REM Fiyat Arastirma Sistemi
+REM [1] Web arastirma (manuel arama + PDF) — varsayilan
+REM [2] Toplu tarama (config urunleri + summary.json)
 
 cd /d "%~dp0"
 
@@ -11,14 +11,30 @@ if not exist node_modules (
     if errorlevel 1 goto :error
 )
 
-REM Playwright'in tarayici dosyalari node_modules'tan bagimsiz, ayri bir klasorde
-REM (ms-playwright) tutuluyor ve npm install onlari kurmuyor. Bu yuzden node_modules
-REM var olsa bile her calistirmada kontrol edilir -- zaten kuruluysa saniyeler
-REM icinde hicbir sey yapmadan gecer, eksikse indirir.
 echo [pricetracker] Playwright tarayicisi kontrol ediliyor...
 call npx playwright install chromium
 if errorlevel 1 goto :error
 
+echo.
+echo  [1] Araştırma web  (manuel arama + PDF rapor)  [varsayilan]
+echo  [2] Toplu tarama   (config urunleri, gunluk veri)
+echo.
+set /p CHOICE="Secim (1/2, Enter=1): "
+if "%CHOICE%"=="" set CHOICE=1
+if "%CHOICE%"=="2" goto :batch
+goto :web
+
+:web
+echo.
+echo [pricetracker] Web sunucusu baslatiliyor...
+echo [pricetracker] Tarayici http://localhost:3456 adresinde acilacak.
+echo [pricetracker] Durdurmak icin bu pencerede Ctrl+C basin.
+start "" "http://localhost:3456"
+call npm run web
+if errorlevel 1 goto :error
+exit /b 0
+
+:batch
 echo.
 echo [pricetracker] Fiyat taramasi basliyor...
 call npm run scrape
@@ -30,14 +46,8 @@ call npm run build-dashboard
 if errorlevel 1 goto :error
 
 echo.
-echo [pricetracker] Dashboard aciliyor...
-start "" "%~dp0dashboard\index.html"
-
-echo.
-echo [pricetracker] Tamamlandi. Dashboard'in "summary.json" verisini gorebilmesi
-echo icin taraycinizin dosya erisim kisitlamalarina takilirsa, su komutla
-echo lokal bir sunucu baslatip http://localhost:8080 adresini acabilirsiniz:
-echo     npx serve dashboard
+echo [pricetracker] Tamamlandi. Sonuclari gormek icin secenek [1] ile web'i acin:
+echo     http://localhost:3456  (Takip edilenler sekmesi)
 echo.
 pause
 exit /b 0
