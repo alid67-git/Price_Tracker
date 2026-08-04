@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ürün Ekle — Fiyat Araştırma Sistemi</title>
+<link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <div class="page">
+    <nav class="site-nav">
+      <a href="index.html">Panel</a>
+      <a href="add-product.html" class="active">Ürün Ekle</a>
+      <a href="history.html">Geçmiş</a>
+    </nav>
+    <header class="page-header">
+      <h1>Yeni Ürün Ekle</h1>
+      <p class="muted">Buradan eklenen ürünler <code>config/products.json</code>'a yazılır ve bir sonraki taramaya dahil edilir.</p>
+    </header>
+
+    <div class="card form-card">
+      <form id="add-product-form" class="form-grid">
+        <div class="field">
+          <label for="sku">SKU (benzersiz kısa kod)</label>
+          <input id="sku" name="sku" required placeholder="örn. CUDY-WR300" />
+        </div>
+        <div class="field">
+          <label for="name">Ürün adı</label>
+          <input id="name" name="name" placeholder="örn. Cudy WR300 300Mbps Router" />
+        </div>
+
+        <h3>Pazaryeri URL'leri (opsiyonel)</h3>
+        <div class="field">
+          <label for="trendyol">Trendyol</label>
+          <input id="trendyol" name="trendyol" type="url" placeholder="https://www.trendyol.com/..." />
+        </div>
+        <div class="field">
+          <label for="hepsiburada">Hepsiburada</label>
+          <input id="hepsiburada" name="hepsiburada" type="url" placeholder="https://www.hepsiburada.com/..." />
+        </div>
+        <div class="field">
+          <label for="n11">N11</label>
+          <input id="n11" name="n11" type="url" placeholder="https://www.n11.com/..." />
+        </div>
+        <div class="field">
+          <label for="amazon_tr">Amazon.com.tr</label>
+          <input id="amazon_tr" name="amazon_tr" type="url" placeholder="https://www.amazon.com.tr/..." />
+        </div>
+
+        <div class="field">
+          <label for="aggregatorQuery">Akakçe / Cimri arama terimi</label>
+          <input id="aggregatorQuery" name="aggregatorQuery" placeholder="örn. cudy wr300 router" />
+        </div>
+
+        <h3>Bağımsız satıcı siteleri (opsiyonel)</h3>
+        <div id="standalone-rows"></div>
+        <button type="button" id="add-standalone-row" class="btn btn-secondary btn-inline">+ Site ekle</button>
+
+        <div class="form-actions">
+          <button type="submit" class="btn">Ürünü Ekle</button>
+          <span id="form-status" role="status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="add-product.js"></script>
+</body>
+</html>

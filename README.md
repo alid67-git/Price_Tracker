@@ -38,23 +38,43 @@ Elle çalıştırmak isterseniz:
 ```bash
 npm run scrape            # tüm urunleri tum kaynaklardan tara
 npm run build-dashboard    # dashboard/summary.json'u guncelle
-npm run add-product        # config/products.json'a yeni urun eklemek icin interaktif CLI
+npm run web                # dashboard + urun ekleme + gecmis web arayuzunu baslat (http://localhost:5173)
+npm run add-product        # config/products.json'a yeni urun eklemek icin interaktif CLI (alternatif)
 ```
 
 ### Dashboard'ı görüntüleme
 
 `dashboard/index.html` doğrudan çift tıklanarak (`file://`) açılırsa tarayıcılar
 güvenlik nedeniyle yerel `summary.json` dosyasını `fetch()` ile okumaya izin
-vermeyebilir. Bu durumda basit bir yerel sunucu başlatın:
+vermeyebilir, ayrıca ürün ekleme/geçmiş sayfaları da çalışmaz. Bu yüzden önerilen
+yol `npm run web` ile yerel sunucuyu başlatmaktır. Alternatif olarak:
 
 ```bash
 npx serve dashboard
 ```
 
-veya GitHub Pages üzerinden `dashboard/` klasörünü yayınlayın (fetch http(s)
-üzerinden sorunsuz çalışır).
+(salt okunur görüntüleme, ürün ekleme/geçmiş API'leri çalışmaz) veya GitHub Pages
+üzerinden `dashboard/` klasörünü yayınlayabilirsiniz (fetch http(s) üzerinden
+sorunsuz çalışır, ama ürün ekleme yine sunucu gerektirir).
 
-## Yeni ürün ekleme
+## Web arayüzünden ürün ekleme ve geçmiş
+
+`npm run web` çalıştırıp `http://localhost:5173` adresini açın (pricetracker.bat
+zaten tarama sonrası bunu otomatik başlatıp tarayıcıyı açar). Bu adres altında:
+
+- **Panel**: mevcut dashboard (rekabet tablosu, fiyat geçmişi).
+- **Ürün Ekle**: SKU, ürün adı, pazaryeri URL'leri, Akakçe/Cimri arama terimi ve
+  bağımsız site bilgilerini bir formdan girip `config/products.json`'a ekleyebilirsiniz
+  -- terminalden komut çalıştırmaya gerek kalmaz. Eklenen ürün bir sonraki
+  `npm run scrape` çalışmasında otomatik dahil edilir.
+- **Geçmiş**: web arayüzünden hangi ürünün ne zaman eklendiğini `data/product-history.json`
+  üzerinden listeler.
+
+Not: bu sayfalar `fetch()` ile API çağrısı yaptığından `dashboard/index.html`'i
+doğrudan çift tıklayarak (`file://`) değil, `npm run web` ile başlatılan sunucu
+üzerinden açmanız gerekir.
+
+## Terminalden ürün ekleme (alternatif)
 
 `npm run add-product` çalıştırıp SKU, ürün adı, her pazaryeri için URL (boş
 bırakılabilir), Akakçe/Cimri arama terimi ve varsa bağımsız site bilgilerini girin.

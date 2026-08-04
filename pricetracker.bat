@@ -30,14 +30,15 @@ call npm run build-dashboard
 if errorlevel 1 goto :error
 
 echo.
-echo [pricetracker] Dashboard aciliyor...
-start "" "%~dp0dashboard\index.html"
+echo [pricetracker] Web sunucusu baslatiliyor (dashboard + urun ekleme + gecmis icin)...
+start "Price Tracker Web" cmd /k npm run web
+timeout /t 2 /nobreak >nul
+start "" "http://localhost:5173"
 
 echo.
-echo [pricetracker] Tamamlandi. Dashboard'in "summary.json" verisini gorebilmesi
-echo icin taraycinizin dosya erisim kisitlamalarina takilirsa, su komutla
-echo lokal bir sunucu baslatip http://localhost:8080 adresini acabilirsiniz:
-echo     npx serve dashboard
+echo [pricetracker] Tamamlandi. Dashboard'a, yeni urun ekleme formuna ve ekleme
+echo gecmisine http://localhost:5173 adresinden erisebilirsiniz. Sunucuyu
+echo kapatmak icin acilan "Price Tracker Web" penceresini kapatin.
 echo.
 pause
 exit /b 0

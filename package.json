@@ -8,6 +8,7 @@
     "scrape": "node src/run-scrape.js",
     "build-dashboard": "node src/build-dashboard-data.js",
     "add-product": "node src/add-product.js",
+    "web": "node src/web-server.js",
     "test": "node --test src/core/*.test.js"
   },
   "dependencies": {

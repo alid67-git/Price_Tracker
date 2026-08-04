@@ -93,6 +93,57 @@ body {
 .page-header h1 { font-size: 1.4rem; margin: 0; font-weight: 650; }
 .muted { color: var(--text-muted); font-size: 0.85rem; }
 
+/* ---------- Site nav ---------- */
+.site-nav { display: flex; gap: 1.25rem; margin-bottom: 1.25rem; font-size: 0.85rem; }
+.site-nav a { color: var(--text-secondary); text-decoration: none; padding: 0.3rem 0; border-bottom: 2px solid transparent; }
+.site-nav a:hover { color: var(--text-primary); }
+.site-nav a.active { color: var(--text-primary); border-bottom-color: var(--series-blue); font-weight: 600; }
+
+/* ---------- Forms ---------- */
+.form-card { max-width: 640px; }
+.form-grid { display: flex; flex-direction: column; gap: 0.9rem; }
+.field { display: flex; flex-direction: column; gap: 0.3rem; }
+.field label { font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; }
+.field input {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+.field input:focus { outline: 2px solid var(--series-blue); outline-offset: 1px; }
+.standalone-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+.standalone-row input {
+  flex: 1;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+.btn {
+  background: var(--series-blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn:hover { opacity: 0.92; }
+.btn-secondary { background: none; border: 1px solid var(--border); color: var(--text-secondary); }
+.btn-inline { align-self: flex-start; }
+.form-actions { display: flex; gap: 0.8rem; align-items: center; }
+.form-message { font-size: 0.85rem; padding: 0.4rem 0.7rem; border-radius: 8px; }
+.form-message.success { background: var(--status-good-bg); color: var(--success-text); }
+.form-message.error { background: var(--status-critical-bg); color: var(--status-critical); }
+
 /* ---------- KPI / stat tile row ---------- */
 .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 2rem; }
 .stat-tile {
