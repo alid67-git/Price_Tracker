@@ -12,6 +12,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DASHBOARD_DIR = path.join(ROOT, "dashboard");
 const SEARCHES_DIR = path.join(ROOT, "data", "searches");
+const PRODUCTS_PATH = path.join(ROOT, "config", "products.json");
+const HISTORY_PATH = path.join(ROOT, "data", "product-history.json");
+const MARKETPLACE_PLATFORMS = ["trendyol", "hepsiburada", "n11", "amazon_tr"];
 const PORT = Number(process.env.PORT) || 3456;
 
 const app = express();
@@ -33,6 +36,76 @@ async function persistSearch(result) {
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, searching: searchLock });
+});
+
+/* ---------- urun ekleme / ekleme gecmisi ---------- */
+
+async function readJsonFile(filePath, fallback) {
+  try {
+    return JSON.parse(await readFile(filePath, "utf-8"));
+  } catch (err) {
+    if (err.code === "ENOENT") return fallback;
+    throw err;
+  }
+}
+
+function sanitizeMarketplaces(input) {
+  const marketplaces = {};
+  for (const platform of MARKETPLACE_PLATFORMS) {
+    const url = typeof input?.[platform] === "string" ? input[platform].trim() : "";
+    if (url) marketplaces[platform] = url;
+  }
+  return marketplaces;
+}
+
+function sanitizeStandalone(input) {
+  if (!Array.isArray(input)) return [];
+  return input
+    .map((entry) => ({
+      url: typeof entry?.url === "string" ? entry.url.trim() : "",
+      platform: typeof entry?.platform === "string" ? entry.platform.trim() : "",
+    }))
+    .filter((entry) => entry.url)
+    .map((entry) => (entry.platform ? entry : { url: entry.url }));
+}
+
+app.get("/api/product-history", async (_req, res) => {
+  res.json(await readJsonFile(HISTORY_PATH, []));
+});
+
+app.post("/api/products", async (req, res) => {
+  const sku = typeof req.body?.sku === "string" ? req.body.sku.trim() : "";
+  if (!sku) {
+    res.status(400).json({ error: "SKU zorunludur" });
+    return;
+  }
+
+  const products = await readJsonFile(PRODUCTS_PATH, []);
+  if (products.some((p) => p.sku === sku)) {
+    res.status(409).json({ error: `"${sku}" zaten mevcut` });
+    return;
+  }
+
+  const name = typeof req.body?.name === "string" && req.body.name.trim() ? req.body.name.trim() : sku;
+  const marketplaces = sanitizeMarketplaces(req.body?.marketplaces);
+  const aggregatorQuery = typeof req.body?.aggregatorQuery === "string" ? req.body.aggregatorQuery.trim() : "";
+  const standalone = sanitizeStandalone(req.body?.standalone);
+
+  const product = { sku, name, marketplaces, aggregatorQuery: aggregatorQuery || undefined, standalone };
+
+  try {
+    products.push(product);
+    await writeFile(PRODUCTS_PATH, JSON.stringify(products, null, 2), "utf-8");
+
+    const history = await readJsonFile(HISTORY_PATH, []);
+    history.push({ ...product, addedAt: new Date().toISOString() });
+    await mkdir(path.dirname(HISTORY_PATH), { recursive: true });
+    await writeFile(HISTORY_PATH, JSON.stringify(history, null, 2), "utf-8");
+
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.get("/api/sources", async (_req, res) => {
