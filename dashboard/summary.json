@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T09:37:21.743Z",
+  "generatedAt": "2026-08-05T09:40:44.675Z",
   "products": [
     {
       "sku": "SEARCH-844N",
@@ -675,6 +675,142 @@
       }
     },
     {
+      "sku": "CUDY-WR300",
+      "name": "Cudy WR300 300Mbps Router",
+      "latestDate": "2026-08-05",
+      "latestOffers": [
+        {
+          "sku": "CUDY-WR300",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "TEKNO54",
+          "price": 634.8,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+          "date": "2026-08-05",
+          "scraped_at": "2026-08-05T08:51:07.255Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "CUDY-WR300",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "MyTechno",
+          "price": 726.8,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+          "date": "2026-08-05",
+          "scraped_at": "2026-08-05T08:51:07.258Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "CUDY-WR300",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "Online Alisveris Yap",
+          "price": 755.51,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+          "date": "2026-08-05",
+          "scraped_at": "2026-08-05T08:51:07.258Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "CUDY-WR300",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "TeknoFS",
+          "price": 919.08,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+          "date": "2026-08-05",
+          "scraped_at": "2026-08-05T08:51:07.259Z",
+          "is_outlier": false
+        }
+      ],
+      "aggregate": {
+        "seller_count": 4,
+        "min_price": 634.8,
+        "max_price": 919.08,
+        "price_spread": 284.28,
+        "price_spread_pct": 44.78,
+        "median_price": 741.155,
+        "outlier_count": 0
+      },
+      "trend": "flat",
+      "history": [
+        {
+          "date": "2026-08-03",
+          "seller_count": 21,
+          "min_price": 634.8,
+          "max_price": 837.47,
+          "price_spread": 202.67,
+          "price_spread_pct": 31.93,
+          "median_price": 726.8,
+          "outlier_count": 0
+        },
+        {
+          "date": "2026-08-04",
+          "seller_count": 4,
+          "min_price": 634.8,
+          "max_price": 726.8,
+          "price_spread": 92,
+          "price_spread_pct": 14.49,
+          "median_price": 669.85,
+          "outlier_count": 0
+        },
+        {
+          "date": "2026-08-05",
+          "seller_count": 4,
+          "min_price": 634.8,
+          "max_price": 919.08,
+          "price_spread": 284.28,
+          "price_spread_pct": 44.78,
+          "median_price": 741.155,
+          "outlier_count": 0
+        }
+      ],
+      "changes": {
+        "newSellers": [
+          {
+            "seller_name": "Online Alisveris Yap",
+            "platform": "n11",
+            "price": 755.51
+          },
+          {
+            "seller_name": "TeknoFS",
+            "platform": "n11",
+            "price": 919.08
+          }
+        ],
+        "removedSellers": [
+          {
+            "seller_name": "Teknoraks",
+            "platform": "n11",
+            "price": 643.08
+          },
+          {
+            "seller_name": "Netsiparis",
+            "platform": "n11",
+            "price": 696.62
+          }
+        ],
+        "priceChanges": []
+      }
+    },
+    {
       "sku": "SEARCH-WR300",
       "name": "SEARCH-WR300",
       "latestDate": "2026-08-03",
@@ -1345,196 +1481,6 @@
       "changes": {
         "newSellers": [],
         "removedSellers": [],
-        "priceChanges": []
-      }
-    },
-    {
-      "sku": "CUDY-WR300",
-      "name": "Cudy WR300 300Mbps Router",
-      "latestDate": "2026-08-04",
-      "latestOffers": [
-        {
-          "sku": "CUDY-WR300",
-          "source_type": "marketplace",
-          "platform": "n11",
-          "seller_name": "TEKNO54",
-          "price": 634.8,
-          "currency": "TRY",
-          "stock_status": "in_stock",
-          "shipping_info": "Ücretsiz Kargo",
-          "is_platform_official": false,
-          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-04",
-          "scraped_at": "2026-08-04T08:42:30.230Z",
-          "is_outlier": false
-        },
-        {
-          "sku": "CUDY-WR300",
-          "source_type": "marketplace",
-          "platform": "n11",
-          "seller_name": "Teknoraks",
-          "price": 643.08,
-          "currency": "TRY",
-          "stock_status": "unknown",
-          "shipping_info": "Ücretsiz Kargo",
-          "is_platform_official": false,
-          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-04",
-          "scraped_at": "2026-08-04T08:42:30.232Z",
-          "is_outlier": false
-        },
-        {
-          "sku": "CUDY-WR300",
-          "source_type": "marketplace",
-          "platform": "n11",
-          "seller_name": "Netsiparis",
-          "price": 696.62,
-          "currency": "TRY",
-          "stock_status": "unknown",
-          "shipping_info": "Ücretsiz Kargo",
-          "is_platform_official": false,
-          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-04",
-          "scraped_at": "2026-08-04T08:42:30.232Z",
-          "is_outlier": false
-        },
-        {
-          "sku": "CUDY-WR300",
-          "source_type": "marketplace",
-          "platform": "n11",
-          "seller_name": "MyTechno",
-          "price": 726.8,
-          "currency": "TRY",
-          "stock_status": "unknown",
-          "shipping_info": "Ücretsiz Kargo",
-          "is_platform_official": false,
-          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-04",
-          "scraped_at": "2026-08-04T08:42:30.232Z",
-          "is_outlier": false
-        }
-      ],
-      "aggregate": {
-        "seller_count": 4,
-        "min_price": 634.8,
-        "max_price": 726.8,
-        "price_spread": 92,
-        "price_spread_pct": 14.49,
-        "median_price": 669.85,
-        "outlier_count": 0
-      },
-      "trend": "flat",
-      "history": [
-        {
-          "date": "2026-08-03",
-          "seller_count": 21,
-          "min_price": 634.8,
-          "max_price": 837.47,
-          "price_spread": 202.67,
-          "price_spread_pct": 31.93,
-          "median_price": 726.8,
-          "outlier_count": 0
-        },
-        {
-          "date": "2026-08-04",
-          "seller_count": 4,
-          "min_price": 634.8,
-          "max_price": 726.8,
-          "price_spread": 92,
-          "price_spread_pct": 14.49,
-          "median_price": 669.85,
-          "outlier_count": 0
-        }
-      ],
-      "changes": {
-        "newSellers": [],
-        "removedSellers": [
-          {
-            "seller_name": "Hepsiburada (Tekno54)",
-            "platform": "akakce",
-            "price": 634.8
-          },
-          {
-            "seller_name": "n11 (tekno54)",
-            "platform": "akakce",
-            "price": 634.8
-          },
-          {
-            "seller_name": "n11 (teknoraks)",
-            "platform": "akakce",
-            "price": 643.08
-          },
-          {
-            "seller_name": "Kraftonline.com.tr",
-            "platform": "akakce",
-            "price": 685.31
-          },
-          {
-            "seller_name": "n11 (netsiparis)",
-            "platform": "akakce",
-            "price": 696.62
-          },
-          {
-            "seller_name": "MediaMarkt Pazaryeri",
-            "platform": "akakce",
-            "price": 719
-          },
-          {
-            "seller_name": "n11 (mytechno)",
-            "platform": "akakce",
-            "price": 726.8
-          },
-          {
-            "seller_name": "Teknosa (Teknoraks)",
-            "platform": "akakce",
-            "price": 739.99
-          },
-          {
-            "seller_name": "Pttavm (Kraft Online)",
-            "platform": "akakce",
-            "price": 750.41
-          },
-          {
-            "seller_name": "Pttavm (onlinealisverisyap)",
-            "platform": "akakce",
-            "price": 759.43
-          },
-          {
-            "seller_name": "Pttavm (Netsiparis)",
-            "platform": "akakce",
-            "price": 769.95
-          },
-          {
-            "seller_name": "Teknosa (onlinealisverisyap)",
-            "platform": "akakce",
-            "price": 781.56
-          },
-          {
-            "seller_name": "Teknosa (Netsipariş)",
-            "platform": "akakce",
-            "price": 786
-          },
-          {
-            "seller_name": "Pazarama (netsiparis)",
-            "platform": "akakce",
-            "price": 801.89
-          },
-          {
-            "seller_name": "Hepsiburada (AKSİYON BİLİŞİM GÜVENLİK)",
-            "platform": "akakce",
-            "price": 829
-          },
-          {
-            "seller_name": "idefix (onlinealisverisyap)",
-            "platform": "akakce",
-            "price": 837.47
-          },
-          {
-            "seller_name": "Online Alisveris Yap",
-            "platform": "cimri",
-            "price": 759.43
-          }
-        ],
         "priceChanges": []
       }
     }
