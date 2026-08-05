@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 import { makeOffer, todayDateString } from "../../core/offer.js";
 import { parseTurkishPrice, normalizeWhitespace } from "../../core/utils.js";
-import { fetchRenderedHtml, randomDelay, withRetry } from "../../core/browser.js";
+import { fetchRenderedHtml, randomDelay, withRetry, newContext } from "../../core/browser.js";
 
 export const platform = "amazon_tr";
 
@@ -146,4 +146,41 @@ export async function fetchOffers({ sku, url }) {
     throw new Error(`amazon_tr: hicbir teklif cikarilamadi (${url})`);
   }
   return offers;
+}
+
+/**
+ * Serbest metinle Amazon.com.tr'de arar, ilk urun /dp/ URL'sini dondurur.
+ * @param {string} query
+ * @returns {Promise<string|null>}
+ */
+export async function searchFirstProductUrl(query) {
+  const context = await newContext();
+  try {
+    const page = await context.newPage();
+    const searchUrl = `https://www.amazon.com.tr/s?k=${encodeURIComponent(query)}`;
+    await withRetry(
+      async () => {
+        await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 20000 });
+        await page.waitForSelector('a[href*="/dp/"]', { timeout: 12000 });
+      },
+      { label: "amazon_tr-search" }
+    );
+    return await page.evaluate(() => {
+      const links = [...document.querySelectorAll('div[data-component-type="s-search-result"] a[href*="/dp/"], a[href*="/dp/"]')];
+      for (const a of links) {
+        try {
+          const u = new URL(a.href, location.origin);
+          if (!/amazon\.com\.tr$/i.test(u.hostname)) continue;
+          const m = u.pathname.match(/\/dp\/([A-Z0-9]{10})/i);
+          if (!m) continue;
+          return `https://www.amazon.com.tr/dp/${m[1]}`;
+        } catch {
+          /* skip */
+        }
+      }
+      return null;
+    });
+  } finally {
+    await context.close();
+  }
 }

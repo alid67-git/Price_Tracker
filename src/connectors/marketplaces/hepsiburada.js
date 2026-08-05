@@ -87,3 +87,40 @@ export async function fetchOffers({ sku, url }) {
     await context.close();
   }
 }
+
+/**
+ * Serbest metinle Hepsiburada'da arar, ilk urun URL'sini dondurur.
+ * @param {string} query
+ * @returns {Promise<string|null>}
+ */
+export async function searchFirstProductUrl(query) {
+  const context = await newContext();
+  try {
+    const page = await context.newPage();
+    const searchUrl = `https://www.hepsiburada.com/ara?q=${encodeURIComponent(query)}`;
+    await withRetry(
+      async () => {
+        await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 20000 });
+        await page.waitForSelector('a[href*="-p-"]', { timeout: 12000 });
+      },
+      { label: "hepsiburada-search" }
+    );
+    return await page.evaluate(() => {
+      const links = [...document.querySelectorAll('a[href*="-p-"]')];
+      for (const a of links) {
+        try {
+          const u = new URL(a.href, location.origin);
+          if (!/hepsiburada\.com$/i.test(u.hostname)) continue;
+          if (!/-p-\w+/i.test(u.pathname)) continue;
+          if (u.pathname.includes("/ara")) continue;
+          return `${u.origin}${u.pathname}`;
+        } catch {
+          /* skip */
+        }
+      }
+      return null;
+    });
+  } finally {
+    await context.close();
+  }
+}

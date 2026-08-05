@@ -8,28 +8,98 @@
 </head>
 <body>
   <div class="page">
-    <nav class="site-nav">
-      <a href="index.html" class="active">Panel</a>
-      <a href="add-product.html">Ürün Ekle</a>
-      <a href="history.html">Geçmiş</a>
-    </nav>
     <header class="page-header">
       <h1>Fiyat Araştırma &amp; Rekabet Takip Sistemi</h1>
-      <p id="generated-at" class="muted"></p>
+      <p id="server-status" class="muted">Sunucu bağlanıyor…</p>
     </header>
 
-    <div id="kpi-row" class="kpi-row"></div>
+    <nav class="tabs" role="tablist">
+      <button type="button" class="tab active" data-tab="search" role="tab" aria-selected="true">Araştırma</button>
+      <button type="button" class="tab" data-tab="tracked" role="tab" aria-selected="false">Takip edilenler</button>
+      <button type="button" class="tab" data-tab="add-product" role="tab" aria-selected="false">Ürün Ekle</button>
+      <button type="button" class="tab" data-tab="history" role="tab" aria-selected="false">Geçmiş</button>
+    </nav>
 
-    <section id="summary-section">
-      <h2>Rekabet Yoğunluğu Özeti</h2>
+    <!-- ========== ARAMA ========== -->
+    <section id="tab-search" class="tab-panel">
+      <form id="search-form" class="search-form card">
+        <label class="field">
+          <span>Ürün / arama terimi</span>
+          <input id="search-query" name="query" type="search" required placeholder="örn. cudy wr300 router" autocomplete="off" />
+        </label>
+        <div class="field">
+          <div class="field-row">
+            <span>Araştırma kategorileri <span class="optional" id="sources-count"></span></span>
+            <button type="button" id="toggle-categories" class="btn-text">Tümünü seç</button>
+          </div>
+          <div id="category-filters" class="category-filters"></div>
+        </div>
+        <p class="search-hint muted">Varsayılan: Pazaryerleri + Elektronik. Daha fazla kategori seçersen süre uzar. Market / ikinci el siteleri henüz otomatik değil.</p>
+        <label class="field">
+          <span>Ek pazaryeri URL’leri <span class="optional">(opsiyonel — belirli ürün sayfası zorlamak için)</span></span>
+          <textarea id="search-urls" name="urls" rows="3" placeholder="https://www.trendyol.com/...&#10;https://www.n11.com/..."></textarea>
+        </label>
+        <div class="search-actions">
+          <button id="search-btn" type="submit" class="btn-primary">Ara</button>
+          <button id="pdf-btn" type="button" class="btn-secondary" disabled>PDF rapor indir</button>
+        </div>
+        <p id="search-status" class="muted search-status" hidden></p>
+      </form>
+
+      <div id="search-results" hidden>
+        <div id="search-kpi" class="kpi-row"></div>
+        <div id="search-alerts" class="alerts"></div>
+
+        <div class="detail-grid">
+          <div class="card">
+            <div class="offers-head">
+              <h3>Teklifler</h3>
+              <div id="search-platform-filters" class="platform-filters"></div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Platform</th>
+                    <th>Satıcı</th>
+                    <th>Fiyat</th>
+                    <th>Stok</th>
+                    <th>Kargo</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="search-offers-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Platform dağılımı</h3>
+            <div id="platform-stats" class="platform-stats"></div>
+            <h3 class="stats-subhead">Özet</h3>
+            <dl id="search-stats-dl" class="stats-dl"></dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TAKİP ========== -->
+    <section id="tab-tracked" class="tab-panel" hidden>
+      <div id="tracked-kpi" class="kpi-row"></div>
+
+      <div class="section-head">
+        <h2>Rekabet Yoğunluğu Özeti</h2>
+        <input id="summary-filter" class="text-filter" type="search" placeholder="SKU veya ürün ara…" autocomplete="off" />
+      </div>
       <div class="card table-scroll">
         <table id="summary-table">
           <thead>
             <tr>
               <th>SKU</th>
               <th>Ürün</th>
-              <th>Teklif Sayısı</th>
+              <th>Teklif</th>
               <th>En Düşük</th>
+              <th>Medyan</th>
               <th>En Yüksek</th>
               <th>Spread</th>
               <th>Trend</th>
@@ -38,66 +108,152 @@
           <tbody id="summary-body"></tbody>
         </table>
       </div>
-    </section>
 
-    <section id="detail-section">
-      <h2 id="detail-title">Ürün Detayı</h2>
-      <div id="alerts" class="alerts"></div>
-
-      <div class="detail-grid">
-        <div class="card">
-          <h3>Tüm Teklifler (fiyata göre sıralı)</h3>
-          <div class="table-scroll">
-            <table id="offers-table">
-              <thead>
-                <tr>
-                  <th>Platform</th>
-                  <th>Satıcı</th>
-                  <th>Fiyat</th>
-                  <th>Stok</th>
-                  <th>Kargo</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="offers-body"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div>
-          <div class="card chart-card">
-            <h3>Fiyat Trendi (min–maks aralığı ve medyan)</h3>
-            <canvas id="price-chart" height="160"></canvas>
-            <div class="chart-legend">
-              <span class="legend-item"><span class="legend-swatch-band"></span> Min–Maks aralığı</span>
-              <span class="legend-item"><span class="legend-swatch-line"></span> Medyan</span>
+      <section id="detail-section" hidden>
+        <h2 id="detail-title">Ürün Detayı</h2>
+        <div id="alerts" class="alerts"></div>
+        <div class="detail-grid">
+          <div class="card">
+            <div class="offers-head">
+              <h3>Tüm Teklifler</h3>
+              <div id="platform-filters" class="platform-filters"></div>
             </div>
-          </div>
-          <div class="card chart-card">
-            <h3>Teklif Sayısı Trendi</h3>
-            <canvas id="seller-count-chart" height="110"></canvas>
-          </div>
-          <button id="toggle-history-table" class="table-toggle" type="button">Tabloyu göster</button>
-          <div id="history-table-wrap" class="history-table-wrap" hidden>
             <div class="table-scroll">
-              <table id="history-table">
+              <table id="offers-table">
                 <thead>
-                  <tr><th>Tarih</th><th>Teklif</th><th>Min</th><th>Medyan</th><th>Max</th></tr>
+                  <tr>
+                    <th>Platform</th>
+                    <th>Satıcı</th>
+                    <th>Fiyat</th>
+                    <th>Stok</th>
+                    <th>Kargo</th>
+                    <th></th>
+                  </tr>
                 </thead>
-                <tbody id="history-body"></tbody>
+                <tbody id="offers-body"></tbody>
               </table>
             </div>
           </div>
+          <div>
+            <div class="card chart-card">
+              <h3>Fiyat Trendi</h3>
+              <canvas id="price-chart" height="160"></canvas>
+            </div>
+            <div class="card chart-card">
+              <h3>Teklif Sayısı Trendi</h3>
+              <canvas id="seller-count-chart" height="110"></canvas>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <p id="empty-state" class="muted" hidden>
+        Takip verisi yok. <code>npm run scrape</code> sonra <code>npm run build-dashboard</code> çalıştırın.
+      </p>
     </section>
 
-    <p id="empty-state" class="muted" hidden>
-      Henüz veri yok. Önce <code>npm run scrape</code> sonra <code>npm run build-dashboard</code> çalıştırın.
-    </p>
+    <!-- ========== URUN EKLE ========== -->
+    <section id="tab-add-product" class="tab-panel" hidden>
+      <p id="add-product-mode" class="muted"></p>
+
+      <details class="gh-settings">
+        <summary>GitHub ile doğrudan kayıt ayarları (PC/yerel sunucu yokken kullanılır)</summary>
+        <div class="search-form" style="margin-top: 0.75rem;">
+          <label class="field">
+            <span>GitHub Personal Access Token</span>
+            <input id="gh-token" type="password" placeholder="github_pat_... veya ghp_..." autocomplete="off" />
+          </label>
+          <label class="field">
+            <span>Repo sahibi</span>
+            <input id="gh-owner" placeholder="alid67-git" />
+          </label>
+          <label class="field">
+            <span>Repo adı</span>
+            <input id="gh-repo" placeholder="Price_Tracker" />
+          </label>
+          <label class="field">
+            <span>Branch</span>
+            <input id="gh-branch" placeholder="main" />
+          </label>
+          <button type="button" id="gh-save" class="btn-secondary" style="align-self: flex-start;">Ayarları Kaydet</button>
+          <p class="muted">
+            Token sadece bu cihazın tarayıcısında saklanır, başka hiçbir yere gönderilmez.
+            <strong>Sadece bu repo için Contents: Read and write</strong> izniyle sınırlı fine-grained
+            bir token oluşturman önerilir —
+            <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">token oluştur ↗</a>.
+            Telefonu kaybedersen tokenı GitHub ayarlarından iptal edebilirsin.
+          </p>
+        </div>
+      </details>
+
+      <form id="add-product-form" class="search-form card">
+        <label class="field">
+          <span>SKU (benzersiz kısa kod)</span>
+          <input id="ap-sku" name="sku" required placeholder="örn. CUDY-WR300" />
+        </label>
+        <label class="field">
+          <span>Ürün adı</span>
+          <input id="ap-name" name="name" placeholder="örn. Cudy WR300 300Mbps Router" />
+        </label>
+
+        <h3>Pazaryeri URL'leri (opsiyonel)</h3>
+        <label class="field">
+          <span>Trendyol</span>
+          <input id="ap-trendyol" name="trendyol" type="url" placeholder="https://www.trendyol.com/..." />
+        </label>
+        <label class="field">
+          <span>Hepsiburada</span>
+          <input id="ap-hepsiburada" name="hepsiburada" type="url" placeholder="https://www.hepsiburada.com/..." />
+        </label>
+        <label class="field">
+          <span>N11</span>
+          <input id="ap-n11" name="n11" type="url" placeholder="https://www.n11.com/..." />
+        </label>
+        <label class="field">
+          <span>Amazon.com.tr</span>
+          <input id="ap-amazon_tr" name="amazon_tr" type="url" placeholder="https://www.amazon.com.tr/..." />
+        </label>
+
+        <label class="field">
+          <span>Akakçe / Cimri arama terimi</span>
+          <input id="ap-aggregatorQuery" name="aggregatorQuery" placeholder="örn. cudy wr300 router" />
+        </label>
+
+        <h3>Bağımsız satıcı siteleri (opsiyonel)</h3>
+        <div id="standalone-rows"></div>
+        <button type="button" id="add-standalone-row" class="btn-secondary" style="align-self: flex-start;">+ Site ekle</button>
+
+        <div class="search-actions">
+          <button type="submit" class="btn-primary">Ürünü Ekle</button>
+          <span id="form-status" role="status"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- ========== GECMIS ========== -->
+    <section id="tab-history" class="tab-panel" hidden>
+      <div class="section-head">
+        <h2>Ürün Ekleme Geçmişi</h2>
+      </div>
+      <div class="card table-scroll">
+        <table id="history-table">
+          <thead>
+            <tr>
+              <th>Tarih</th>
+              <th>SKU</th>
+              <th>Ürün</th>
+              <th>Kaynaklar</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+      <p id="empty-history" class="muted" hidden></p>
+    </section>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="github-client.js"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>

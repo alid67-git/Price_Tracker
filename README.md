@@ -29,73 +29,60 @@ npx playwright install chromium
 ## Kullanım
 
 En kolay yol: proje klasöründeki **`pricetracker.bat`** dosyasına çift tıklamak.
-İlk çalıştırmada bağımlılıkları kurar, taramayı yapar, dashboard verisini üretir
-ve dashboard'u tarayıcıda açar. Sonraki çalıştırmalarda sadece tarama+dashboard
-adımlarını tekrarlar.
+İlk çalıştırmada bağımlılıkları kurar, sonra iki seçenek sunar:
+
+- **[1] Araştırma web** (varsayılan): `npm run web` ile `src/server.js`'i başlatıp
+  `http://localhost:3456`'ı açar. Dashboard'da dört sekme vardır:
+  - **Araştırma**: anlık, manuel arama (bir ürünü tüm kaynaklardan tara, PDF rapor indir).
+  - **Takip edilenler**: `npm run scrape` ile toplanan günlük veriden rekabet tablosu ve fiyat geçmişi.
+  - **Ürün Ekle**: `npm run scrape`'in düzenli takip edeceği ürünleri forma girerek `config/products.json`'a ekleme (bkz. aşağıdaki bölüm).
+  - **Geçmiş**: Ürün Ekle'den ne zaman ne eklendiğinin kaydı.
+- **[2] Toplu tarama**: `npm run scrape` + `npm run build-dashboard` çalıştırıp "Takip edilenler" verisini günceller.
 
 Elle çalıştırmak isterseniz:
 
 ```bash
-npm run scrape            # tüm urunleri tum kaynaklardan tara
+npm run scrape            # tum urunleri tum kaynaklardan tara (Takip edilenler sekmesi icin)
 npm run build-dashboard    # dashboard/summary.json'u guncelle
-npm run web                # dashboard + urun ekleme + gecmis web arayuzunu baslat (http://localhost:5173)
+npm run web                # http://localhost:3456 -- arama + takip + urun ekleme + gecmis
 npm run add-product        # config/products.json'a yeni urun eklemek icin interaktif CLI (alternatif)
 ```
 
 ### Dashboard'ı görüntüleme
 
-`dashboard/index.html` doğrudan çift tıklanarak (`file://`) açılırsa tarayıcılar
-güvenlik nedeniyle yerel `summary.json` dosyasını `fetch()` ile okumaya izin
-vermeyebilir, ayrıca ürün ekleme/geçmiş sayfaları da çalışmaz. Bu yüzden önerilen
-yol `npm run web` ile yerel sunucuyu başlatmaktır. Alternatif olarak:
+`dashboard/index.html` doğrudan çift tıklanarak (`file://`) açılırsa Araştırma
+sekmesi ve Ürün Ekle/Geçmiş'in yerel-sunucu modu çalışmaz (sunucuya ihtiyaç
+duyarlar). Önerilen yol `npm run web` (veya `pricetracker.bat` → [1]) ile
+`http://localhost:3456`'ı açmaktır.
 
-```bash
-npx serve dashboard
-```
+`dashboard/` klasörü ayrıca `.github/workflows/pages.yml` ile otomatik olarak
+GitHub Pages'e de yayınlanır (bkz. aşağıdaki "GitHub Actions" bölümü). Orada
+"Takip edilenler" sekmesi `summary.json`'u statik olarak gösterir; "Ürün Ekle" ve
+"Geçmiş" ise sunucu bulunamayınca otomatik olarak GitHub'a doğrudan commit atan
+moda geçer (bir GitHub token gerekir, bkz. Ürün Ekle sekmesindeki ayarlar).
+"Araştırma" sekmesi (canlı arama + PDF) ise her zaman `npm run web` sunucusunu
+gerektirir, GitHub Pages'te çalışmaz.
 
-(salt okunur görüntüleme, ürün ekleme/geçmiş API'leri çalışmaz) veya GitHub Pages
-üzerinden `dashboard/` klasörünü yayınlayabilirsiniz (fetch http(s) üzerinden
-sorunsuz çalışır; ürün ekleme ve geçmiş de GitHub Pages'te çalışır, çünkü PC/yerel
-sunucu bulunamayınca sayfa doğrudan GitHub API'sine commit atmaya geçer -- aşağıya
-bakın).
+## Yeni ürün ekleme
 
-## Web arayüzünden ürün ekleme ve geçmiş
+En pratik yol: `npm run web` (ya da `pricetracker.bat` → [1]) ile açılan
+`http://localhost:3456` üzerinde **Ürün Ekle** sekmesi. SKU, ürün adı, pazaryeri
+URL'leri, Akakçe/Cimri arama terimi ve bağımsız site bilgilerini bir formdan
+girip `config/products.json`'a ekler -- eklenen ürün bir sonraki `npm run scrape`
+çalışmasında (günlük otomatik ya da elle `workflow_dispatch`) dahil edilir.
+Ne zaman hangi ürünün eklendiği **Geçmiş** sekmesinden görülebilir.
 
-Bu, ürün eklemeyi ve eklenen ürünlerin geçmişini web sayfasından (PC ya da telefon)
-yönetmenizi sağlar. İki modu var, otomatik seçilir:
+PC/yerel sunucu yoksa (örn. GitHub Pages üzerinden telefondan açıldığında) aynı
+form otomatik olarak GitHub'ın Contents API'sine geçip doğrudan commit atar; bunun
+için Ürün Ekle sekmesindeki ayarlar bölümünden, sadece bu repo için
+**Contents: Read and write** izniyle sınırlı bir
+[fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
+girmeniz gerekir. Token yalnızca o cihazın tarayıcısında (`localStorage`) saklanır.
 
-1. **Yerel sunucu modu** (PC açık, `npm run web` çalışıyor): `http://localhost:5173`
-   açın (pricetracker.bat tarama sonrası bunu zaten otomatik başlatıp tarayıcıyı
-   açar). Aynı Wi-Fi'daki telefondan da `http://<pc-ip>:5173` ile erişilebilir --
-   nereden girersen gir, aynı `config/products.json` dosyasına yazılır.
-2. **GitHub modu** (PC kapalı / yerel sunucu yok, örn. GitHub Pages'ten açıldığında):
-   sayfa `/api/...` uçlarına erişemeyince otomatik olarak GitHub'ın Contents API'sine
-   geçer ve `config/products.json` + `data/product-history.json` dosyalarına doğrudan
-   commit atar. Bunun için **Ürün Ekle** sayfasındaki "GitHub ile doğrudan kayıt
-   ayarları" bölümünden, sadece bu repo için **Contents: Read and write** izniyle
-   sınırlı bir [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
-   girmeniz gerekir. Token yalnızca o cihazın tarayıcısında (`localStorage`) saklanır;
-   cihazı kaybederseniz GitHub ayarlarından iptal edebilirsiniz. Geçmişi salt okumak
-   (History sayfası) için token gerekmez, repo public olduğu sürece çalışır.
-
-Sayfalar şunları içerir:
-- **Panel**: mevcut dashboard (rekabet tablosu, fiyat geçmişi).
-- **Ürün Ekle**: SKU, ürün adı, pazaryeri URL'leri, Akakçe/Cimri arama terimi ve
-  bağımsız site bilgilerini bir formdan girip ürün ekleyebilirsiniz -- terminalden
-  komut çalıştırmaya gerek kalmaz. Eklenen ürün bir sonraki taramada (günlük otomatik
-  ya da elle `workflow_dispatch` ile tetiklenen) dahil edilir.
-- **Geçmiş**: hangi ürünün ne zaman eklendiğini `data/product-history.json`
-  üzerinden listeler.
-
-Not: bu sayfalar `dashboard/index.html`'i doğrudan çift tıklayarak (`file://`) açılırsa
-GitHub moduna düşer (yerel sunucu `file://` altından erişilemez) -- localhost'ta
-test ediyorsanız mutlaka `npm run web` ile başlatılan sunucu üzerinden açın.
-
-## Terminalden ürün ekleme (alternatif)
-
-`npm run add-product` çalıştırıp SKU, ürün adı, her pazaryeri için URL (boş
-bırakılabilir), Akakçe/Cimri arama terimi ve varsa bağımsız site bilgilerini girin.
-Elle düzenlemek isterseniz `config/products.json`'daki şu şekli takip edin:
+Alternatif olarak `npm run add-product` çalıştırıp SKU, ürün adı, her pazaryeri
+için URL (boş bırakılabilir), Akakçe/Cimri arama terimi ve varsa bağımsız site
+bilgilerini terminalden de girebilirsiniz. Elle düzenlemek isterseniz
+`config/products.json`'daki şu şekli takip edin:
 
 ```json
 {
@@ -136,8 +123,11 @@ siteleri doldurun.
    saatiyle ~09:00) çalışır; `workflow_dispatch` ile elle de tetiklenebilir
    (Actions sekmesinden "Run workflow").
 3. Workflow, `data/` ve `dashboard/summary.json` değişikliklerini otomatik commit+push eder.
-4. `dashboard/` klasörünü GitHub Pages'e bağlarsanız dashboard'a internetten de
-   erişebilirsiniz.
+4. `.github/workflows/pages.yml`, `dashboard/` klasörü her değiştiğinde (yukarıdaki
+   günlük tarama commit'i dahil) GitHub Pages'e otomatik deploy eder. İlk kullanımda
+   bir kerelik **Settings → Pages → Build and deployment → Source → "GitHub Actions"**
+   seçilmesi gerekir; sonrasında dashboard'a `https://<kullanici>.github.io/<repo>/`
+   adresinden internetten de erişebilirsiniz (bkz. yukarıdaki "Dashboard'ı görüntüleme").
 
 ## Bilinen kısıtlar
 

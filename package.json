@@ -8,11 +8,13 @@
     "scrape": "node src/run-scrape.js",
     "build-dashboard": "node src/build-dashboard-data.js",
     "add-product": "node src/add-product.js",
-    "web": "node src/web-server.js",
+    "web": "node src/server.js",
     "test": "node --test src/core/*.test.js"
   },
   "dependencies": {
     "cheerio": "^1.0.0",
+    "express": "^4.21.0",
+    "pdfkit": "^0.15.0",
     "playwright": "^1.48.0"
   }
 }

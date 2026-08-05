@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 import { makeOffer, todayDateString } from "../../core/offer.js";
 import { parseTurkishPrice, normalizeWhitespace } from "../../core/utils.js";
-import { fetchRenderedHtml, randomDelay, withRetry } from "../../core/browser.js";
+import { fetchRenderedHtml, randomDelay, withRetry, newContext } from "../../core/browser.js";
 
 export const platform = "n11";
 
@@ -84,4 +84,40 @@ export async function fetchOffers({ sku, url }) {
   // "Tumu" linkine tiklanip acilmasi gerekebilir -- ileride genisletilebilir.
   await randomDelay();
   return offers;
+}
+
+/**
+ * Serbest metinle n11'de arar, ilk urun URL'sini dondurur.
+ * @param {string} query
+ * @returns {Promise<string|null>}
+ */
+export async function searchFirstProductUrl(query) {
+  const context = await newContext();
+  try {
+    const page = await context.newPage();
+    const searchUrl = `https://www.n11.com/arama?q=${encodeURIComponent(query)}`;
+    await withRetry(
+      async () => {
+        await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 20000 });
+        await page.waitForSelector('a[href*="/urun/"]', { timeout: 10000 });
+      },
+      { label: "n11-search" }
+    );
+    return await page.evaluate(() => {
+      const links = [...document.querySelectorAll('a[href*="/urun/"]')];
+      for (const a of links) {
+        try {
+          const u = new URL(a.href, location.origin);
+          if (!/n11\.com$/i.test(u.hostname)) continue;
+          if (!u.pathname.startsWith("/urun/")) continue;
+          return `${u.origin}${u.pathname}`;
+        } catch {
+          /* skip */
+        }
+      }
+      return null;
+    });
+  } finally {
+    await context.close();
+  }
 }

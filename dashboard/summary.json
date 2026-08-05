@@ -1,6 +1,480 @@
 {
-  "generatedAt": "2026-08-04T08:45:06.295Z",
+  "generatedAt": "2026-08-05T09:40:44.675Z",
   "products": [
+    {
+      "sku": "SEARCH-844N",
+      "name": "SEARCH-844N",
+      "latestDate": "2026-08-03",
+      "latestOffers": [
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "marketplace",
+          "platform": "trendyol",
+          "seller_name": "Doğanlı Kozmetik",
+          "price": 129.99,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Kargo Bedava",
+          "is_platform_official": false,
+          "product_url": "https://www.trendyol.com/nail-master/m844-kalici-oje-7-3ml-simli-pembe-p-339602609",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:13.527Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "Laptop_Çözüm_Merkezi",
+          "price": 707,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/tp-link-tl-wr844n-300-mbps-24-ghz-coklu-mod-router-1460478",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:50:25.425Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "marketplace",
+          "platform": "amazon_tr",
+          "seller_name": "TP-Link Store",
+          "price": 720,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": null,
+          "is_platform_official": false,
+          "product_url": "https://www.amazon.com.tr/dp/B08CC34C99",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:50:36.766Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "VenotNetwork",
+          "price": 786.6,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/tp-link-tl-wr844n-300-mbps-24-ghz-coklu-mod-router-1460478",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:50:25.428Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "TNG",
+          "price": 817.88,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/tp-link-tl-wr844n-300-mbps-24-ghz-coklu-mod-router-1460478",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:50:25.428Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "nepalbilisim",
+          "price": 854.68,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/tp-link-tl-wr844n-300-mbps-24-ghz-coklu-mod-router-1460478",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:50:25.428Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "TeknikDükkan",
+          "price": 1675.08,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/freze/en-ucuz-zps-din-844n-hssco8-12-mm-4-agiz-uzun-parmak-freze-fiyatlari,2425867975",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:03.534Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "Dükkan",
+          "price": 1675.08,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/freze/en-ucuz-zps-din-844n-hssco8-12-mm-4-agiz-uzun-parmak-freze-fiyatlari,2425867975",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:03.534Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Teknikdukkanshop.com",
+          "price": 1987.12,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": null,
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:02.231Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "kaledijitalpazarlama",
+          "price": 2130.9,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/freze/en-ucuz-zps-din-844n-hssco8-12-mm-4-agiz-uzun-parmak-freze-fiyatlari,2425867975",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:03.534Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Hepsiburada (Teknik Dükkan)",
+          "price": 2560.16,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:02.231Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (TeknikDükkan)",
+          "price": 2560.16,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:02.231Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pazarama (KALE DİJİTAL PAZARLAMA)",
+          "price": 3210.15,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:02.231Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (kaledijitalpazarlama)",
+          "price": 3287.9,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:49:02.231Z",
+          "is_outlier": false
+        }
+      ],
+      "aggregate": {
+        "seller_count": 14,
+        "min_price": 129.99,
+        "max_price": 3287.9,
+        "price_spread": 3157.91,
+        "price_spread_pct": 2429.35,
+        "median_price": 1675.08,
+        "outlier_count": 0
+      },
+      "trend": "down",
+      "history": [
+        {
+          "date": "2026-08-03",
+          "seller_count": 8,
+          "min_price": 1675.08,
+          "max_price": 3287.9,
+          "price_spread": 1612.82,
+          "price_spread_pct": 96.28,
+          "median_price": 2345.5299999999997,
+          "outlier_count": 0
+        },
+        {
+          "date": "2026-08-03",
+          "seller_count": 14,
+          "min_price": 129.99,
+          "max_price": 3287.9,
+          "price_spread": 3157.91,
+          "price_spread_pct": 2429.35,
+          "median_price": 1675.08,
+          "outlier_count": 0
+        }
+      ],
+      "changes": {
+        "newSellers": [
+          {
+            "seller_name": "Doğanlı Kozmetik",
+            "platform": "trendyol",
+            "price": 129.99
+          },
+          {
+            "seller_name": "Laptop_Çözüm_Merkezi",
+            "platform": "n11",
+            "price": 707
+          },
+          {
+            "seller_name": "TP-Link Store",
+            "platform": "amazon_tr",
+            "price": 720
+          },
+          {
+            "seller_name": "VenotNetwork",
+            "platform": "n11",
+            "price": 786.6
+          },
+          {
+            "seller_name": "TNG",
+            "platform": "n11",
+            "price": 817.88
+          },
+          {
+            "seller_name": "nepalbilisim",
+            "platform": "n11",
+            "price": 854.68
+          }
+        ],
+        "removedSellers": [],
+        "priceChanges": []
+      }
+    },
+    {
+      "sku": "SEARCH-844N-TP-LINK",
+      "name": "SEARCH-844N-TP-LINK",
+      "latestDate": "2026-08-03",
+      "latestOffers": [
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "Hepsiindirimde",
+          "price": 697.58,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/router/en-ucuz-tp-link-tl-wr844n-300-mbps-4-portlu-multi-mode-router-fiyatlari,600464327",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:44.598Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "Online",
+          "price": 851.68,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/router/en-ucuz-tp-link-tl-wr844n-300-mbps-4-portlu-multi-mode-router-fiyatlari,600464327",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:44.598Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "ELEKTRONİK",
+          "price": 854.05,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/router/en-ucuz-tp-link-tl-wr844n-300-mbps-4-portlu-multi-mode-router-fiyatlari,600464327",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:44.598Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "tbilgisayar",
+          "price": 862.12,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/router/en-ucuz-tp-link-tl-wr844n-300-mbps-4-portlu-multi-mode-router-fiyatlari,600464327",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:44.598Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Teknikdukkanshop.com",
+          "price": 1987.12,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": null,
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:43.258Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Hepsiburada (Teknik Dükkan)",
+          "price": 2560.16,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:43.258Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (TeknikDükkan)",
+          "price": 2560.16,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:43.258Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pazarama (KALE DİJİTAL PAZARLAMA)",
+          "price": 3210.15,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:43.258Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-844N-TP-LINK",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (kaledijitalpazarlama)",
+          "price": 3287.9,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/freze-aksesuari/en-ucuz-18mm-zps-4-agiz-uzun-parmak-freze-din-844n-hssco8-fiyati,1053001073.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:26:43.258Z",
+          "is_outlier": false
+        }
+      ],
+      "aggregate": {
+        "seller_count": 9,
+        "min_price": 697.58,
+        "max_price": 3287.9,
+        "price_spread": 2590.32,
+        "price_spread_pct": 371.33,
+        "median_price": 1987.12,
+        "outlier_count": 0
+      },
+      "trend": "flat",
+      "history": [
+        {
+          "date": "2026-08-03",
+          "seller_count": 9,
+          "min_price": 697.58,
+          "max_price": 3287.9,
+          "price_spread": 2590.32,
+          "price_spread_pct": 371.33,
+          "median_price": 1987.12,
+          "outlier_count": 0
+        },
+        {
+          "date": "2026-08-03",
+          "seller_count": 9,
+          "min_price": 697.58,
+          "max_price": 3287.9,
+          "price_spread": 2590.32,
+          "price_spread_pct": 371.33,
+          "median_price": 1987.12,
+          "outlier_count": 0
+        },
+        {
+          "date": "2026-08-03",
+          "seller_count": 9,
+          "min_price": 697.58,
+          "max_price": 3287.9,
+          "price_spread": 2590.32,
+          "price_spread_pct": 371.33,
+          "median_price": 1987.12,
+          "outlier_count": 0
+        }
+      ],
+      "changes": {
+        "newSellers": [],
+        "removedSellers": [],
+        "priceChanges": []
+      }
+    },
     {
       "sku": "CUDY-AP3000-OUTDOOR",
       "name": "Cudy AP3000 Outdoor Wi-Fi 6 Access Point",
@@ -11,14 +485,15 @@
           "source_type": "aggregator",
           "platform": "akakce",
           "seller_name": "Güvenli Ticaret",
-          "price": 4843.84,
+          "price": 4859.06,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -27,12 +502,13 @@
           "seller_name": "Pttavm (ZmTeknoloji)",
           "price": 5126.93,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -41,12 +517,13 @@
           "seller_name": "Pttavm (onlinealisverisyap)",
           "price": 5159.38,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -55,12 +532,13 @@
           "seller_name": "Amazon Türkiye (onlinealisverisyap)",
           "price": 5370.26,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -69,12 +547,13 @@
           "seller_name": "Hepsiburada (ZmTeknoloji)",
           "price": 5618.31,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -83,12 +562,13 @@
           "seller_name": "idefix (ZMTEKNOLOJİ)",
           "price": 5698.67,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -97,12 +577,13 @@
           "seller_name": "idefix (onlinealisverisyap)",
           "price": 5720.15,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -111,12 +592,13 @@
           "seller_name": "Hepsiburada (Core Bilgisayar)",
           "price": 6423.82,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -130,7 +612,8 @@
           "is_platform_official": false,
           "product_url": "https://www.trendyol.com/universal/cudy-ap3000-outdoor-wi-fi-6-ax3000-1port-2-anten-2-4-ghz-5-ghz-access-point-p-1168158712?boutiqueId=61&merchantId=497121",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:37:54.451Z"
+          "scraped_at": "2026-08-03T14:42:01.224Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -139,12 +622,13 @@
           "seller_name": "Pttavm (ylmzhome)",
           "price": 17296.85,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": true
         },
         {
           "sku": "CUDY-AP3000-OUTDOOR",
@@ -153,32 +637,35 @@
           "seller_name": "idefix (Erenler Ticaret)",
           "price": 27868.6,
           "currency": "TRY",
-          "stock_status": "unknown",
+          "stock_status": "in_stock",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.akakce.com/access-point/en-ucuz-cudy-ap3000-3000-mbps-tavan-tipi-fiyati,523589362.html",
           "date": "2026-08-03",
-          "scraped_at": "2026-08-03T11:38:06.543Z"
+          "scraped_at": "2026-08-03T14:42:10.294Z",
+          "is_outlier": true
         }
       ],
       "aggregate": {
         "seller_count": 11,
-        "min_price": 4843.84,
-        "max_price": 27868.6,
-        "price_spread": 23024.76,
-        "price_spread_pct": 475.34,
-        "median_price": 5698.67
+        "min_price": 4859.06,
+        "max_price": 8768.03,
+        "price_spread": 3908.97,
+        "price_spread_pct": 80.45,
+        "median_price": 5618.31,
+        "outlier_count": 2
       },
       "trend": "flat",
       "history": [
         {
           "date": "2026-08-03",
           "seller_count": 11,
-          "min_price": 4843.84,
-          "max_price": 27868.6,
-          "price_spread": 23024.76,
-          "price_spread_pct": 475.34,
-          "median_price": 5698.67
+          "min_price": 4859.06,
+          "max_price": 8768.03,
+          "price_spread": 3908.97,
+          "price_spread_pct": 80.45,
+          "median_price": 5618.31,
+          "outlier_count": 2
         }
       ],
       "changes": {
@@ -190,7 +677,7 @@
     {
       "sku": "CUDY-WR300",
       "name": "Cudy WR300 300Mbps Router",
-      "latestDate": "2026-08-04",
+      "latestDate": "2026-08-05",
       "latestOffers": [
         {
           "sku": "CUDY-WR300",
@@ -203,36 +690,9 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-04",
-          "scraped_at": "2026-08-04T08:42:30.230Z"
-        },
-        {
-          "sku": "CUDY-WR300",
-          "source_type": "marketplace",
-          "platform": "n11",
-          "seller_name": "Teknoraks",
-          "price": 643.08,
-          "currency": "TRY",
-          "stock_status": "unknown",
-          "shipping_info": "Ücretsiz Kargo",
-          "is_platform_official": false,
-          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-04",
-          "scraped_at": "2026-08-04T08:42:30.232Z"
-        },
-        {
-          "sku": "CUDY-WR300",
-          "source_type": "marketplace",
-          "platform": "n11",
-          "seller_name": "Netsiparis",
-          "price": 696.62,
-          "currency": "TRY",
-          "stock_status": "unknown",
-          "shipping_info": "Ücretsiz Kargo",
-          "is_platform_official": false,
-          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-04",
-          "scraped_at": "2026-08-04T08:42:30.232Z"
+          "date": "2026-08-05",
+          "scraped_at": "2026-08-05T08:51:07.255Z",
+          "is_outlier": false
         },
         {
           "sku": "CUDY-WR300",
@@ -245,17 +705,49 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-04",
-          "scraped_at": "2026-08-04T08:42:30.232Z"
+          "date": "2026-08-05",
+          "scraped_at": "2026-08-05T08:51:07.258Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "CUDY-WR300",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "Online Alisveris Yap",
+          "price": 755.51,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+          "date": "2026-08-05",
+          "scraped_at": "2026-08-05T08:51:07.258Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "CUDY-WR300",
+          "source_type": "marketplace",
+          "platform": "n11",
+          "seller_name": "TeknoFS",
+          "price": 919.08,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+          "date": "2026-08-05",
+          "scraped_at": "2026-08-05T08:51:07.259Z",
+          "is_outlier": false
         }
       ],
       "aggregate": {
         "seller_count": 4,
         "min_price": 634.8,
-        "max_price": 726.8,
-        "price_spread": 92,
-        "price_spread_pct": 14.49,
-        "median_price": 669.85
+        "max_price": 919.08,
+        "price_spread": 284.28,
+        "price_spread_pct": 44.78,
+        "median_price": 741.155,
+        "outlier_count": 0
       },
       "trend": "flat",
       "history": [
@@ -263,10 +755,11 @@
           "date": "2026-08-03",
           "seller_count": 21,
           "min_price": 634.8,
-          "max_price": 841.3,
-          "price_spread": 206.5,
-          "price_spread_pct": 32.53,
-          "median_price": 726.8
+          "max_price": 837.47,
+          "price_spread": 202.67,
+          "price_spread_pct": 31.93,
+          "median_price": 726.8,
+          "outlier_count": 0
         },
         {
           "date": "2026-08-04",
@@ -275,12 +768,343 @@
           "max_price": 726.8,
           "price_spread": 92,
           "price_spread_pct": 14.49,
-          "median_price": 669.85
+          "median_price": 669.85,
+          "outlier_count": 0
+        },
+        {
+          "date": "2026-08-05",
+          "seller_count": 4,
+          "min_price": 634.8,
+          "max_price": 919.08,
+          "price_spread": 284.28,
+          "price_spread_pct": 44.78,
+          "median_price": 741.155,
+          "outlier_count": 0
         }
       ],
       "changes": {
-        "newSellers": [],
+        "newSellers": [
+          {
+            "seller_name": "Online Alisveris Yap",
+            "platform": "n11",
+            "price": 755.51
+          },
+          {
+            "seller_name": "TeknoFS",
+            "platform": "n11",
+            "price": 919.08
+          }
+        ],
         "removedSellers": [
+          {
+            "seller_name": "Teknoraks",
+            "platform": "n11",
+            "price": 643.08
+          },
+          {
+            "seller_name": "Netsiparis",
+            "platform": "n11",
+            "price": 696.62
+          }
+        ],
+        "priceChanges": []
+      }
+    },
+    {
+      "sku": "SEARCH-WR300",
+      "name": "SEARCH-WR300",
+      "latestDate": "2026-08-03",
+      "latestOffers": [
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Hepsiburada (Tekno54)",
+          "price": 634.8,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "n11 (tekno54)",
+          "price": 634.8,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "n11 (teknoraks)",
+          "price": 643.08,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Kraftonline.com.tr",
+          "price": 685.31,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "n11 (netsiparis)",
+          "price": 696.62,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "MediaMarkt Pazaryeri",
+          "price": 719,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "n11 (mytechno)",
+          "price": 726.8,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Teknosa (Teknoraks)",
+          "price": 739.99,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (onlinealisverisyap)",
+          "price": 745.97,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "Online Alisveris Yap",
+          "price": 745.97,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/router/en-ucuz-cudy-wr300-n300-2-4-ghz-ev-ofis-tipi-router-fiyatlari,2399403450",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:17.014Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (Kraft Online)",
+          "price": 750.41,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (Netsiparis)",
+          "price": 769.95,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.671Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Teknosa (onlinealisverisyap)",
+          "price": 781.56,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.672Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Teknosa (Netsipariş)",
+          "price": 786,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.672Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pazarama (netsiparis)",
+          "price": 801.89,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.672Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Hepsiburada (AKSİYON BİLİŞİM GÜVENLİK)",
+          "price": 829,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.672Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "idefix (onlinealisverisyap)",
+          "price": 837.47,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:13:15.672Z",
+          "is_outlier": false
+        }
+      ],
+      "aggregate": {
+        "seller_count": 17,
+        "min_price": 634.8,
+        "max_price": 837.47,
+        "price_spread": 202.67,
+        "price_spread_pct": 31.93,
+        "median_price": 745.97,
+        "outlier_count": 0
+      },
+      "trend": "flat",
+      "history": [
+        {
+          "date": "2026-08-03",
+          "seller_count": 0,
+          "min_price": null,
+          "max_price": null,
+          "price_spread": null,
+          "price_spread_pct": null,
+          "median_price": null,
+          "outlier_count": 0
+        },
+        {
+          "date": "2026-08-03",
+          "seller_count": 17,
+          "min_price": 634.8,
+          "max_price": 837.47,
+          "price_spread": 202.67,
+          "price_spread_pct": 31.93,
+          "median_price": 745.97,
+          "outlier_count": 0
+        }
+      ],
+      "changes": {
+        "newSellers": [
           {
             "seller_name": "Hepsiburada (Tekno54)",
             "platform": "akakce",
@@ -302,14 +1126,14 @@
             "price": 685.31
           },
           {
+            "seller_name": "n11 (netsiparis)",
+            "platform": "akakce",
+            "price": 696.62
+          },
+          {
             "seller_name": "MediaMarkt Pazaryeri",
             "platform": "akakce",
             "price": 719
-          },
-          {
-            "seller_name": "n11 (netsiparis)",
-            "platform": "akakce",
-            "price": 720.45
           },
           {
             "seller_name": "n11 (mytechno)",
@@ -322,14 +1146,19 @@
             "price": 739.99
           },
           {
+            "seller_name": "Pttavm (onlinealisverisyap)",
+            "platform": "akakce",
+            "price": 745.97
+          },
+          {
+            "seller_name": "Online Alisveris Yap",
+            "platform": "cimri",
+            "price": 745.97
+          },
+          {
             "seller_name": "Pttavm (Kraft Online)",
             "platform": "akakce",
             "price": 750.41
-          },
-          {
-            "seller_name": "Pttavm (onlinealisverisyap)",
-            "platform": "akakce",
-            "price": 759.43
           },
           {
             "seller_name": "Pttavm (Netsiparis)",
@@ -340,6 +1169,11 @@
             "seller_name": "Teknosa (onlinealisverisyap)",
             "platform": "akakce",
             "price": 781.56
+          },
+          {
+            "seller_name": "Teknosa (Netsipariş)",
+            "platform": "akakce",
+            "price": 786
           },
           {
             "seller_name": "Pazarama (netsiparis)",
@@ -355,27 +1189,299 @@
             "seller_name": "idefix (onlinealisverisyap)",
             "platform": "akakce",
             "price": 837.47
-          },
-          {
-            "seller_name": "idefix (netsipariş)",
-            "platform": "akakce",
-            "price": 841.3
-          },
-          {
-            "seller_name": "Online Alisveris Yap",
-            "platform": "cimri",
-            "price": 759.43
           }
         ],
-        "priceChanges": [
-          {
-            "platform": "n11",
-            "seller_name": "Netsiparis",
-            "old_price": 720.45,
-            "new_price": 696.62,
-            "pct_change": -3.31
-          }
-        ]
+        "removedSellers": [],
+        "priceChanges": []
+      }
+    },
+    {
+      "sku": "SEARCH-CUDY-WR300",
+      "name": "SEARCH-CUDY-WR300",
+      "latestDate": "2026-08-03",
+      "latestOffers": [
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Hepsiburada (Tekno54)",
+          "price": 634.8,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "n11 (tekno54)",
+          "price": 634.8,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "n11 (teknoraks)",
+          "price": 643.08,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Kraftonline.com.tr",
+          "price": 685.31,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "n11 (netsiparis)",
+          "price": 696.62,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "MediaMarkt Pazaryeri",
+          "price": 719,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "n11 (mytechno)",
+          "price": 726.8,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Teknosa (Teknoraks)",
+          "price": 739.99,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (onlinealisverisyap)",
+          "price": 745.97,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (Kraft Online)",
+          "price": 750.41,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "cimri",
+          "seller_name": "Online Alisveris Yap",
+          "price": 759.43,
+          "currency": "TRY",
+          "stock_status": "unknown",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.cimri.com/router/en-ucuz-cudy-wr300-n300-2-4-ghz-ev-ofis-tipi-router-fiyatlari,2399403450",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:03.477Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pttavm (Netsiparis)",
+          "price": 769.95,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Teknosa (onlinealisverisyap)",
+          "price": 781.56,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Teknosa (Netsipariş)",
+          "price": 786,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Pazarama (netsiparis)",
+          "price": 801.89,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "Hepsiburada (AKSİYON BİLİŞİM GÜVENLİK)",
+          "price": 829,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        },
+        {
+          "sku": "SEARCH-CUDY-WR300",
+          "source_type": "aggregator",
+          "platform": "akakce",
+          "seller_name": "idefix (onlinealisverisyap)",
+          "price": 837.47,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": "Ücretsiz Kargo",
+          "is_platform_official": false,
+          "product_url": "https://www.akakce.com/router/en-ucuz-cudy-wr300-3-port-300-mbps-fiyati,610841007.html",
+          "date": "2026-08-03",
+          "scraped_at": "2026-08-03T15:10:01.910Z",
+          "is_outlier": false
+        }
+      ],
+      "aggregate": {
+        "seller_count": 17,
+        "min_price": 634.8,
+        "max_price": 837.47,
+        "price_spread": 202.67,
+        "price_spread_pct": 31.93,
+        "median_price": 745.97,
+        "outlier_count": 0
+      },
+      "trend": "flat",
+      "history": [
+        {
+          "date": "2026-08-03",
+          "seller_count": 17,
+          "min_price": 634.8,
+          "max_price": 837.47,
+          "price_spread": 202.67,
+          "price_spread_pct": 31.93,
+          "median_price": 745.97,
+          "outlier_count": 0
+        }
+      ],
+      "changes": {
+        "newSellers": [],
+        "removedSellers": [],
+        "priceChanges": []
       }
     }
   ]
