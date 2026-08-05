@@ -16,14 +16,24 @@ function showEmpty(message) {
   el.hidden = false;
 }
 
+async function fetchHistory() {
+  const useLocal = await isLocalServerAvailable();
+  if (useLocal) {
+    const res = await fetch("/api/product-history");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+  const cfg = getGithubConfig();
+  const file = await ghGetFile(cfg, "data/product-history.json");
+  return file ? JSON.parse(file.content) : [];
+}
+
 async function init() {
   let entries;
   try {
-    const res = await fetch("/api/product-history");
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    entries = await res.json();
+    entries = await fetchHistory();
   } catch (err) {
-    showEmpty(`Geçmiş yüklenemedi (web sunucusu üzerinden açtığınızdan emin olun): ${err.message}`);
+    showEmpty(`Geçmiş yüklenemedi: ${err.message}`);
     return;
   }
 

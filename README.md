@@ -55,24 +55,41 @@ npx serve dashboard
 
 (salt okunur görüntüleme, ürün ekleme/geçmiş API'leri çalışmaz) veya GitHub Pages
 üzerinden `dashboard/` klasörünü yayınlayabilirsiniz (fetch http(s) üzerinden
-sorunsuz çalışır, ama ürün ekleme yine sunucu gerektirir).
+sorunsuz çalışır; ürün ekleme ve geçmiş de GitHub Pages'te çalışır, çünkü PC/yerel
+sunucu bulunamayınca sayfa doğrudan GitHub API'sine commit atmaya geçer -- aşağıya
+bakın).
 
 ## Web arayüzünden ürün ekleme ve geçmiş
 
-`npm run web` çalıştırıp `http://localhost:5173` adresini açın (pricetracker.bat
-zaten tarama sonrası bunu otomatik başlatıp tarayıcıyı açar). Bu adres altında:
+Bu, ürün eklemeyi ve eklenen ürünlerin geçmişini web sayfasından (PC ya da telefon)
+yönetmenizi sağlar. İki modu var, otomatik seçilir:
 
+1. **Yerel sunucu modu** (PC açık, `npm run web` çalışıyor): `http://localhost:5173`
+   açın (pricetracker.bat tarama sonrası bunu zaten otomatik başlatıp tarayıcıyı
+   açar). Aynı Wi-Fi'daki telefondan da `http://<pc-ip>:5173` ile erişilebilir --
+   nereden girersen gir, aynı `config/products.json` dosyasına yazılır.
+2. **GitHub modu** (PC kapalı / yerel sunucu yok, örn. GitHub Pages'ten açıldığında):
+   sayfa `/api/...` uçlarına erişemeyince otomatik olarak GitHub'ın Contents API'sine
+   geçer ve `config/products.json` + `data/product-history.json` dosyalarına doğrudan
+   commit atar. Bunun için **Ürün Ekle** sayfasındaki "GitHub ile doğrudan kayıt
+   ayarları" bölümünden, sadece bu repo için **Contents: Read and write** izniyle
+   sınırlı bir [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
+   girmeniz gerekir. Token yalnızca o cihazın tarayıcısında (`localStorage`) saklanır;
+   cihazı kaybederseniz GitHub ayarlarından iptal edebilirsiniz. Geçmişi salt okumak
+   (History sayfası) için token gerekmez, repo public olduğu sürece çalışır.
+
+Sayfalar şunları içerir:
 - **Panel**: mevcut dashboard (rekabet tablosu, fiyat geçmişi).
 - **Ürün Ekle**: SKU, ürün adı, pazaryeri URL'leri, Akakçe/Cimri arama terimi ve
-  bağımsız site bilgilerini bir formdan girip `config/products.json`'a ekleyebilirsiniz
-  -- terminalden komut çalıştırmaya gerek kalmaz. Eklenen ürün bir sonraki
-  `npm run scrape` çalışmasında otomatik dahil edilir.
-- **Geçmiş**: web arayüzünden hangi ürünün ne zaman eklendiğini `data/product-history.json`
+  bağımsız site bilgilerini bir formdan girip ürün ekleyebilirsiniz -- terminalden
+  komut çalıştırmaya gerek kalmaz. Eklenen ürün bir sonraki taramada (günlük otomatik
+  ya da elle `workflow_dispatch` ile tetiklenen) dahil edilir.
+- **Geçmiş**: hangi ürünün ne zaman eklendiğini `data/product-history.json`
   üzerinden listeler.
 
-Not: bu sayfalar `fetch()` ile API çağrısı yaptığından `dashboard/index.html`'i
-doğrudan çift tıklayarak (`file://`) değil, `npm run web` ile başlatılan sunucu
-üzerinden açmanız gerekir.
+Not: bu sayfalar `dashboard/index.html`'i doğrudan çift tıklayarak (`file://`) açılırsa
+GitHub moduna düşer (yerel sunucu `file://` altından erişilemez) -- localhost'ta
+test ediyorsanız mutlaka `npm run web` ile başlatılan sunucu üzerinden açın.
 
 ## Terminalden ürün ekleme (alternatif)
 

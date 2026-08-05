@@ -18,6 +18,38 @@
       <p class="muted">Buradan eklenen ürünler <code>config/products.json</code>'a yazılır ve bir sonraki taramaya dahil edilir.</p>
     </header>
 
+    <p id="mode-indicator" class="muted">Kayıt yöntemi kontrol ediliyor…</p>
+
+    <details class="gh-settings">
+      <summary>GitHub ile doğrudan kayıt ayarları (PC/yerel sunucu yokken kullanılır)</summary>
+      <div class="form-grid" style="margin-top: 0.75rem;">
+        <div class="field">
+          <label for="gh-token">GitHub Personal Access Token</label>
+          <input id="gh-token" type="password" placeholder="github_pat_... veya ghp_..." autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="gh-owner">Repo sahibi</label>
+          <input id="gh-owner" placeholder="alid67-git" />
+        </div>
+        <div class="field">
+          <label for="gh-repo">Repo adı</label>
+          <input id="gh-repo" placeholder="Price_Tracker" />
+        </div>
+        <div class="field">
+          <label for="gh-branch">Branch</label>
+          <input id="gh-branch" placeholder="main" />
+        </div>
+        <button type="button" id="gh-save" class="btn btn-secondary btn-inline">Ayarları Kaydet</button>
+        <p class="muted">
+          Token sadece bu cihazın tarayıcısında saklanır, başka hiçbir yere gönderilmez.
+          <strong>Sadece bu repo için Contents: Read and write</strong> izniyle sınırlı
+          fine-grained bir token oluşturman önerilir —
+          <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">token oluştur ↗</a>.
+          Telefonu kaybedersen tokenı GitHub ayarlarından iptal edebilirsin.
+        </p>
+      </div>
+    </details>
+
     <div class="card form-card">
       <form id="add-product-form" class="form-grid">
         <div class="field">
@@ -63,6 +95,7 @@
       </form>
     </div>
   </div>
+  <script src="github-client.js"></script>
   <script src="add-product.js"></script>
 </body>
 </html>
