@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-06T08:44:42.461Z",
+  "generatedAt": "2026-08-07T07:23:40.883Z",
   "products": [
     {
       "sku": "SEARCH-844N",
@@ -1351,7 +1351,7 @@
     {
       "sku": "CUDY-WR300",
       "name": "Cudy WR300 300Mbps Router",
-      "latestDate": "2026-08-06",
+      "latestDate": "2026-08-07",
       "latestOffers": [
         {
           "sku": "CUDY-WR300",
@@ -1364,8 +1364,8 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-06",
-          "scraped_at": "2026-08-06T08:42:04.366Z",
+          "date": "2026-08-07",
+          "scraped_at": "2026-08-07T07:21:06.802Z",
           "is_outlier": false
         },
         {
@@ -1373,14 +1373,14 @@
           "source_type": "marketplace",
           "platform": "n11",
           "seller_name": "Netsiparis",
-          "price": 697.08,
+          "price": 697.45,
           "currency": "TRY",
           "stock_status": "unknown",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-06",
-          "scraped_at": "2026-08-06T08:42:04.368Z",
+          "date": "2026-08-07",
+          "scraped_at": "2026-08-07T07:21:06.804Z",
           "is_outlier": false
         },
         {
@@ -1394,8 +1394,8 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-06",
-          "scraped_at": "2026-08-06T08:42:04.368Z",
+          "date": "2026-08-07",
+          "scraped_at": "2026-08-07T07:21:06.805Z",
           "is_outlier": false
         },
         {
@@ -1409,8 +1409,8 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-06",
-          "scraped_at": "2026-08-06T08:42:04.369Z",
+          "date": "2026-08-07",
+          "scraped_at": "2026-08-07T07:21:06.805Z",
           "is_outlier": false
         }
       ],
@@ -1420,7 +1420,7 @@
         "max_price": 755.51,
         "price_spread": 120.71,
         "price_spread_pct": 19.02,
-        "median_price": 711.94,
+        "median_price": 712.125,
         "outlier_count": 0
       },
       "trend": "flat",
@@ -1464,24 +1464,30 @@
           "price_spread_pct": 19.02,
           "median_price": 711.94,
           "outlier_count": 0
+        },
+        {
+          "date": "2026-08-07",
+          "seller_count": 4,
+          "min_price": 634.8,
+          "max_price": 755.51,
+          "price_spread": 120.71,
+          "price_spread_pct": 19.02,
+          "median_price": 712.125,
+          "outlier_count": 0
         }
       ],
       "changes": {
-        "newSellers": [
+        "newSellers": [],
+        "removedSellers": [],
+        "priceChanges": [
           {
+            "platform": "n11",
             "seller_name": "Netsiparis",
-            "platform": "n11",
-            "price": 697.08
+            "old_price": 697.08,
+            "new_price": 697.45,
+            "pct_change": 0.05
           }
-        ],
-        "removedSellers": [
-          {
-            "seller_name": "TeknoFS",
-            "platform": "n11",
-            "price": 919.08
-          }
-        ],
-        "priceChanges": []
+        ]
       }
     }
   ]
