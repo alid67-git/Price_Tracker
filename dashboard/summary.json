@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-08T07:01:20.328Z",
+  "generatedAt": "2026-08-09T07:03:50.280Z",
   "products": [
     {
       "sku": "SEARCH-844N",
@@ -1351,7 +1351,7 @@
     {
       "sku": "CUDY-WR300",
       "name": "Cudy WR300 300Mbps Router",
-      "latestDate": "2026-08-08",
+      "latestDate": "2026-08-09",
       "latestOffers": [
         {
           "sku": "CUDY-WR300",
@@ -1364,8 +1364,8 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-08",
-          "scraped_at": "2026-08-08T06:58:49.306Z",
+          "date": "2026-08-09",
+          "scraped_at": "2026-08-09T07:01:12.461Z",
           "is_outlier": false
         },
         {
@@ -1379,8 +1379,8 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-08",
-          "scraped_at": "2026-08-08T06:58:49.309Z",
+          "date": "2026-08-09",
+          "scraped_at": "2026-08-09T07:01:12.463Z",
           "is_outlier": false
         },
         {
@@ -1394,8 +1394,8 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-08",
-          "scraped_at": "2026-08-08T06:58:49.309Z",
+          "date": "2026-08-09",
+          "scraped_at": "2026-08-09T07:01:12.464Z",
           "is_outlier": false
         },
         {
@@ -1403,23 +1403,23 @@
           "source_type": "marketplace",
           "platform": "n11",
           "seller_name": "Online Alisveris Yap",
-          "price": 756.15,
+          "price": 759.95,
           "currency": "TRY",
           "stock_status": "unknown",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-08",
-          "scraped_at": "2026-08-08T06:58:49.310Z",
+          "date": "2026-08-09",
+          "scraped_at": "2026-08-09T07:01:12.464Z",
           "is_outlier": false
         }
       ],
       "aggregate": {
         "seller_count": 4,
         "min_price": 634.8,
-        "max_price": 756.15,
-        "price_spread": 121.35,
-        "price_spread_pct": 19.12,
+        "max_price": 759.95,
+        "price_spread": 125.15,
+        "price_spread_pct": 19.71,
         "median_price": 712.125,
         "outlier_count": 0
       },
@@ -1484,6 +1484,16 @@
           "price_spread_pct": 19.12,
           "median_price": 712.125,
           "outlier_count": 0
+        },
+        {
+          "date": "2026-08-09",
+          "seller_count": 4,
+          "min_price": 634.8,
+          "max_price": 759.95,
+          "price_spread": 125.15,
+          "price_spread_pct": 19.71,
+          "median_price": 712.125,
+          "outlier_count": 0
         }
       ],
       "changes": {
@@ -1493,9 +1503,9 @@
           {
             "platform": "n11",
             "seller_name": "Online Alisveris Yap",
-            "old_price": 755.51,
-            "new_price": 756.15,
-            "pct_change": 0.08
+            "old_price": 756.15,
+            "new_price": 759.95,
+            "pct_change": 0.5
           }
         ]
       }
