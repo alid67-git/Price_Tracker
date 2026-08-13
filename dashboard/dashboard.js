@@ -643,25 +643,29 @@ async function loadTracked() {
   }
 }
 
+function activateTab(name) {
+  const tab = document.querySelector(`.tab[data-tab="${name}"]`);
+  if (!tab) return;
+  document.querySelectorAll(".tab").forEach((t) => {
+    const on = t === tab;
+    t.classList.toggle("active", on);
+    t.setAttribute("aria-selected", on ? "true" : "false");
+  });
+  document.getElementById("tab-search").hidden = name !== "search";
+  document.getElementById("tab-tracked").hidden = name !== "tracked";
+  document.getElementById("tab-add-product").hidden = name !== "add-product";
+  document.getElementById("tab-history").hidden = name !== "history";
+  if (name === "tracked" && selectedProduct) {
+    renderPriceChart(selectedProduct);
+    renderSellerCountChart(selectedProduct);
+  }
+  if (name === "add-product") updateAddProductMode();
+  if (name === "history") loadHistory();
+}
+
 function setupTabs() {
   document.querySelectorAll(".tab").forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const name = tab.dataset.tab;
-      document.querySelectorAll(".tab").forEach((t) => {
-        t.classList.toggle("active", t === tab);
-        t.setAttribute("aria-selected", t === tab ? "true" : "false");
-      });
-      document.getElementById("tab-search").hidden = name !== "search";
-      document.getElementById("tab-tracked").hidden = name !== "tracked";
-      document.getElementById("tab-add-product").hidden = name !== "add-product";
-      document.getElementById("tab-history").hidden = name !== "history";
-      if (name === "tracked" && selectedProduct) {
-        renderPriceChart(selectedProduct);
-        renderSellerCountChart(selectedProduct);
-      }
-      if (name === "add-product") updateAddProductMode();
-      if (name === "history") loadHistory();
-    });
+    tab.addEventListener("click", () => activateTab(tab.dataset.tab));
   });
 }
 
@@ -809,9 +813,18 @@ async function submitProduct(e) {
 async function updateAddProductMode() {
   const el = document.getElementById("add-product-mode");
   const useLocal = await isLocalServerAvailable();
-  el.textContent = useLocal
-    ? "Kayıt yöntemi: PC üzerindeki yerel sunucu"
-    : "Kayıt yöntemi: yerel sunucu bulunamadı, GitHub'a doğrudan commit edilecek (aşağıdan token gerekir)";
+  if (useLocal) {
+    el.textContent = "Kayıt yöntemi: PC üzerindeki yerel sunucu";
+    return;
+  }
+  const cfg = getGithubConfig();
+  el.textContent = cfg.token
+    ? "Kayıt yöntemi: GitHub (telefon/Pages). Ürün doğrudan repoya commit edilir; PC'de sync-from-github.bat ile çekersin."
+    : "Kayıt yöntemi: GitHub. Önce aşağıdaki ayarlardan token kaydet — sonra ürün ekleyebilirsin.";
+  if (!cfg.token) {
+    const details = document.querySelector(".gh-settings");
+    if (details) details.open = true;
+  }
 }
 
 function initGithubSettingsForm() {
@@ -891,15 +904,34 @@ async function loadHistory() {
   historyLoaded = true;
 }
 
+function isGithubPagesHost() {
+  return /\.github\.io$/i.test(location.hostname);
+}
+
 async function checkServer() {
   const el = document.getElementById("server-status");
+  const banner = document.getElementById("mode-banner");
   try {
-    const res = await fetch("/api/health");
+    const res = await fetch("/api/health", { signal: AbortSignal.timeout(1500) });
     if (!res.ok) throw new Error();
-    el.textContent = "Yerel sunucu hazır — arama yapabilirsiniz";
+    el.textContent = "PC modu — arama + ürün ekleme yerel sunucuda";
+    el.classList.remove("status-error");
+    if (banner) banner.hidden = true;
+    return true;
   } catch {
-    el.textContent = "Sunucu yok: npm run web veya pricetracker.bat ile başlatın";
+    el.textContent = isGithubPagesHost()
+      ? "Telefon / GitHub Pages — takip + ürün ekleme (token ile)"
+      : "Sunucu yok — takip verisi okunur; canlı arama için pricetracker.bat";
     el.classList.add("status-error");
+    if (banner) {
+      banner.hidden = false;
+      banner.innerHTML =
+        "<strong>Mobil / online mod:</strong> Takip edilenler her gün otomatik güncellenir. " +
+        "Ürün Ekle sekmesinden token kaydedip yeni ürün commit edebilirsin. " +
+        "Canlı Araştırma (PDF) yalnızca PC’de <code>pricetracker.bat</code> ile çalışır. " +
+        "Telefondan eklediklerini PC’de <code>sync-from-github.bat</code> ile çekersin.";
+    }
+    return false;
   }
 }
 
@@ -912,7 +944,15 @@ async function init() {
   document.getElementById("add-standalone-row").addEventListener("click", addStandaloneRow);
   document.getElementById("add-product-form").addEventListener("submit", submitProduct);
   initGithubSettingsForm();
-  await checkServer();
+  const hasLocal = await checkServer();
+  if (!hasLocal) {
+    activateTab("tracked");
+    const searchTab = document.querySelector('.tab[data-tab="search"]');
+    if (searchTab) {
+      searchTab.title = "Canlı arama yalnızca PC yerel sunucusunda çalışır";
+      searchTab.classList.add("tab-limited");
+    }
+  }
   await loadSources();
   await loadTracked();
 }

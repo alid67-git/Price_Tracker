@@ -4,7 +4,47 @@ Trendyol, Hepsiburada, N11 ve Amazon.com.tr'deki **tüm alt satıcıları**, Aka
 fiyat karşılaştırma sitelerini ve istediğiniz bağımsız satıcı sitelerini takip edip
 rekabet yoğunluğu (satıcı sayısı, fiyat aralığı/spread, trend) analiz eden bir sistem.
 
+## Telefon + PC birlikte kullanım
+
+İki ortam aynı GitHub reposunu paylaşır. Telefon yazarsa, PC `git pull` ile alır.
+
+| | Telefon (GitHub Pages) | PC (lokal) |
+|---|---|---|
+| Adres | https://alid67-git.github.io/Price_Tracker/ | `pricetracker.bat` → [1] → `http://localhost:3456` |
+| Takip / grafikler | Evet (günlük Actions günceller) | Evet |
+| Ürün ekleme | Evet (token ile doğrudan commit) | Evet (yerel sunucu) |
+| Canlı araştırma + PDF | Hayır (sunucu gerekir) | Evet |
+
+### Telefondan ilk kurulum (bir kez)
+
+1. Safari/Chrome’da paneli aç: https://alid67-git.github.io/Price_Tracker/
+2. İstersen **Paylaş → Ana Ekrana Ekle** (PWA kısayolu).
+3. **Ürün Ekle** → “GitHub ile doğrudan kayıt ayarları”nı aç.
+4. Sadece bu repo için **Contents: Read and write** izinli
+   [fine-grained token](https://github.com/settings/personal-access-tokens/new) oluştur,
+   yapıştır, **Ayarları Kaydet**.
+5. Ürün ekle → commit GitHub’a gider → ertesi gün (veya Actions’tan elle) tarama ürünü alır.
+
+### PC’de telefondan gelenleri kaydetmek
+
+```text
+sync-from-github.bat
+```
+
+veya `pricetracker.bat` → **[3] GitHub'dan çek**. Bu `git pull` yapar; `config/products.json`
+ve günlük `data/` dosyaları lokale iner.
+
+### Akış özeti
+
+```text
+Telefon (Pages) --ürün ekle--> GitHub repo --Actions tarama--> data/ + summary.json
+                                      |
+                                      +-- sync-from-github.bat --> PC klasörü
+PC (pricetracker.bat [1]) --canlı arama/PDF--> sadece lokal (repo’ya yazmaz)
+```
+
 ## Nasıl çalışır
+
 
 - `config/products.json` içinde takip edilecek ürünler tanımlanır (SKU, isim, her
   pazaryeri için ürün URL'si, Akakçe/Cimri için arama terimi, varsa bağımsız site linkleri).
@@ -29,15 +69,16 @@ npx playwright install chromium
 ## Kullanım
 
 En kolay yol: proje klasöründeki **`pricetracker.bat`** dosyasına çift tıklamak.
-İlk çalıştırmada bağımlılıkları kurar, sonra iki seçenek sunar:
+İlk çalıştırmada bağımlılıkları kurar, sonra üç seçenek sunar:
 
 - **[1] Araştırma web** (varsayılan): `npm run web` ile `src/server.js`'i başlatıp
   `http://localhost:3456`'ı açar. Dashboard'da dört sekme vardır:
   - **Araştırma**: anlık, manuel arama (bir ürünü tüm kaynaklardan tara, PDF rapor indir).
-  - **Takip edilenler**: `npm run scrape` ile toplanan günlük veriden rekabet tablosu ve fiyat geçmişi.
+  - **Takip**: `npm run scrape` ile toplanan günlük veriden rekabet tablosu ve fiyat geçmişi.
   - **Ürün Ekle**: `npm run scrape`'in düzenli takip edeceği ürünleri forma girerek `config/products.json`'a ekleme (bkz. aşağıdaki bölüm).
   - **Geçmiş**: Ürün Ekle'den ne zaman ne eklendiğinin kaydı.
-- **[2] Toplu tarama**: `npm run scrape` + `npm run build-dashboard` çalıştırıp "Takip edilenler" verisini günceller.
+- **[2] Toplu tarama**: `npm run scrape` + `npm run build-dashboard` çalıştırıp "Takip" verisini günceller.
+- **[3] GitHub'dan çek**: telefondan / Actions'tan gelen commit'leri lokale alır (`sync-from-github.bat`).
 
 Elle çalıştırmak isterseniz:
 

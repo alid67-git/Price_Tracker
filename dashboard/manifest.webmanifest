@@ -1,0 +1,11 @@
+{
+  "name": "Fiyat Araştırma Sistemi",
+  "short_name": "Fiyat Takip",
+  "description": "Telefon ve PC için fiyat takip paneli",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f9f9f7",
+  "theme_color": "#2a78d6",
+  "lang": "tr"
+}

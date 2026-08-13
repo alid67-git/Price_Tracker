@@ -2,8 +2,14 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#2a78d6" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Fiyat Takip" />
+<meta name="description" content="Fiyat araştırma ve rekabet takip paneli — telefon ve PC." />
 <title>Fiyat Araştırma Sistemi</title>
+<link rel="manifest" href="manifest.webmanifest" />
 <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
@@ -13,9 +19,11 @@
       <p id="server-status" class="muted">Sunucu bağlanıyor…</p>
     </header>
 
+    <div id="mode-banner" class="mode-banner" hidden></div>
+
     <nav class="tabs" role="tablist">
       <button type="button" class="tab active" data-tab="search" role="tab" aria-selected="true">Araştırma</button>
-      <button type="button" class="tab" data-tab="tracked" role="tab" aria-selected="false">Takip edilenler</button>
+      <button type="button" class="tab" data-tab="tracked" role="tab" aria-selected="false">Takip</button>
       <button type="button" class="tab" data-tab="add-product" role="tab" aria-selected="false">Ürün Ekle</button>
       <button type="button" class="tab" data-tab="history" role="tab" aria-selected="false">Geçmiş</button>
     </nav>

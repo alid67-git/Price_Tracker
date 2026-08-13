@@ -94,7 +94,32 @@ body {
 .muted { color: var(--text-muted); font-size: 0.85rem; }
 .status-error { color: var(--status-critical) !important; }
 
-.tabs { display: flex; gap: 0.35rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--gridline); padding-bottom: 0; }
+.mode-banner {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  background: var(--series-blue-wash);
+  border: 1px solid color-mix(in srgb, var(--series-blue) 35%, transparent);
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+.mode-banner strong { color: var(--text-primary); }
+.mode-banner code {
+  font-size: 0.8rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.2rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--gridline);
+  padding-bottom: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
 .tab {
   background: transparent;
   border: none;
@@ -102,12 +127,16 @@ body {
   color: var(--text-secondary);
   font-size: 0.92rem;
   font-weight: 600;
-  padding: 0.55rem 0.9rem;
+  padding: 0.65rem 0.85rem;
   cursor: pointer;
   margin-bottom: -1px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  min-height: 44px;
 }
 .tab:hover { color: var(--text-primary); }
 .tab.active { color: var(--series-blue); border-bottom-color: var(--series-blue); }
+.tab.tab-limited { opacity: 0.55; }
 .tab-panel { margin-top: 0; }
 .tab-panel[hidden] { display: none; }
 
@@ -299,7 +328,18 @@ tbody tr.active-row { background: var(--series-blue-wash); }
 :root[data-theme="dark"] .alert-warning { color: var(--status-warning); }
 
 .detail-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.25rem; align-items: start; }
-@media (max-width: 860px) { .detail-grid { grid-template-columns: 1fr; } }
+@media (max-width: 860px) {
+  .detail-grid { grid-template-columns: 1fr; }
+  .page { padding: 1rem 0.85rem 3.5rem; }
+  .page-header h1 { font-size: 1.15rem; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .field input, .field textarea, .standalone-row input {
+    font-size: 16px; /* iOS zoom engeli */
+    min-height: 44px;
+  }
+  .btn-primary, .btn-secondary { min-height: 44px; padding: 0.7rem 1rem; }
+  .standalone-row { flex-direction: column; }
+}
 
 .chart-card + .chart-card { margin-top: 1rem; }
 .chart-legend { display: flex; align-items: center; gap: 1rem; margin-top: 0.6rem; font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap; }

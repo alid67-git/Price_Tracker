@@ -16,12 +16,16 @@ call npx playwright install chromium
 if errorlevel 1 goto :error
 
 echo.
-echo  [1] Araştırma web  (manuel arama + PDF rapor)  [varsayilan]
-echo  [2] Toplu tarama   (config urunleri, gunluk veri)
+echo  [1] Arastirma web     (manuel arama + PDF)     [varsayilan]
+echo  [2] Toplu tarama      (config urunleri)
+echo  [3] GitHub'dan cek    (telefon/Actions -^> lokal)
 echo.
-set /p CHOICE="Secim (1/2, Enter=1): "
+echo  Telefon paneli: https://alid67-git.github.io/Price_Tracker/
+echo.
+set /p CHOICE="Secim (1/2/3, Enter=1): "
 if "%CHOICE%"=="" set CHOICE=1
 if "%CHOICE%"=="2" goto :batch
+if "%CHOICE%"=="3" goto :sync
 goto :web
 
 :web
@@ -51,6 +55,11 @@ echo     http://localhost:3456  (Takip edilenler sekmesi)
 echo.
 pause
 exit /b 0
+
+:sync
+echo.
+call "%~dp0sync-from-github.bat"
+exit /b %ERRORLEVEL%
 
 :error
 echo.
