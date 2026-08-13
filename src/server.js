@@ -7,6 +7,7 @@ import { runSearchSession } from "./core/search-session.js";
 import { buildPdfReport } from "./report/pdf-report.js";
 import { loadResearchCatalog, catalogSummary } from "./connectors/catalog-search.js";
 import { beginSearch, requestCancel, endSearch } from "./core/search-cancel.js";
+import { APP_VERSION, versionLabel } from "./core/version.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -14,6 +15,7 @@ const DASHBOARD_DIR = path.join(ROOT, "dashboard");
 const SEARCHES_DIR = path.join(ROOT, "data", "searches");
 const PRODUCTS_PATH = path.join(ROOT, "config", "products.json");
 const HISTORY_PATH = path.join(ROOT, "data", "product-history.json");
+const INTL_MARKETS_PATH = path.join(ROOT, "config", "international-markets.json");
 const MARKETPLACE_PLATFORMS = ["trendyol", "hepsiburada", "n11", "amazon_tr"];
 const PORT = Number(process.env.PORT) || 3456;
 
@@ -35,7 +37,68 @@ async function persistSearch(result) {
 }
 
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, searching: searchLock });
+  res.json({
+    ok: true,
+    searching: searchLock,
+    version: APP_VERSION,
+    label: versionLabel(),
+  });
+});
+
+app.get("/api/version", (_req, res) => {
+  res.json({ version: APP_VERSION, label: versionLabel() });
+});
+
+app.get("/api/international-markets", async (_req, res) => {
+  try {
+    res.json(await readJsonFile(INTL_MARKETS_PATH, { regions: [], status: "missing" }));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/** Arama sonucundan takip listesine kaydet (istege bagli). */
+app.post("/api/search/save-tracked", async (req, res) => {
+  const query = typeof req.body?.query === "string" ? req.body.query.trim() : "";
+  const skuRaw = typeof req.body?.sku === "string" ? req.body.sku.trim() : "";
+  const offers = Array.isArray(req.body?.offers) ? req.body.offers : [];
+  if (!query && !skuRaw) {
+    res.status(400).json({ error: "query veya sku gerekli" });
+    return;
+  }
+
+  const sku = skuRaw || `TR-${Date.now().toString(36).toUpperCase()}`;
+  const products = await readJsonFile(PRODUCTS_PATH, []);
+  if (products.some((p) => p.sku === sku)) {
+    res.status(409).json({ error: `"${sku}" zaten takip listesinde` });
+    return;
+  }
+
+  const marketplaces = {};
+  for (const platform of MARKETPLACE_PLATFORMS) {
+    const hit = offers.find((o) => o?.platform === platform && o?.product_url);
+    if (hit?.product_url) marketplaces[platform] = hit.product_url;
+  }
+
+  const product = {
+    sku,
+    name: typeof req.body?.name === "string" && req.body.name.trim() ? req.body.name.trim() : query || sku,
+    marketplaces,
+    aggregatorQuery: query || undefined,
+    standalone: [],
+  };
+
+  try {
+    products.push(product);
+    await writeFile(PRODUCTS_PATH, JSON.stringify(products, null, 2), "utf-8");
+    const history = await readJsonFile(HISTORY_PATH, []);
+    history.push({ ...product, addedAt: new Date().toISOString(), source: "search-save" });
+    await mkdir(path.dirname(HISTORY_PATH), { recursive: true });
+    await writeFile(HISTORY_PATH, JSON.stringify(history, null, 2), "utf-8");
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 /* ---------- urun ekleme / ekleme gecmisi ---------- */
@@ -219,8 +282,8 @@ app.post("/api/report.pdf", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`[web] Fiyat Arastirma sunucusu http://localhost:${PORT}`);
-  console.log(`[web] Tarayicida acin, arama kutusuna urun yazin.`);
+  console.log(`[web] Fiyat Arastirma ${versionLabel()} — http://localhost:${PORT}`);
+  console.log(`[web] Mod 1: Turkiye arastirma | Mod 2 (v2): uluslararasi (yakinda)`);
 }).on("error", (err) => {
   if (err.code === "EADDRINUSE") {
     console.error(`[web] Port ${PORT} dolu. Onceki sunucuyu kapatin veya PORT=3457 npm run web`);

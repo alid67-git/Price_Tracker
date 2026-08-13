@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "description": "Uluslararası fiyat araştırması hedef pazarları (v2.0). Arama connector'ları henüz yok — UI iskeleti.",
+  "status": "planned",
+  "targetAppVersion": "2.0.0",
+  "regions": [
+    {
+      "id": "europe_top10",
+      "name": "Avrupa — 10 gelişmiş pazar",
+      "countries": [
+        { "code": "DE", "name": "Almanya", "currency": "EUR", "examples": ["amazon.de", "idealo.de", "mediamarkt.de"] },
+        { "code": "FR", "name": "Fransa", "currency": "EUR", "examples": ["amazon.fr", "fnac.com", "cdiscount.com"] },
+        { "code": "IT", "name": "İtalya", "currency": "EUR", "examples": ["amazon.it", "mediaworld.it"] },
+        { "code": "ES", "name": "İspanya", "currency": "EUR", "examples": ["amazon.es", "pccomponentes.com"] },
+        { "code": "NL", "name": "Hollanda", "currency": "EUR", "examples": ["amazon.nl", "bol.com"] },
+        { "code": "BE", "name": "Belçika", "currency": "EUR", "examples": ["amazon.com.be", "coolblue.be"] },
+        { "code": "SE", "name": "İsveç", "currency": "SEK", "examples": ["amazon.se", "inet.se"] },
+        { "code": "AT", "name": "Avusturya", "currency": "EUR", "examples": ["amazon.de", "geizhals.at"] },
+        { "code": "CH", "name": "İsviçre", "currency": "CHF", "examples": ["digitec.ch", "galaxus.ch"] },
+        { "code": "GB", "name": "Birleşik Krallık", "currency": "GBP", "examples": ["amazon.co.uk", "currys.co.uk"] }
+      ]
+    },
+    {
+      "id": "asia_priority",
+      "name": "Asya — öncelikli pazarlar",
+      "countries": [
+        { "code": "CN", "name": "Çin", "currency": "CNY", "examples": ["jd.com", "tmall.com", "amazon.cn"] },
+        { "code": "KR", "name": "Güney Kore", "currency": "KRW", "examples": ["coupang.com", "gmarket.co.kr"] },
+        { "code": "TH", "name": "Tayland", "currency": "THB", "examples": ["lazada.co.th", "shopee.co.th"] },
+        { "code": "JP", "name": "Japonya", "currency": "JPY", "examples": ["amazon.co.jp", "rakuten.co.jp", "kakaku.com"] }
+      ]
+    }
+  ]
+}

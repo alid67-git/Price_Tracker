@@ -1,10 +1,18 @@
 # Fiyat Araştırma Sistemi
 
+**Sürüm:** `1.2.0` — her gelişmede SemVer artar (`CHANGELOG.md`).
+
+| Hat | Sürüm | İçerik |
+|-----|-------|--------|
+| Türkiye araştırması + takip | **1.x** | Seçili TR platformlarında ara, sırala, kaydet |
+| Uluslararası fiyat listesi | **2.0** (hedef) | Avrupa 10 + Çin, Kore, Tayland, Japonya |
+
 Trendyol, Hepsiburada, N11 ve Amazon.com.tr'deki **tüm alt satıcıları**, Akakçe/Cimri
 fiyat karşılaştırma sitelerini ve istediğiniz bağımsız satıcı sitelerini takip edip
 rekabet yoğunluğu (satıcı sayısı, fiyat aralığı/spread, trend) analiz eden bir sistem.
 
 ## Telefon + PC birlikte kullanım
+
 
 İki ortam aynı GitHub reposunu paylaşır. Telefon yazarsa, PC `git pull` ile alır.
 

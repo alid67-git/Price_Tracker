@@ -15,7 +15,10 @@
 <body>
   <div class="page">
     <header class="page-header">
-      <h1>Fiyat Araştırma &amp; Rekabet Takip Sistemi</h1>
+      <div class="page-header-main">
+        <h1>Fiyat Araştırma &amp; Rekabet Takip Sistemi</h1>
+        <span id="app-version" class="version-badge" title="SemVer — CHANGELOG.md">v…</span>
+      </div>
       <p id="server-status" class="muted">Sunucu bağlanıyor…</p>
     </header>
 
@@ -30,6 +33,24 @@
 
     <!-- ========== ARAMA ========== -->
     <section id="tab-search" class="tab-panel">
+      <div class="research-modes" role="radiogroup" aria-label="Araştırma bölgesi">
+        <label class="mode-card">
+          <input type="radio" name="research-mode" value="tr" checked />
+          <span class="mode-card-body">
+            <strong>1 · Türkiye</strong>
+            <span class="muted">Seçili platformlarda ara, fiyata göre sırala, isteğe bağlı kaydet</span>
+          </span>
+        </label>
+        <label class="mode-card">
+          <input type="radio" name="research-mode" value="intl" />
+          <span class="mode-card-body">
+            <strong>2 · Uluslararası <em class="mode-soon">v2.0</em></strong>
+            <span class="muted">Avrupa (10 ülke) + Çin, Kore, Tayland, Japonya</span>
+          </span>
+        </label>
+      </div>
+
+      <div id="research-tr">
       <form id="search-form" class="search-form card">
         <label class="field">
           <span>Ürün / arama terimi</span>
@@ -37,19 +58,20 @@
         </label>
         <div class="field">
           <div class="field-row">
-            <span>Araştırma kategorileri <span class="optional" id="sources-count"></span></span>
+            <span>Türkiye platformları <span class="optional" id="sources-count"></span></span>
             <button type="button" id="toggle-categories" class="btn-text">Tümünü seç</button>
           </div>
           <div id="category-filters" class="category-filters"></div>
         </div>
-        <p class="search-hint muted">Varsayılan: Pazaryerleri + Elektronik. Daha fazla kategori seçersen süre uzar. Market / ikinci el siteleri henüz otomatik değil.</p>
+        <p class="search-hint muted">Varsayılan: Pazaryerleri + Elektronik. Sonuçlar fiyata göre sıralanır. Market / ikinci el henüz otomatik değil.</p>
         <label class="field">
           <span>Ek pazaryeri URL’leri <span class="optional">(opsiyonel — belirli ürün sayfası zorlamak için)</span></span>
           <textarea id="search-urls" name="urls" rows="3" placeholder="https://www.trendyol.com/...&#10;https://www.n11.com/..."></textarea>
         </label>
         <div class="search-actions">
-          <button id="search-btn" type="submit" class="btn-primary">Ara</button>
-          <button id="pdf-btn" type="button" class="btn-secondary" disabled>PDF rapor indir</button>
+          <button id="search-btn" type="submit" class="btn-primary">Türkiye’de ara</button>
+          <button id="pdf-btn" type="button" class="btn-secondary" disabled>PDF rapor</button>
+          <button id="save-tracked-btn" type="button" class="btn-secondary" disabled>Takibe kaydet</button>
         </div>
         <p id="search-status" class="muted search-status" hidden></p>
       </form>
@@ -61,13 +83,24 @@
         <div class="detail-grid">
           <div class="card">
             <div class="offers-head">
-              <h3>Teklifler</h3>
-              <div id="search-platform-filters" class="platform-filters"></div>
+              <h3>Teklifler <span class="optional">(sıralı)</span></h3>
+              <div class="offers-toolbar">
+                <label class="sort-field">
+                  <span class="sr-only">Sırala</span>
+                  <select id="search-sort">
+                    <option value="price-asc">Fiyat ↑ (ucuzdan pahalıya)</option>
+                    <option value="price-desc">Fiyat ↓ (pahalıdan ucuza)</option>
+                    <option value="platform">Platform A→Z</option>
+                  </select>
+                </label>
+                <div id="search-platform-filters" class="platform-filters"></div>
+              </div>
             </div>
             <div class="table-scroll">
               <table>
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>Platform</th>
                     <th>Satıcı</th>
                     <th>Fiyat</th>
@@ -87,6 +120,16 @@
             <h3 class="stats-subhead">Özet</h3>
             <dl id="search-stats-dl" class="stats-dl"></dl>
           </div>
+        </div>
+      </div>
+      </div>
+
+      <div id="research-intl" hidden>
+        <div class="card intl-panel">
+          <h2>Uluslararası fiyat listesi <span class="version-badge">v2.0 hedef</span></h2>
+          <p class="muted">Aynı ürün için Avrupa’nın 10 gelişmiş pazarı ile Çin, Güney Kore, Tayland ve Japonya fiyatlarını ülke bazlı listelemek. Connector’lar henüz bağlanmadı — ülke iskeleti hazır.</p>
+          <div id="intl-markets-list" class="intl-markets"></div>
+          <p id="intl-status" class="muted">Bu mod <strong>2.0.0</strong> sürümünde açılacak. Şimdilik Türkiye araştırmasını kullan.</p>
         </div>
       </div>
     </section>

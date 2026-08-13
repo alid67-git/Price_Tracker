@@ -215,6 +215,8 @@ export async function runSearchSession(input) {
     id: `${todayDateString()}_${Date.now()}`,
     query,
     sku,
+    mode: "tr",
+    region: "TR",
     generatedAt: new Date().toISOString(),
     date: todayDateString(),
     marketplaceUrls,

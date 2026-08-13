@@ -76,11 +76,20 @@ function renderStatTiles(containerId, tiles) {
 }
 
 function appendOfferRows(tbody, offers, extra = {}) {
-  const { newSellerNames = new Set(), urlCounts = new Map() } = extra;
+  const { newSellerNames = new Set(), urlCounts = new Map(), showRank = false } = extra;
   tbody.innerHTML = "";
+  let rank = 0;
   for (const offer of offers) {
     const tr = document.createElement("tr");
     if (offer.is_outlier) tr.classList.add("outlier-row");
+
+    if (showRank) {
+      rank += 1;
+      const rankTd = document.createElement("td");
+      rankTd.className = "rank-cell";
+      rankTd.textContent = String(rank);
+      tr.appendChild(rankTd);
+    }
 
     const platformTd = document.createElement("td");
     platformTd.textContent = offer.platform;
@@ -160,6 +169,7 @@ function renderSearchResults(result) {
   lastSearchResult = result;
   document.getElementById("search-results").hidden = false;
   document.getElementById("pdf-btn").disabled = false;
+  document.getElementById("save-tracked-btn").disabled = false;
 
   const agg = result.aggregate;
   renderStatTiles("search-kpi", [
@@ -218,6 +228,18 @@ function makeAlert(level, icon, text) {
   return div;
 }
 
+function sortSearchOffers(offers, sortKey) {
+  const list = [...offers];
+  if (sortKey === "price-desc") return list.sort((a, b) => b.price - a.price);
+  if (sortKey === "platform") {
+    return list.sort((a, b) => {
+      const p = String(a.platform).localeCompare(String(b.platform), "tr");
+      return p !== 0 ? p : a.price - b.price;
+    });
+  }
+  return list.sort((a, b) => a.price - b.price);
+}
+
 function renderSearchOffers() {
   if (!lastSearchResult) return;
   const offers = lastSearchResult.offers;
@@ -226,12 +248,102 @@ function renderSearchOffers() {
     renderSearchOffers();
   });
 
-  const filtered = offers.filter((o) => searchPlatformFilter === "all" || o.platform === searchPlatformFilter);
+  const sortKey = document.getElementById("search-sort")?.value || "price-asc";
+  const filtered = sortSearchOffers(
+    offers.filter((o) => searchPlatformFilter === "all" || o.platform === searchPlatformFilter),
+    sortKey
+  );
   const urlCounts = offers.reduce((map, o) => {
     map.set(o.product_url, (map.get(o.product_url) ?? 0) + 1);
     return map;
   }, new Map());
-  appendOfferRows(document.getElementById("search-offers-body"), filtered, { urlCounts });
+  appendOfferRows(document.getElementById("search-offers-body"), filtered, { urlCounts, showRank: true });
+}
+
+async function saveSearchToTracked() {
+  if (!lastSearchResult) return;
+  const btn = document.getElementById("save-tracked-btn");
+  const status = document.getElementById("search-status");
+  btn.disabled = true;
+  try {
+    const res = await fetch("/api/search/save-tracked", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: lastSearchResult.query,
+        sku: lastSearchResult.sku,
+        name: lastSearchResult.query,
+        offers: lastSearchResult.offers,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    status.hidden = false;
+    status.classList.remove("status-error");
+    status.textContent = `"${data.sku}" takibe kaydedildi. Günlük tarama / Actions bu ürünü dahil edecek.`;
+    historyLoaded = false;
+  } catch (err) {
+    status.hidden = false;
+    status.classList.add("status-error");
+    status.textContent = `Kaydetme hatası: ${err.message}`;
+  } finally {
+    btn.disabled = !lastSearchResult?.offers?.length;
+  }
+}
+
+function setupResearchModes() {
+  const radios = document.querySelectorAll('input[name="research-mode"]');
+  const trPanel = document.getElementById("research-tr");
+  const intlPanel = document.getElementById("research-intl");
+  const apply = () => {
+    const mode = document.querySelector('input[name="research-mode"]:checked')?.value || "tr";
+    trPanel.hidden = mode !== "tr";
+    intlPanel.hidden = mode !== "intl";
+    if (mode === "intl") loadIntlMarkets();
+  };
+  radios.forEach((r) => r.addEventListener("change", apply));
+  apply();
+}
+
+let intlLoaded = false;
+async function loadIntlMarkets() {
+  if (intlLoaded) return;
+  const box = document.getElementById("intl-markets-list");
+  if (!box) return;
+  try {
+    let data = null;
+    try {
+      const res = await fetch("/api/international-markets");
+      if (res.ok) data = await res.json();
+    } catch {
+      /* Pages / sunucusuz */
+    }
+    if (!data) {
+      const res = await fetch("intl-markets.json");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      data = await res.json();
+    }
+    box.innerHTML = "";
+    for (const region of data.regions ?? []) {
+      const section = document.createElement("section");
+      section.className = "intl-region";
+      const h = document.createElement("h3");
+      h.textContent = region.name;
+      section.appendChild(h);
+      const ul = document.createElement("ul");
+      ul.className = "intl-country-list";
+      for (const c of region.countries ?? []) {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${c.code}</strong> ${c.name} <span class="muted">(${c.currency})</span>`;
+        ul.appendChild(li);
+      }
+      section.appendChild(ul);
+      box.appendChild(section);
+    }
+    intlLoaded = true;
+  } catch (err) {
+    box.textContent = `Pazar listesi yüklenemedi: ${err.message}`;
+  }
 }
 
 async function loadSources() {
@@ -382,8 +494,9 @@ async function runSearch(e) {
         document.getElementById("search-results").hidden = true;
         return;
       }
-      status.textContent = `${retryData.offers.length} teklif · ${retryData.searchedSources?.length ?? "?"} kaynak tarandı.`;
+      status.textContent = `${retryData.offers.length} teklif · ${retryData.searchedSources?.length ?? "?"} kaynak tarandı (fiyata göre sıralı).`;
       renderSearchResults(retryData);
+      document.getElementById("save-tracked-btn").disabled = false;
       return;
     }
     if (data.code === "SEARCH_CANCELLED" || res.status === 499) {
@@ -400,8 +513,9 @@ async function runSearch(e) {
     }
     status.textContent = data.warnings?.length
       ? `${data.offers.length} teklif · ${data.searchedSources?.length ?? "?"} kaynak. Uyarı: ${data.warnings.slice(0, 3).join("; ")}${data.warnings.length > 3 ? "…" : ""}`
-      : `${data.offers.length} teklif · ${data.searchedSources?.length ?? "?"} kaynak tarandı.`;
+      : `${data.offers.length} teklif · ${data.searchedSources?.length ?? "?"} kaynak tarandı (fiyata göre sıralı).`;
     renderSearchResults(data);
+    document.getElementById("save-tracked-btn").disabled = false;
   } catch (err) {
     if (err.name === "AbortError") {
       status.textContent = "Arama iptal edildi.";
@@ -413,7 +527,7 @@ async function runSearch(e) {
   } finally {
     searchInFlight = false;
     searchAbort = null;
-    btn.textContent = "Ara";
+    btn.textContent = "Türkiye’de ara";
     btn.disabled = false;
   }
 }
@@ -911,14 +1025,28 @@ function isGithubPagesHost() {
 async function checkServer() {
   const el = document.getElementById("server-status");
   const banner = document.getElementById("mode-banner");
+  const verEl = document.getElementById("app-version");
   try {
     const res = await fetch("/api/health", { signal: AbortSignal.timeout(1500) });
     if (!res.ok) throw new Error();
-    el.textContent = "PC modu — arama + ürün ekleme yerel sunucuda";
+    const health = await res.json();
+    if (verEl && health.label) verEl.textContent = health.label;
+    el.textContent = `PC modu ${health.label || ""} — Türkiye araştırması hazır`;
     el.classList.remove("status-error");
     if (banner) banner.hidden = true;
     return true;
   } catch {
+    try {
+      const vr = await fetch("https://raw.githubusercontent.com/alid67-git/Price_Tracker/main/package.json", {
+        signal: AbortSignal.timeout(2000),
+      });
+      if (vr.ok) {
+        const pkg = await vr.json();
+        if (verEl && pkg.version) verEl.textContent = `v${pkg.version}`;
+      }
+    } catch {
+      if (verEl) verEl.textContent = "v—";
+    }
     el.textContent = isGithubPagesHost()
       ? "Telefon / GitHub Pages — takip + ürün ekleme (token ile)"
       : "Sunucu yok — takip verisi okunur; canlı arama için pricetracker.bat";
@@ -928,7 +1056,7 @@ async function checkServer() {
       banner.innerHTML =
         "<strong>Mobil / online mod:</strong> Takip edilenler her gün otomatik güncellenir. " +
         "Ürün Ekle sekmesinden token kaydedip yeni ürün commit edebilirsin. " +
-        "Canlı Araştırma (PDF) yalnızca PC’de <code>pricetracker.bat</code> ile çalışır. " +
+        "Canlı Türkiye araştırması yalnızca PC’de <code>pricetracker.bat</code> ile çalışır. " +
         "Telefondan eklediklerini PC’de <code>sync-from-github.bat</code> ile çekersin.";
     }
     return false;
@@ -937,8 +1065,11 @@ async function checkServer() {
 
 async function init() {
   setupTabs();
+  setupResearchModes();
   document.getElementById("search-form").addEventListener("submit", runSearch);
   document.getElementById("pdf-btn").addEventListener("click", downloadPdf);
+  document.getElementById("save-tracked-btn")?.addEventListener("click", saveSearchToTracked);
+  document.getElementById("search-sort")?.addEventListener("change", renderSearchOffers);
   document.getElementById("toggle-categories")?.addEventListener("click", toggleAllCategories);
   document.getElementById("summary-filter").addEventListener("input", applySummaryFilter);
   document.getElementById("add-standalone-row").addEventListener("click", addStandaloneRow);
