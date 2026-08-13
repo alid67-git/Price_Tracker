@@ -1,5 +1,6 @@
 import express from "express";
 import path from "node:path";
+import os from "node:os";
 import { fileURLToPath } from "node:url";
 import { mkdir, writeFile, readFile, readdir } from "node:fs/promises";
 import { closeBrowser } from "./core/browser.js";
@@ -20,6 +21,19 @@ const MARKETPLACE_PLATFORMS = ["trendyol", "hepsiburada", "n11", "amazon_tr"];
 const PORT = Number(process.env.PORT) || 3456;
 
 const app = express();
+
+/** Telefondan / baska origin'den API cagrisi (tunnel veya LAN proxy) icin CORS */
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") {
+    res.sendStatus(204);
+    return;
+  }
+  next();
+});
+
 app.use(express.json({ limit: "2mb" }));
 app.use(express.static(DASHBOARD_DIR));
 
@@ -322,9 +336,24 @@ app.post("/api/report.pdf", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`[web] Fiyat Arastirma ${versionLabel()} — http://localhost:${PORT}`);
-  console.log(`[web] Mod 1: Turkiye arastirma | Mod 2 (v2): uluslararasi (yakinda)`);
+function lanListenUrls(port) {
+  const urls = [];
+  for (const nets of Object.values(os.networkInterfaces())) {
+    for (const net of nets ?? []) {
+      const v4 = net.family === "IPv4" || net.family === 4;
+      if (v4 && !net.internal) urls.push(`http://${net.address}:${port}`);
+    }
+  }
+  return urls;
+}
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`[web] Fiyat Arastirma ${versionLabel()}`);
+  console.log(`[web] PC:      http://localhost:${PORT}`);
+  for (const url of lanListenUrls(PORT)) {
+    console.log(`[web] Telefon: ${url}  (ayni WiFi)`);
+  }
+  console.log(`[web] Not: github.io uzerinden arama YAPILAMAZ (HTTP 405). Telefonda yukaridaki adresi ac.`);
 }).on("error", (err) => {
   if (err.code === "EADDRINUSE") {
     console.error(`[web] Port ${PORT} dolu. Onceki sunucuyu kapatin veya PORT=3457 npm run web`);

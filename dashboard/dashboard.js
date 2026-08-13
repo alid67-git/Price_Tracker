@@ -266,7 +266,7 @@ async function saveSearchToTracked() {
   const status = document.getElementById("search-status");
   btn.disabled = true;
   try {
-    const res = await fetch("/api/search/save-tracked", {
+    const res = await fetch(apiUrl("/api/search/save-tracked"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -313,7 +313,7 @@ async function loadIntlMarkets() {
   try {
     let data = null;
     try {
-      const res = await fetch("/api/international-markets");
+      const res = await fetch(apiUrl("/api/international-markets"));
       if (res.ok) data = await res.json();
     } catch {
       /* Pages / sunucusuz */
@@ -351,7 +351,7 @@ async function loadSources() {
   try {
     let data = null;
     try {
-      const res = await fetch("/api/sources");
+      const res = await fetch(apiUrl("/api/sources"));
       if (res.ok) data = await res.json();
     } catch {
       /* static fallback */
@@ -429,7 +429,7 @@ async function cancelActiveSearch() {
     searchAbort = null;
   }
   try {
-    await fetch("/api/search/cancel", { method: "POST" });
+    await fetch(apiUrl("/api/search/cancel"), { method: "POST" });
   } catch {
     /* ignore */
   }
@@ -437,7 +437,7 @@ async function cancelActiveSearch() {
   for (let i = 0; i < 40; i++) {
     await new Promise((r) => setTimeout(r, 250));
     try {
-      const health = await fetch("/api/health").then((r) => r.json());
+      const health = await fetch(apiUrl("/api/health")).then((r) => r.json());
       if (!health.searching) break;
     } catch {
       break;
@@ -448,6 +448,17 @@ async function cancelActiveSearch() {
 
 async function runSearch(e) {
   e.preventDefault();
+  e.stopPropagation?.();
+
+  const status = document.getElementById("search-status");
+  if (!serverReady) {
+    status.hidden = false;
+    status.classList.add("status-error");
+    status.textContent = isGithubPagesHost()
+      ? "HTTP 405: GitHub Pages arama sunucusu değil. Telefonda PC ile aynı WiFi’de sunucu adresini aç (PC konsolunda ‘Telefon: http://…’ yazar)."
+      : "Arama sunucusu yok. PC’de pricetracker.bat → [1] çalıştır, sonra bu sayfayı yenile.";
+    return;
+  }
 
   if (searchInFlight) {
     const ok = window.confirm("Devam eden bir arama var. İptal edip yenisini başlatalım mı?");
@@ -467,7 +478,6 @@ async function runSearch(e) {
     .filter(Boolean);
   const categories = selectedCategories();
   if (!categories.length) {
-    const status = document.getElementById("search-status");
     status.hidden = false;
     status.textContent = "En az bir kategori seçin.";
     status.classList.add("status-error");
@@ -475,7 +485,6 @@ async function runSearch(e) {
   }
 
   const btn = document.getElementById("search-btn");
-  const status = document.getElementById("search-status");
   document.getElementById("pdf-btn").disabled = true;
   status.hidden = false;
   status.textContent = `Taranıyor… ${categories.length} kategori. İptal için tekrar Ara’ya basın.`;
@@ -486,12 +495,17 @@ async function runSearch(e) {
   searchInFlight = true;
 
   try {
-    const res = await fetch("/api/search", {
+    const res = await fetch(apiUrl("/api/search"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, marketplaceUrls, categories }),
       signal: searchAbort.signal,
     });
+    if (res.status === 405) {
+      throw new Error(
+        "HTTP 405: Bu adres arama API’si sunmuyor (GitHub Pages). Telefonda PC’nin WiFi adresini aç."
+      );
+    }
     const data = await res.json().catch(() => ({}));
     if (res.status === 409 || data.code === "SEARCH_IN_PROGRESS") {
       const ok = window.confirm("Sunucuda hâlâ bir arama sürüyor. İptal edip tekrar deneyelim mi?");
@@ -499,7 +513,7 @@ async function runSearch(e) {
       await cancelActiveSearch();
       searchAbort = new AbortController();
       searchInFlight = true;
-      const retry = await fetch("/api/search", {
+      const retry = await fetch(apiUrl("/api/search"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, marketplaceUrls, categories }),
@@ -556,7 +570,7 @@ async function downloadPdf() {
   const btn = document.getElementById("pdf-btn");
   btn.disabled = true;
   try {
-    const res = await fetch("/api/report.pdf", {
+    const res = await fetch(apiUrl("/api/report.pdf"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ report: lastSearchResult, searchId: lastSearchResult.id }),
@@ -864,7 +878,7 @@ function collectProductPayload(form) {
 }
 
 async function submitProductViaLocalServer(payload) {
-  const res = await fetch("/api/products", {
+  const res = await fetch(apiUrl("/api/products"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -998,7 +1012,7 @@ async function loadHistory() {
 
   let entries = [];
   try {
-    const res = await fetch("/api/search-history");
+    const res = await fetch(apiUrl("/api/search-history"));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     entries = await res.json();
   } catch (err) {
@@ -1042,7 +1056,7 @@ async function loadHistory() {
 
 async function openSearchFromHistory(id) {
   try {
-    const res = await fetch(`/api/search-history/${encodeURIComponent(id)}`);
+    const res = await fetch(apiUrl(`/api/search-history/${encodeURIComponent(id)}`));
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
     activateTab("search");
@@ -1063,35 +1077,40 @@ function isGithubPagesHost() {
   return /\.github\.io$/i.test(location.hostname);
 }
 
+let serverReady = false;
+
 async function checkServer() {
   const el = document.getElementById("server-status");
   const verEl = document.getElementById("app-version");
+  const searchBtn = document.getElementById("search-btn");
   try {
-    const res = await fetch("/api/health", { signal: AbortSignal.timeout(1500) });
-    if (!res.ok) throw new Error();
+    const res = await fetch(apiUrl("/api/health"), { signal: AbortSignal.timeout(2500) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const health = await res.json();
     if (verEl && health.label) verEl.textContent = health.label;
     el.textContent = `Sunucu hazır ${health.label || ""}`;
     el.classList.remove("status-error");
+    serverReady = true;
+    if (searchBtn) searchBtn.disabled = false;
     return true;
   } catch {
+    serverReady = false;
     try {
-      const vr = await fetch("sources-meta.json", { signal: AbortSignal.timeout(2000) });
-      if (vr.ok && verEl) {
-        const pkgRes = await fetch("https://raw.githubusercontent.com/alid67-git/Price_Tracker/main/package.json", {
-          signal: AbortSignal.timeout(2000),
-        }).catch(() => null);
-        if (pkgRes?.ok) {
-          const pkg = await pkgRes.json();
-          verEl.textContent = `v${pkg.version}`;
-        } else {
-          verEl.textContent = "v—";
-        }
-      }
+      const pkgRes = await fetch("https://raw.githubusercontent.com/alid67-git/Price_Tracker/main/package.json", {
+        signal: AbortSignal.timeout(2000),
+      }).catch(() => null);
+      if (pkgRes?.ok && verEl) {
+        const pkg = await pkgRes.json();
+        verEl.textContent = `v${pkg.version}`;
+      } else if (verEl) verEl.textContent = "v—";
     } catch {
       if (verEl) verEl.textContent = "v—";
     }
-    el.textContent = "Arama için pricetracker.bat ile sunucuyu başlat";
+    if (isGithubPagesHost()) {
+      el.textContent = "Pages: sadece takip. Arama için PC WiFi adresini aç";
+    } else {
+      el.textContent = "Arama için pricetracker.bat ile sunucuyu başlat";
+    }
     el.classList.add("status-error");
     return false;
   }
@@ -1100,7 +1119,10 @@ async function checkServer() {
 async function init() {
   setupTabs();
   setupResearchModes();
-  document.getElementById("search-form").addEventListener("submit", runSearch);
+  const form = document.getElementById("search-form");
+  form.addEventListener("submit", runSearch);
+  form.setAttribute("action", "#");
+  form.setAttribute("method", "get");
   document.getElementById("pdf-btn").addEventListener("click", downloadPdf);
   document.getElementById("save-tracked-btn")?.addEventListener("click", saveSearchToTracked);
   document.getElementById("search-sort")?.addEventListener("change", renderSearchOffers);

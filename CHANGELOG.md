@@ -11,6 +11,13 @@ SemVer: `MAJOR.MINOR.PATCH`
 Her anlamlı gelişmede `package.json` → `version` güncellenir, bu dosyaya satır eklenir,
 dashboard üstünde görünür. Uluslararası fiyat modu hedefi: **2.0.0**.
 
+## [1.2.2] — 2026-08-14
+
+### Fixed
+- Telefonda GitHub Pages üzerinden aramada HTTP 405: Pages arama API’si sunmaz
+- Form native POST engellendi; net hata mesajı
+- Sunucu `0.0.0.0` dinler; konsola telefon WiFi adresi yazılır
+
 ## [1.2.1] — 2026-08-14
 
 ### Changed

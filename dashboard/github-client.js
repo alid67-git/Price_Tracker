@@ -1,5 +1,17 @@
 const GH_DEFAULTS = { owner: "alid67-git", repo: "Price_Tracker", branch: "main" };
 const GH_LS_KEYS = { token: "pt_gh_token", owner: "pt_gh_owner", repo: "pt_gh_repo", branch: "pt_gh_branch" };
+const API_BASE_KEY = "pt_api_base";
+
+/** Opsiyonel uzak/tunnel API kok adresi. Bos = ayni origin. */
+function getApiBase() {
+  return (localStorage.getItem(API_BASE_KEY) || "").replace(/\/$/, "");
+}
+
+function apiUrl(path) {
+  const base = getApiBase();
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return base ? `${base}${p}` : p;
+}
 
 function getGithubConfig() {
   return {
@@ -70,7 +82,7 @@ async function ghPutFile(cfg, path, content, sha, message) {
 
 async function isLocalServerAvailable() {
   try {
-    const res = await fetch("/api/health", { signal: AbortSignal.timeout(1500) });
+    const res = await fetch(apiUrl("/api/health"), { signal: AbortSignal.timeout(2000) });
     return res.ok;
   } catch {
     return false;
