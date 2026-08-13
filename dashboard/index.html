@@ -22,12 +22,9 @@
       <p id="server-status" class="muted">Sunucu bağlanıyor…</p>
     </header>
 
-    <div id="mode-banner" class="mode-banner" hidden></div>
-
     <nav class="tabs" role="tablist">
       <button type="button" class="tab active" data-tab="search" role="tab" aria-selected="true">Araştırma</button>
       <button type="button" class="tab" data-tab="tracked" role="tab" aria-selected="false">Takip</button>
-      <button type="button" class="tab" data-tab="add-product" role="tab" aria-selected="false">Ürün Ekle</button>
       <button type="button" class="tab" data-tab="history" role="tab" aria-selected="false">Geçmiş</button>
     </nav>
 
@@ -58,12 +55,13 @@
         </label>
         <div class="field">
           <div class="field-row">
-            <span>Türkiye platformları <span class="optional" id="sources-count"></span></span>
+            <span>Platform grupları <span class="optional" id="sources-count"></span></span>
             <button type="button" id="toggle-categories" class="btn-text">Tümünü seç</button>
           </div>
-          <div id="category-filters" class="category-filters"></div>
+          <div id="category-filters" class="category-filters" role="group" aria-label="Platform grupları"></div>
+          <p id="category-empty" class="muted" hidden>Platform listesi yüklenemedi.</p>
         </div>
-        <p class="search-hint muted">Varsayılan: Pazaryerleri + Elektronik. Sonuçlar fiyata göre sıralanır. Market / ikinci el henüz otomatik değil.</p>
+        <p class="search-hint muted">Önce tümünü kaldırıp istediğin grupları tek tek açabilirsin. Sonuçlar fiyata göre sıralanır.</p>
         <label class="field">
           <span>Ek pazaryeri URL’leri <span class="optional">(opsiyonel — belirli ürün sayfası zorlamak için)</span></span>
           <textarea id="search-urls" name="urls" rows="3" placeholder="https://www.trendyol.com/...&#10;https://www.n11.com/..."></textarea>
@@ -134,8 +132,9 @@
       </div>
     </section>
 
-    <!-- ========== TAKİP ========== -->
+    <!-- ========== TAKİP (pasif) ========== -->
     <section id="tab-tracked" class="tab-panel" hidden>
+      <p class="muted tracked-passive-note">Takip şu aşamada salt görüntüleme. Ürün ekleme burada olacak (sonra).</p>
       <div id="tracked-kpi" class="kpi-row"></div>
 
       <div class="section-head">
@@ -203,97 +202,23 @@
       </p>
     </section>
 
-    <!-- ========== URUN EKLE ========== -->
-    <section id="tab-add-product" class="tab-panel" hidden>
-      <p id="add-product-mode" class="muted"></p>
+    <!-- Ürün Ekle sekmesi kaldırıldı; form kodu sonra Takip içine taşınacak -->
+    <section id="tab-add-product" class="tab-panel" hidden aria-hidden="true"></section>
 
-      <details class="gh-settings">
-        <summary>GitHub ile doğrudan kayıt ayarları (PC/yerel sunucu yokken kullanılır)</summary>
-        <div class="search-form" style="margin-top: 0.75rem;">
-          <label class="field">
-            <span>GitHub Personal Access Token</span>
-            <input id="gh-token" type="password" placeholder="github_pat_... veya ghp_..." autocomplete="off" />
-          </label>
-          <label class="field">
-            <span>Repo sahibi</span>
-            <input id="gh-owner" placeholder="alid67-git" />
-          </label>
-          <label class="field">
-            <span>Repo adı</span>
-            <input id="gh-repo" placeholder="Price_Tracker" />
-          </label>
-          <label class="field">
-            <span>Branch</span>
-            <input id="gh-branch" placeholder="main" />
-          </label>
-          <button type="button" id="gh-save" class="btn-secondary" style="align-self: flex-start;">Ayarları Kaydet</button>
-          <p class="muted">
-            Token sadece bu cihazın tarayıcısında saklanır, başka hiçbir yere gönderilmez.
-            <strong>Sadece bu repo için Contents: Read and write</strong> izniyle sınırlı fine-grained
-            bir token oluşturman önerilir —
-            <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">token oluştur ↗</a>.
-            Telefonu kaybedersen tokenı GitHub ayarlarından iptal edebilirsin.
-          </p>
-        </div>
-      </details>
-
-      <form id="add-product-form" class="search-form card">
-        <label class="field">
-          <span>SKU (benzersiz kısa kod)</span>
-          <input id="ap-sku" name="sku" required placeholder="örn. CUDY-WR300" />
-        </label>
-        <label class="field">
-          <span>Ürün adı</span>
-          <input id="ap-name" name="name" placeholder="örn. Cudy WR300 300Mbps Router" />
-        </label>
-
-        <h3>Pazaryeri URL'leri (opsiyonel)</h3>
-        <label class="field">
-          <span>Trendyol</span>
-          <input id="ap-trendyol" name="trendyol" type="url" placeholder="https://www.trendyol.com/..." />
-        </label>
-        <label class="field">
-          <span>Hepsiburada</span>
-          <input id="ap-hepsiburada" name="hepsiburada" type="url" placeholder="https://www.hepsiburada.com/..." />
-        </label>
-        <label class="field">
-          <span>N11</span>
-          <input id="ap-n11" name="n11" type="url" placeholder="https://www.n11.com/..." />
-        </label>
-        <label class="field">
-          <span>Amazon.com.tr</span>
-          <input id="ap-amazon_tr" name="amazon_tr" type="url" placeholder="https://www.amazon.com.tr/..." />
-        </label>
-
-        <label class="field">
-          <span>Akakçe / Cimri arama terimi</span>
-          <input id="ap-aggregatorQuery" name="aggregatorQuery" placeholder="örn. cudy wr300 router" />
-        </label>
-
-        <h3>Bağımsız satıcı siteleri (opsiyonel)</h3>
-        <div id="standalone-rows"></div>
-        <button type="button" id="add-standalone-row" class="btn-secondary" style="align-self: flex-start;">+ Site ekle</button>
-
-        <div class="search-actions">
-          <button type="submit" class="btn-primary">Ürünü Ekle</button>
-          <span id="form-status" role="status"></span>
-        </div>
-      </form>
-    </section>
-
-    <!-- ========== GECMIS ========== -->
+    <!-- ========== GECMIS (aramalar) ========== -->
     <section id="tab-history" class="tab-panel" hidden>
       <div class="section-head">
-        <h2>Ürün Ekleme Geçmişi</h2>
+        <h2>Arama geçmişi</h2>
       </div>
       <div class="card table-scroll">
         <table id="history-table">
           <thead>
             <tr>
               <th>Tarih</th>
-              <th>SKU</th>
-              <th>Ürün</th>
-              <th>Kaynaklar</th>
+              <th>Sorgu</th>
+              <th>Teklif</th>
+              <th>Gruplar</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="history-body"></tbody>

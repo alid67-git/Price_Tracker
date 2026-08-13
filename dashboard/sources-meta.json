@@ -1,0 +1,958 @@
+{
+  "total": 123,
+  "categories": [
+    {
+      "id": "pazaryeri",
+      "name": "Genel Pazaryerleri",
+      "defaultEnabled": true
+    },
+    {
+      "id": "elektronik",
+      "name": "Elektronik & Teknoloji",
+      "defaultEnabled": true
+    },
+    {
+      "id": "yapi_ev",
+      "name": "Yapi Market & Ev",
+      "defaultEnabled": false
+    },
+    {
+      "id": "moda",
+      "name": "Moda",
+      "defaultEnabled": false
+    },
+    {
+      "id": "spor",
+      "name": "Spor",
+      "defaultEnabled": false
+    },
+    {
+      "id": "kozmetik",
+      "name": "Kozmetik",
+      "defaultEnabled": false
+    },
+    {
+      "id": "anne_bebek",
+      "name": "Anne & Bebek",
+      "defaultEnabled": false
+    },
+    {
+      "id": "kitap",
+      "name": "Kitap & Kirtasiye",
+      "defaultEnabled": false
+    },
+    {
+      "id": "market",
+      "name": "Market",
+      "defaultEnabled": false
+    },
+    {
+      "id": "pet",
+      "name": "Pet Shop",
+      "defaultEnabled": false
+    },
+    {
+      "id": "oto",
+      "name": "Oto",
+      "defaultEnabled": false
+    },
+    {
+      "id": "mobilya",
+      "name": "Mobilya",
+      "defaultEnabled": false
+    },
+    {
+      "id": "taki",
+      "name": "Taki & Saat",
+      "defaultEnabled": false
+    },
+    {
+      "id": "cicek",
+      "name": "Cicek & Hediye",
+      "defaultEnabled": false
+    },
+    {
+      "id": "ikinci_el",
+      "name": "Ikinci El",
+      "defaultEnabled": false
+    },
+    {
+      "id": "hobi",
+      "name": "Hobi & Oyuncak",
+      "defaultEnabled": false
+    },
+    {
+      "id": "b2b",
+      "name": "B2B",
+      "defaultEnabled": false
+    }
+  ],
+  "byMode": {
+    "dedicated": 6,
+    "generic": 101,
+    "planned": 16
+  },
+  "sources": [
+    {
+      "id": "akakce",
+      "name": "Akakce",
+      "category": "pazaryeri",
+      "mode": "dedicated",
+      "domain": "akakce.com"
+    },
+    {
+      "id": "cimri",
+      "name": "Cimri",
+      "category": "pazaryeri",
+      "mode": "dedicated",
+      "domain": "cimri.com"
+    },
+    {
+      "id": "trendyol",
+      "name": "Trendyol",
+      "category": "pazaryeri",
+      "mode": "dedicated",
+      "domain": "trendyol.com"
+    },
+    {
+      "id": "hepsiburada",
+      "name": "Hepsiburada",
+      "category": "pazaryeri",
+      "mode": "dedicated",
+      "domain": "hepsiburada.com"
+    },
+    {
+      "id": "amazon_tr",
+      "name": "Amazon Turkiye",
+      "category": "pazaryeri",
+      "mode": "dedicated",
+      "domain": "amazon.com.tr"
+    },
+    {
+      "id": "n11",
+      "name": "n11",
+      "category": "pazaryeri",
+      "mode": "dedicated",
+      "domain": "n11.com"
+    },
+    {
+      "id": "pazarama",
+      "name": "Pazarama",
+      "category": "pazaryeri",
+      "mode": "generic",
+      "domain": "pazarama.com"
+    },
+    {
+      "id": "pttavm",
+      "name": "PttAVM",
+      "category": "pazaryeri",
+      "mode": "generic",
+      "domain": "pttavm.com"
+    },
+    {
+      "id": "ciceksepeti",
+      "name": "CicekSepeti",
+      "category": "pazaryeri",
+      "mode": "generic",
+      "domain": "ciceksepeti.com"
+    },
+    {
+      "id": "idefix",
+      "name": "idefix",
+      "category": "pazaryeri",
+      "mode": "generic",
+      "domain": "idefix.com.tr"
+    },
+    {
+      "id": "mediamarkt",
+      "name": "MediaMarkt",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "mediamarkt.com.tr"
+    },
+    {
+      "id": "teknosa",
+      "name": "Teknosa",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "teknosa.com"
+    },
+    {
+      "id": "vatan",
+      "name": "Vatan Bilgisayar",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "vatanbilgisayar.com"
+    },
+    {
+      "id": "incehesap",
+      "name": "Incehesap",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "incehesap.com"
+    },
+    {
+      "id": "gaminggen",
+      "name": "Gaming.Gen.TR",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "gaming.gen.tr"
+    },
+    {
+      "id": "itopya",
+      "name": "Itopya",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "itopya.com"
+    },
+    {
+      "id": "sinerji",
+      "name": "Sinerji Bilgisayar",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "sinerji.gen.tr"
+    },
+    {
+      "id": "easycep",
+      "name": "EasyCep",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "easycep.com"
+    },
+    {
+      "id": "teknoway",
+      "name": "Teknoway",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "teknoway.com.tr"
+    },
+    {
+      "id": "troystore",
+      "name": "Troy Store",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "troystore.com"
+    },
+    {
+      "id": "beko",
+      "name": "Beko",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "beko.com.tr"
+    },
+    {
+      "id": "arcelik",
+      "name": "Arcelik",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "arcelik.com.tr"
+    },
+    {
+      "id": "bosch",
+      "name": "Bosch",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "bosch-home.com.tr"
+    },
+    {
+      "id": "samsung",
+      "name": "Samsung Turkiye",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "samsung.com"
+    },
+    {
+      "id": "lg",
+      "name": "LG Turkiye",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "lg.com"
+    },
+    {
+      "id": "xiaomi",
+      "name": "Xiaomi Turkiye",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "mi.com"
+    },
+    {
+      "id": "huawei",
+      "name": "Huawei Turkiye",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "huawei.com"
+    },
+    {
+      "id": "dyson",
+      "name": "Dyson Turkiye",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "dyson.com.tr"
+    },
+    {
+      "id": "philips",
+      "name": "Philips Turkiye",
+      "category": "elektronik",
+      "mode": "generic",
+      "domain": "philips.com.tr"
+    },
+    {
+      "id": "koctas",
+      "name": "Koctas",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "koctas.com.tr"
+    },
+    {
+      "id": "bauhaus",
+      "name": "Bauhaus",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "bauhaus.com.tr"
+    },
+    {
+      "id": "ikea",
+      "name": "IKEA Turkiye",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "ikea.com.tr"
+    },
+    {
+      "id": "evidea",
+      "name": "Evidea",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "evidea.com"
+    },
+    {
+      "id": "madamecoco",
+      "name": "Madame Coco",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "madamecoco.com"
+    },
+    {
+      "id": "englishhome",
+      "name": "English Home",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "englishhome.com"
+    },
+    {
+      "id": "karaca",
+      "name": "Karaca",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "karaca.com"
+    },
+    {
+      "id": "schafer",
+      "name": "Schafer",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "schafer.com.tr"
+    },
+    {
+      "id": "jumbo",
+      "name": "Jumbo",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "jumbo.com.tr"
+    },
+    {
+      "id": "emsan",
+      "name": "Emsan",
+      "category": "yapi_ev",
+      "mode": "generic",
+      "domain": "emsan.com.tr"
+    },
+    {
+      "id": "boyner",
+      "name": "Boyner",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "boyner.com.tr"
+    },
+    {
+      "id": "beymen",
+      "name": "Beymen",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "beymen.com"
+    },
+    {
+      "id": "defacto",
+      "name": "DeFacto",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "defacto.com.tr"
+    },
+    {
+      "id": "lcw",
+      "name": "LC Waikiki",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "lcwaikiki.com"
+    },
+    {
+      "id": "mavi",
+      "name": "Mavi",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "mavi.com"
+    },
+    {
+      "id": "koton",
+      "name": "Koton",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "koton.com"
+    },
+    {
+      "id": "flo",
+      "name": "FLO",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "flo.com.tr"
+    },
+    {
+      "id": "derimod",
+      "name": "Derimod",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "derimod.com.tr"
+    },
+    {
+      "id": "network",
+      "name": "Network",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "network.com.tr"
+    },
+    {
+      "id": "vakko",
+      "name": "Vakko",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "vakko.com"
+    },
+    {
+      "id": "pierrecardin",
+      "name": "Pierre Cardin",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "pierrecardin.com.tr"
+    },
+    {
+      "id": "uspolo",
+      "name": "US Polo Assn.",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "uspoloassn.com.tr"
+    },
+    {
+      "id": "kigili",
+      "name": "Kigili",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "kigili.com"
+    },
+    {
+      "id": "altinyildiz",
+      "name": "Altinyildiz Classics",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "altinyildizclassics.com"
+    },
+    {
+      "id": "colins",
+      "name": "Colin's",
+      "category": "moda",
+      "mode": "generic",
+      "domain": "colins.com.tr"
+    },
+    {
+      "id": "decathlon",
+      "name": "Decathlon",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "decathlon.com.tr"
+    },
+    {
+      "id": "sportive",
+      "name": "Sportive",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "sportive.com.tr"
+    },
+    {
+      "id": "barcin",
+      "name": "Barcin Spor",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "barcin.com"
+    },
+    {
+      "id": "sneaksup",
+      "name": "Sneaks Up",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "sneaksup.com"
+    },
+    {
+      "id": "superstep",
+      "name": "SuperStep",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "superstep.com.tr"
+    },
+    {
+      "id": "instreet",
+      "name": "In Street",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "instreet.com.tr"
+    },
+    {
+      "id": "lescon",
+      "name": "Lescon",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "lescon.com.tr"
+    },
+    {
+      "id": "newbalance",
+      "name": "New Balance Turkiye",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "newbalance.com.tr"
+    },
+    {
+      "id": "nike",
+      "name": "Nike Turkiye",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "nike.com"
+    },
+    {
+      "id": "adidas",
+      "name": "Adidas Turkiye",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "adidas.com.tr"
+    },
+    {
+      "id": "puma",
+      "name": "Puma Turkiye",
+      "category": "spor",
+      "mode": "generic",
+      "domain": "tr.puma.com"
+    },
+    {
+      "id": "sephora",
+      "name": "Sephora",
+      "category": "kozmetik",
+      "mode": "generic",
+      "domain": "sephora.com.tr"
+    },
+    {
+      "id": "watsons",
+      "name": "Watsons",
+      "category": "kozmetik",
+      "mode": "generic",
+      "domain": "watsons.com.tr"
+    },
+    {
+      "id": "gratis",
+      "name": "Gratis",
+      "category": "kozmetik",
+      "mode": "generic",
+      "domain": "gratis.com"
+    },
+    {
+      "id": "rossmann",
+      "name": "Rossmann",
+      "category": "kozmetik",
+      "mode": "generic",
+      "domain": "rossmann.com.tr"
+    },
+    {
+      "id": "flormar",
+      "name": "Flormar",
+      "category": "kozmetik",
+      "mode": "generic",
+      "domain": "flormar.com"
+    },
+    {
+      "id": "mac",
+      "name": "MAC Cosmetics Turkiye",
+      "category": "kozmetik",
+      "mode": "generic",
+      "domain": "maccosmetics.com.tr"
+    },
+    {
+      "id": "ebebek",
+      "name": "ebebek",
+      "category": "anne_bebek",
+      "mode": "generic",
+      "domain": "e-bebek.com"
+    },
+    {
+      "id": "joker",
+      "name": "Joker",
+      "category": "anne_bebek",
+      "mode": "generic",
+      "domain": "joker.com.tr"
+    },
+    {
+      "id": "civil",
+      "name": "Civil",
+      "category": "anne_bebek",
+      "mode": "generic",
+      "domain": "civil.com.tr"
+    },
+    {
+      "id": "babymall",
+      "name": "BabyMall",
+      "category": "anne_bebek",
+      "mode": "generic",
+      "domain": "babymall.com.tr"
+    },
+    {
+      "id": "dr",
+      "name": "D&R",
+      "category": "kitap",
+      "mode": "generic",
+      "domain": "dr.com.tr"
+    },
+    {
+      "id": "bkm",
+      "name": "BKM Kitap",
+      "category": "kitap",
+      "mode": "generic",
+      "domain": "bkmkitap.com"
+    },
+    {
+      "id": "kitapyurdu",
+      "name": "Kitapyurdu",
+      "category": "kitap",
+      "mode": "generic",
+      "domain": "kitapyurdu.com"
+    },
+    {
+      "id": "pandora",
+      "name": "Pandora Kitabevi",
+      "category": "kitap",
+      "mode": "generic",
+      "domain": "pandora.com.tr"
+    },
+    {
+      "id": "idefix_kitap",
+      "name": "idefix (Kitap)",
+      "category": "kitap",
+      "mode": "generic",
+      "domain": "idefix.com.tr"
+    },
+    {
+      "id": "migros",
+      "name": "Migros Sanal Market",
+      "category": "market",
+      "mode": "planned",
+      "domain": "migros.com.tr"
+    },
+    {
+      "id": "carrefour",
+      "name": "CarrefourSA Online",
+      "category": "market",
+      "mode": "planned",
+      "domain": "carrefoursa.com"
+    },
+    {
+      "id": "a101",
+      "name": "A101 Kapida",
+      "category": "market",
+      "mode": "planned",
+      "domain": "a101.com.tr"
+    },
+    {
+      "id": "bim",
+      "name": "BIM Online",
+      "category": "market",
+      "mode": "planned",
+      "domain": "bim.com.tr"
+    },
+    {
+      "id": "sok",
+      "name": "SOK Market",
+      "category": "market",
+      "mode": "planned",
+      "domain": "sokmarket.com.tr"
+    },
+    {
+      "id": "getir",
+      "name": "Getir",
+      "category": "market",
+      "mode": "planned",
+      "domain": "getir.com"
+    },
+    {
+      "id": "tygo",
+      "name": "Trendyol GO Market",
+      "category": "market",
+      "mode": "planned",
+      "domain": "tgo.com.tr"
+    },
+    {
+      "id": "ysmarket",
+      "name": "Yemeksepeti Market",
+      "category": "market",
+      "mode": "planned",
+      "domain": "yemeksepeti.com"
+    },
+    {
+      "id": "istegelsin",
+      "name": "Istegelsin",
+      "category": "market",
+      "mode": "planned",
+      "domain": "istegelsin.com"
+    },
+    {
+      "id": "petlebi",
+      "name": "Petlebi",
+      "category": "pet",
+      "mode": "generic",
+      "domain": "petlebi.com"
+    },
+    {
+      "id": "juen",
+      "name": "Juen Pet Market",
+      "category": "pet",
+      "mode": "generic",
+      "domain": "juenpetmarket.com"
+    },
+    {
+      "id": "petzz",
+      "name": "Petzzshop",
+      "category": "pet",
+      "mode": "generic",
+      "domain": "petzzshop.com"
+    },
+    {
+      "id": "lastikpark",
+      "name": "LastikPark",
+      "category": "oto",
+      "mode": "generic",
+      "domain": "lastikpark.com"
+    },
+    {
+      "id": "lastikcim",
+      "name": "Lastikcim",
+      "category": "oto",
+      "mode": "generic",
+      "domain": "lastikcim.com"
+    },
+    {
+      "id": "otopratik",
+      "name": "Otopratik",
+      "category": "oto",
+      "mode": "generic",
+      "domain": "otopratik.com.tr"
+    },
+    {
+      "id": "vivense",
+      "name": "Vivense",
+      "category": "mobilya",
+      "mode": "generic",
+      "domain": "vivense.com"
+    },
+    {
+      "id": "bellona",
+      "name": "Bellona",
+      "category": "mobilya",
+      "mode": "generic",
+      "domain": "bellona.com.tr"
+    },
+    {
+      "id": "istikbal",
+      "name": "Istikbal",
+      "category": "mobilya",
+      "mode": "generic",
+      "domain": "istikbal.com.tr"
+    },
+    {
+      "id": "mondi",
+      "name": "Mondi",
+      "category": "mobilya",
+      "mode": "generic",
+      "domain": "mondi.com.tr"
+    },
+    {
+      "id": "dogtas",
+      "name": "Dogtas",
+      "category": "mobilya",
+      "mode": "generic",
+      "domain": "dogtas.com"
+    },
+    {
+      "id": "kelebek",
+      "name": "Kelebek",
+      "category": "mobilya",
+      "mode": "generic",
+      "domain": "kelebek.com"
+    },
+    {
+      "id": "enza",
+      "name": "Enza Home",
+      "category": "mobilya",
+      "mode": "generic",
+      "domain": "enzahome.com"
+    },
+    {
+      "id": "atasay",
+      "name": "Atasay",
+      "category": "taki",
+      "mode": "generic",
+      "domain": "atasay.com"
+    },
+    {
+      "id": "altinbas",
+      "name": "Altinbas",
+      "category": "taki",
+      "mode": "generic",
+      "domain": "altinbas.com"
+    },
+    {
+      "id": "zen",
+      "name": "Zen Pirlanta",
+      "category": "taki",
+      "mode": "generic",
+      "domain": "zenpirlanta.com"
+    },
+    {
+      "id": "saatsaat",
+      "name": "Saat&Saat",
+      "category": "taki",
+      "mode": "generic",
+      "domain": "saatsaat.com.tr"
+    },
+    {
+      "id": "gizerler",
+      "name": "Gizerler",
+      "category": "taki",
+      "mode": "generic",
+      "domain": "gizerler.com"
+    },
+    {
+      "id": "ciceksepeti_hediye",
+      "name": "CicekSepeti (Hediye)",
+      "category": "cicek",
+      "mode": "generic",
+      "domain": "ciceksepeti.com"
+    },
+    {
+      "id": "mizu",
+      "name": "Mizu",
+      "category": "cicek",
+      "mode": "generic",
+      "domain": "mizu.com.tr"
+    },
+    {
+      "id": "osevio",
+      "name": "Osevio",
+      "category": "cicek",
+      "mode": "generic",
+      "domain": "osevio.com"
+    },
+    {
+      "id": "wishflowers",
+      "name": "Wish Flowers",
+      "category": "cicek",
+      "mode": "generic",
+      "domain": "wishflowers.com.tr"
+    },
+    {
+      "id": "sahibinden",
+      "name": "sahibinden",
+      "category": "ikinci_el",
+      "mode": "planned",
+      "domain": "sahibinden.com"
+    },
+    {
+      "id": "letgo",
+      "name": "letgo",
+      "category": "ikinci_el",
+      "mode": "planned",
+      "domain": "letgo.com"
+    },
+    {
+      "id": "dolap",
+      "name": "Dolap",
+      "category": "ikinci_el",
+      "mode": "planned",
+      "domain": "dolap.com"
+    },
+    {
+      "id": "gardrops",
+      "name": "Gardrops",
+      "category": "ikinci_el",
+      "mode": "planned",
+      "domain": "gardrops.com"
+    },
+    {
+      "id": "zebramo",
+      "name": "Zebramo",
+      "category": "ikinci_el",
+      "mode": "planned",
+      "domain": "zebramo.com"
+    },
+    {
+      "id": "toyzz",
+      "name": "Toyzz Shop",
+      "category": "hobi",
+      "mode": "generic",
+      "domain": "toyzzshop.com"
+    },
+    {
+      "id": "lego",
+      "name": "LEGO Store Turkiye",
+      "category": "hobi",
+      "mode": "generic",
+      "domain": "lego.com"
+    },
+    {
+      "id": "nezih",
+      "name": "Nezih",
+      "category": "hobi",
+      "mode": "generic",
+      "domain": "nezih.com.tr"
+    },
+    {
+      "id": "avansas",
+      "name": "Avansas",
+      "category": "b2b",
+      "mode": "generic",
+      "domain": "avansas.com"
+    },
+    {
+      "id": "ofix",
+      "name": "Ofix",
+      "category": "b2b",
+      "mode": "generic",
+      "domain": "ofix.com"
+    },
+    {
+      "id": "bizimtoptan",
+      "name": "Bizim Toptan",
+      "category": "b2b",
+      "mode": "planned",
+      "domain": "bizimtoptan.com.tr"
+    },
+    {
+      "id": "metro",
+      "name": "Metro Turkiye",
+      "category": "b2b",
+      "mode": "planned",
+      "domain": "metro-tr.com"
+    }
+  ]
+}

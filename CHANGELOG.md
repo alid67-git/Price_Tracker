@@ -11,6 +11,16 @@ SemVer: `MAJOR.MINOR.PATCH`
 Her anlamlı gelişmede `package.json` → `version` güncellenir, bu dosyaya satır eklenir,
 dashboard üstünde görünür. Uluslararası fiyat modu hedefi: **2.0.0**.
 
+## [1.2.1] — 2026-08-14
+
+### Changed
+- Üst sekmeler: Araştırma / Takip / Geçmiş (Ürün Ekle kaldırıldı)
+- Takip salt görüntüleme (pasif)
+- Geçmiş = yapılan aramalar (`/api/search-history`)
+- Platform grupları tıklanabilir chip + Tümünü seç/kaldır
+- Mobil/online açıklama banner’ı kaldırıldı
+- Platform listesi `sources-meta.json` ile sunucusuz da yüklenir
+
 ## [1.2.0] — 2026-08-14
 
 ### Added

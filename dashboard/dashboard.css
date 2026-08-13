@@ -253,26 +253,37 @@ body {
   padding: 0.15rem 0;
 }
 .btn-text:hover { text-decoration: underline; }
-.category-filters { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.category-filters { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 .category-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 0.3rem 0.7rem;
-  font-size: 0.78rem;
+  padding: 0.55rem 0.85rem;
+  min-height: 44px;
+  font: inherit;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  background: transparent;
+  background: var(--surface-raised);
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
-.category-chip input { accent-color: var(--series-blue); margin: 0; }
+.category-chip:hover { border-color: var(--series-blue); color: var(--text-primary); }
 .category-chip.active {
   background: var(--series-blue-wash);
   border-color: var(--series-blue);
   color: var(--series-blue);
-  font-weight: 600;
+  font-weight: 650;
+}
+.tracked-passive-note {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  background: var(--gridline);
 }
 
 .platform-stats { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.25rem; }

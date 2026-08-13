@@ -347,15 +347,31 @@ async function loadIntlMarkets() {
 }
 
 async function loadSources() {
+  const emptyEl = document.getElementById("category-empty");
   try {
-    const res = await fetch("/api/sources");
-    if (!res.ok) throw new Error();
-    sourcesMeta = await res.json();
+    let data = null;
+    try {
+      const res = await fetch("/api/sources");
+      if (res.ok) data = await res.json();
+    } catch {
+      /* static fallback */
+    }
+    if (!data?.categories?.length) {
+      const res = await fetch("sources-meta.json");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      data = await res.json();
+    }
+    sourcesMeta = data;
     renderCategoryFilters();
     const el = document.getElementById("sources-count");
-    if (el) el.textContent = `(${sourcesMeta.total} site tanımlı)`;
-  } catch {
+    if (el) el.textContent = `(${sourcesMeta.total} site)`;
+    if (emptyEl) emptyEl.hidden = true;
+  } catch (err) {
     sourcesMeta = null;
+    if (emptyEl) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = `Platform listesi yüklenemedi: ${err.message}`;
+    }
   }
 }
 
@@ -364,18 +380,19 @@ function renderCategoryFilters() {
   if (!box || !sourcesMeta?.categories) return;
   box.innerHTML = "";
   for (const cat of sourcesMeta.categories) {
-    const label = document.createElement("label");
-    label.className = `category-chip${cat.defaultEnabled ? " active" : ""}`;
-    const input = document.createElement("input");
-    input.type = "checkbox";
-    input.value = cat.id;
-    input.checked = Boolean(cat.defaultEnabled);
-    input.addEventListener("change", () => {
-      label.classList.toggle("active", input.checked);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `category-chip${cat.defaultEnabled ? " active" : ""}`;
+    btn.dataset.category = cat.id;
+    btn.setAttribute("aria-pressed", cat.defaultEnabled ? "true" : "false");
+    btn.textContent = cat.name;
+    btn.addEventListener("click", () => {
+      const on = btn.getAttribute("aria-pressed") !== "true";
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.classList.toggle("active", on);
       syncToggleCategoriesLabel();
     });
-    label.append(input, document.createTextNode(cat.name));
-    box.appendChild(label);
+    box.appendChild(btn);
   }
   syncToggleCategoriesLabel();
 }
@@ -383,25 +400,27 @@ function renderCategoryFilters() {
 function syncToggleCategoriesLabel() {
   const btn = document.getElementById("toggle-categories");
   if (!btn) return;
-  const inputs = [...document.querySelectorAll("#category-filters input")];
-  const allOn = inputs.length > 0 && inputs.every((el) => el.checked);
+  const chips = [...document.querySelectorAll("#category-filters .category-chip")];
+  const allOn = chips.length > 0 && chips.every((el) => el.getAttribute("aria-pressed") === "true");
   btn.textContent = allOn ? "Tümünü kaldır" : "Tümünü seç";
 }
 
 function toggleAllCategories() {
-  const inputs = [...document.querySelectorAll("#category-filters input")];
-  if (!inputs.length) return;
-  const allOn = inputs.every((el) => el.checked);
+  const chips = [...document.querySelectorAll("#category-filters .category-chip")];
+  if (!chips.length) return;
+  const allOn = chips.every((el) => el.getAttribute("aria-pressed") === "true");
   const next = !allOn;
-  for (const input of inputs) {
-    input.checked = next;
-    input.closest(".category-chip")?.classList.toggle("active", next);
+  for (const chip of chips) {
+    chip.setAttribute("aria-pressed", next ? "true" : "false");
+    chip.classList.toggle("active", next);
   }
   syncToggleCategoriesLabel();
 }
 
 function selectedCategories() {
-  return [...document.querySelectorAll("#category-filters input:checked")].map((el) => el.value);
+  return [...document.querySelectorAll('#category-filters .category-chip[aria-pressed="true"]')].map(
+    (el) => el.dataset.category
+  );
 }
 
 async function cancelActiveSearch() {
@@ -767,14 +786,17 @@ function activateTab(name) {
   });
   document.getElementById("tab-search").hidden = name !== "search";
   document.getElementById("tab-tracked").hidden = name !== "tracked";
-  document.getElementById("tab-add-product").hidden = name !== "add-product";
+  const addTab = document.getElementById("tab-add-product");
+  if (addTab) addTab.hidden = true;
   document.getElementById("tab-history").hidden = name !== "history";
   if (name === "tracked" && selectedProduct) {
     renderPriceChart(selectedProduct);
     renderSellerCountChart(selectedProduct);
   }
-  if (name === "add-product") updateAddProductMode();
-  if (name === "history") loadHistory();
+  if (name === "history") {
+    historyLoaded = false;
+    loadHistory();
+  }
 }
 
 function setupTabs() {
@@ -959,63 +981,82 @@ function initGithubSettingsForm() {
   });
 }
 
-/* ---------- GECMIS TAB ---------- */
+/* ---------- GECMIS TAB (arama gecmisi) ---------- */
 
 function formatDateTime(iso) {
   return new Date(iso).toLocaleString("tr-TR");
 }
 
-function sourceList(entry) {
-  const sources = [];
-  if (entry.marketplaces) sources.push(...Object.keys(entry.marketplaces));
-  if (entry.aggregatorQuery) sources.push("akakçe/cimri");
-  if (entry.standalone?.length) sources.push(`${entry.standalone.length} bağımsız site`);
-  return sources.join(", ") || "–";
-}
-
 let historyLoaded = false;
 
 async function loadHistory() {
-  if (historyLoaded) return;
   const tbody = document.getElementById("history-body");
   const emptyEl = document.getElementById("empty-history");
+  if (!tbody || !emptyEl) return;
   emptyEl.hidden = true;
   tbody.innerHTML = "";
 
-  let entries;
+  let entries = [];
   try {
-    const useLocal = await isLocalServerAvailable();
-    if (useLocal) {
-      const res = await fetch("/api/product-history");
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      entries = await res.json();
-    } else {
-      const cfg = getGithubConfig();
-      const file = await ghGetFile(cfg, "data/product-history.json");
-      entries = file ? JSON.parse(file.content) : [];
-    }
+    const res = await fetch("/api/search-history");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    entries = await res.json();
   } catch (err) {
     emptyEl.hidden = false;
-    emptyEl.textContent = `Geçmiş yüklenemedi: ${err.message}`;
+    emptyEl.textContent = `Arama geçmişi için yerel sunucu gerekli (pricetracker.bat). ${err.message}`;
     return;
   }
 
   if (!entries.length) {
     emptyEl.hidden = false;
-    emptyEl.textContent = 'Henüz eklenen ürün yok. "Ürün Ekle" sekmesinden ilk ürününü ekleyebilirsin.';
+    emptyEl.textContent = "Henüz arama yok. Araştırma sekmesinden ürün ara.";
+    historyLoaded = true;
     return;
   }
 
-  for (const entry of [...entries].reverse()) {
+  for (const entry of entries) {
     const tr = document.createElement("tr");
-    for (const text of [formatDateTime(entry.addedAt), entry.sku, entry.name, sourceList(entry)]) {
+    const cells = [
+      formatDateTime(entry.generatedAt || entry.date),
+      entry.query || "–",
+      String(entry.offerCount ?? entry.offers?.length ?? 0),
+      (entry.categories || []).join(", ") || "–",
+    ];
+    for (const text of cells) {
       const td = document.createElement("td");
       td.textContent = text;
       tr.appendChild(td);
     }
+    const actionTd = document.createElement("td");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn-text";
+    btn.textContent = "Aç";
+    btn.addEventListener("click", () => openSearchFromHistory(entry.id));
+    actionTd.appendChild(btn);
+    tr.appendChild(actionTd);
     tbody.appendChild(tr);
   }
   historyLoaded = true;
+}
+
+async function openSearchFromHistory(id) {
+  try {
+    const res = await fetch(`/api/search-history/${encodeURIComponent(id)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    activateTab("search");
+    document.querySelector('input[name="research-mode"][value="tr"]')?.click();
+    renderSearchResults(data);
+    const status = document.getElementById("search-status");
+    status.hidden = false;
+    status.classList.remove("status-error");
+    status.textContent = `Geçmiş arama: "${data.query}" · ${data.offers?.length ?? 0} teklif`;
+  } catch (err) {
+    const emptyEl = document.getElementById("empty-history");
+    emptyEl.hidden = false;
+    emptyEl.textContent = `Açılamadı: ${err.message}`;
+  }
 }
 
 function isGithubPagesHost() {
@@ -1024,41 +1065,34 @@ function isGithubPagesHost() {
 
 async function checkServer() {
   const el = document.getElementById("server-status");
-  const banner = document.getElementById("mode-banner");
   const verEl = document.getElementById("app-version");
   try {
     const res = await fetch("/api/health", { signal: AbortSignal.timeout(1500) });
     if (!res.ok) throw new Error();
     const health = await res.json();
     if (verEl && health.label) verEl.textContent = health.label;
-    el.textContent = `PC modu ${health.label || ""} — Türkiye araştırması hazır`;
+    el.textContent = `Sunucu hazır ${health.label || ""}`;
     el.classList.remove("status-error");
-    if (banner) banner.hidden = true;
     return true;
   } catch {
     try {
-      const vr = await fetch("https://raw.githubusercontent.com/alid67-git/Price_Tracker/main/package.json", {
-        signal: AbortSignal.timeout(2000),
-      });
-      if (vr.ok) {
-        const pkg = await vr.json();
-        if (verEl && pkg.version) verEl.textContent = `v${pkg.version}`;
+      const vr = await fetch("sources-meta.json", { signal: AbortSignal.timeout(2000) });
+      if (vr.ok && verEl) {
+        const pkgRes = await fetch("https://raw.githubusercontent.com/alid67-git/Price_Tracker/main/package.json", {
+          signal: AbortSignal.timeout(2000),
+        }).catch(() => null);
+        if (pkgRes?.ok) {
+          const pkg = await pkgRes.json();
+          verEl.textContent = `v${pkg.version}`;
+        } else {
+          verEl.textContent = "v—";
+        }
       }
     } catch {
       if (verEl) verEl.textContent = "v—";
     }
-    el.textContent = isGithubPagesHost()
-      ? "Telefon / GitHub Pages — takip + ürün ekleme (token ile)"
-      : "Sunucu yok — takip verisi okunur; canlı arama için pricetracker.bat";
+    el.textContent = "Arama için pricetracker.bat ile sunucuyu başlat";
     el.classList.add("status-error");
-    if (banner) {
-      banner.hidden = false;
-      banner.innerHTML =
-        "<strong>Mobil / online mod:</strong> Takip edilenler her gün otomatik güncellenir. " +
-        "Ürün Ekle sekmesinden token kaydedip yeni ürün commit edebilirsin. " +
-        "Canlı Türkiye araştırması yalnızca PC’de <code>pricetracker.bat</code> ile çalışır. " +
-        "Telefondan eklediklerini PC’de <code>sync-from-github.bat</code> ile çekersin.";
-    }
     return false;
   }
 }
@@ -1070,20 +1104,12 @@ async function init() {
   document.getElementById("pdf-btn").addEventListener("click", downloadPdf);
   document.getElementById("save-tracked-btn")?.addEventListener("click", saveSearchToTracked);
   document.getElementById("search-sort")?.addEventListener("change", renderSearchOffers);
-  document.getElementById("toggle-categories")?.addEventListener("click", toggleAllCategories);
-  document.getElementById("summary-filter").addEventListener("input", applySummaryFilter);
-  document.getElementById("add-standalone-row").addEventListener("click", addStandaloneRow);
-  document.getElementById("add-product-form").addEventListener("submit", submitProduct);
-  initGithubSettingsForm();
-  const hasLocal = await checkServer();
-  if (!hasLocal) {
-    activateTab("tracked");
-    const searchTab = document.querySelector('.tab[data-tab="search"]');
-    if (searchTab) {
-      searchTab.title = "Canlı arama yalnızca PC yerel sunucusunda çalışır";
-      searchTab.classList.add("tab-limited");
-    }
-  }
+  document.getElementById("toggle-categories")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleAllCategories();
+  });
+  document.getElementById("summary-filter")?.addEventListener("input", applySummaryFilter);
+  await checkServer();
   await loadSources();
   await loadTracked();
 }

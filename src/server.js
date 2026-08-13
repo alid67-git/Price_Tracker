@@ -1,7 +1,7 @@
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { mkdir, writeFile, readFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile, readdir } from "node:fs/promises";
 import { closeBrowser } from "./core/browser.js";
 import { runSearchSession } from "./core/search-session.js";
 import { buildPdfReport } from "./report/pdf-report.js";
@@ -54,6 +54,47 @@ app.get("/api/international-markets", async (_req, res) => {
     res.json(await readJsonFile(INTL_MARKETS_PATH, { regions: [], status: "missing" }));
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/search-history", async (_req, res) => {
+  try {
+    await mkdir(SEARCHES_DIR, { recursive: true });
+    const names = (await readdir(SEARCHES_DIR)).filter((f) => f.endsWith(".json"));
+    const entries = [];
+    for (const name of names) {
+      try {
+        const raw = JSON.parse(await readFile(path.join(SEARCHES_DIR, name), "utf-8"));
+        entries.push({
+          id: raw.id || name.replace(/\.json$/, ""),
+          query: raw.query,
+          sku: raw.sku,
+          generatedAt: raw.generatedAt,
+          date: raw.date,
+          offerCount: Array.isArray(raw.offers) ? raw.offers.length : 0,
+          categories: raw.categories ?? [],
+          mode: raw.mode || "tr",
+        });
+      } catch {
+        /* skip corrupt */
+      }
+    }
+    entries.sort((a, b) => String(b.generatedAt || "").localeCompare(String(a.generatedAt || "")));
+    res.json(entries);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/search-history/:id", async (req, res) => {
+  try {
+    const safe = String(req.params.id).replace(/[^a-zA-Z0-9_\-]/g, "");
+    const filePath = path.join(SEARCHES_DIR, `${safe}.json`);
+    const raw = await readFile(filePath, "utf-8");
+    res.json(JSON.parse(raw));
+  } catch (err) {
+    if (err.code === "ENOENT") res.status(404).json({ error: "Arama kaydi bulunamadi" });
+    else res.status(500).json({ error: err.message });
   }
 });
 
