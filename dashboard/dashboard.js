@@ -258,6 +258,37 @@ function renderSearchOffers() {
     return map;
   }, new Map());
   appendOfferRows(document.getElementById("search-offers-body"), filtered, { urlCounts, showRank: true });
+  renderSearchUrlList(filtered);
+}
+
+function renderSearchUrlList(offers) {
+  const list = document.getElementById("search-url-list");
+  if (!list) return;
+  list.innerHTML = "";
+  let rank = 0;
+  for (const offer of offers) {
+    const url = String(offer.product_url || "").trim();
+    if (!url) continue;
+    rank += 1;
+    const li = document.createElement("li");
+    const meta = document.createElement("div");
+    meta.className = "url-list-meta";
+    meta.textContent = `${rank}. ${offer.platform} · ${offer.seller_name} · ${formatPrice(offer.price)}`;
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.className = "url-list-link";
+    a.textContent = url;
+    li.append(meta, a);
+    list.appendChild(li);
+  }
+  if (!rank) {
+    const empty = document.createElement("li");
+    empty.className = "url-list-empty";
+    empty.textContent = "Gösterilecek adres yok.";
+    list.appendChild(empty);
+  }
 }
 
 async function saveSearchToTracked() {
