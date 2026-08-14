@@ -1215,6 +1215,9 @@ async function openSearchFromHistory(id) {
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
     activateTab("search");
     document.querySelector('input[name="research-mode"][value="tr"]')?.click();
+    if (data.marketplaceUrlStatuses?.length) {
+      renderMarketplaceUrlStatus(data.marketplaceUrlStatuses, { revealAll: true });
+    }
     renderSearchResults(data);
     const status = document.getElementById("search-status");
     status.hidden = false;
