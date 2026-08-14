@@ -11,6 +11,12 @@ SemVer: `MAJOR.MINOR.PATCH`
 Her anlamlı gelişmede `package.json` → `version` güncellenir, bu dosyaya satır eklenir,
 dashboard üstünde görünür. Uluslararası fiyat modu hedefi: **2.0.0**.
 
+## [1.3.4] — 2026-08-14
+
+### Added
+- Arama sırasında tüm siteler sırayla listelenir (ek URL + Akakçe/Cimri + pazaryeri + katalog)
+- Üstte “Şu an: …” satırı; bulundu mavi / yok kırmızı; bitince tam liste
+
 ## [1.3.3] — 2026-08-14
 
 ### Added

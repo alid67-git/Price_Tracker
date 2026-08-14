@@ -83,18 +83,33 @@ export async function findFirstProductUrl(source, query) {
  * Katalogdaki generic kaynaklari tarar.
  * @param {{sku: string, query: string, sources: object[]}} opts
  */
-export async function searchCatalogSources({ sku, query, sources }) {
+export async function searchCatalogSources({ sku, query, sources, onSource } = {}) {
   const offers = [];
   const errors = [];
   const genericSources = (sources ?? []).filter((s) => s.mode === "generic" && s.searchUrl);
 
   for (const source of genericSources) {
     throwIfCancelled();
+    const searchUrl = source.searchUrl.replaceAll("{q}", encodeURIComponent(query));
+    onSource?.({
+      id: source.id,
+      name: source.name || source.id,
+      url: searchUrl,
+      status: "scanning",
+    });
     try {
       const productUrl = await findFirstProductUrl(source, query);
       throwIfCancelled();
       if (!productUrl) {
         errors.push({ platform: source.id, message: "arama sonucu urun bulunamadi" });
+        onSource?.({
+          id: source.id,
+          name: source.name || source.id,
+          url: searchUrl,
+          status: "missing",
+          offerCount: 0,
+          error: "urun bulunamadi",
+        });
         continue;
       }
       console.log(`[${source.id}] katalog eslesmesi: ${productUrl}`);
@@ -105,11 +120,27 @@ export async function searchCatalogSources({ sku, query, sources }) {
       });
       // Marka/magaza adini daha okunur yap
       offers.push({ ...offer, seller_name: source.name });
+      onSource?.({
+        id: source.id,
+        name: source.name || source.id,
+        url: productUrl,
+        status: "found",
+        offerCount: 1,
+        error: null,
+      });
     } catch (err) {
       if (err.code === "SEARCH_CANCELLED") throw err;
       const message = err.message ?? String(err);
       console.warn(`[${source.id}] katalog aramasi basarisiz: ${message}`);
       errors.push({ platform: source.id, message: message.split("\n")[0].slice(0, 160) });
+      onSource?.({
+        id: source.id,
+        name: source.name || source.id,
+        url: searchUrl,
+        status: "missing",
+        offerCount: 0,
+        error: message.split("\n")[0].slice(0, 160),
+      });
     }
     await randomDelay(800, 1800);
   }

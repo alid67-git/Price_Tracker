@@ -119,6 +119,16 @@ body {
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 0.45rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.mp-url-current {
+  margin: 0 0 0.55rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 .mp-url-status {
   list-style: none;

@@ -1,6 +1,6 @@
 # Fiyat Araştırma Sistemi
 
-**Sürüm:** `1.3.3` — her gelişmede SemVer artar (`CHANGELOG.md`).
+**Sürüm:** `1.3.4` — her gelişmede SemVer artar (`CHANGELOG.md`).
 
 | Hat | Sürüm | İçerik |
 |-----|-------|--------|

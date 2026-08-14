@@ -119,7 +119,7 @@ function shortenBrowserError(message) {
 /**
  * Manuel web aramasi: katalog kategorileri + dedicated connector'lar + istege bagli URL.
  * @param {{query: string, sku?: string, marketplaceUrls?: string[], categories?: string[], maxGeneric?: number}} input
- * @param {{onProgress?: (p: {marketplaceUrlStatuses: object[]}) => void}} [hooks]
+ * @param {{onProgress?: (p: object) => void}} [hooks]
  */
 export async function runSearchSession(input, hooks = {}) {
   const onProgress = typeof hooks.onProgress === "function" ? hooks.onProgress : null;
@@ -139,52 +139,97 @@ export async function runSearchSession(input, hooks = {}) {
     : defaultCategoryIds(catalog);
   const selectedSources = resolveSources(catalog, { categories });
   const maxGeneric = Number.isFinite(input.maxGeneric) ? input.maxGeneric : 25;
+  const runDedicatedMp = categories.includes("pazaryeri");
+  const genericPool = selectedSources
+    .filter((s) => s.mode === "generic" && s.searchUrl)
+    .slice(0, maxGeneric);
 
-  /** @type {Array<{url:string, host:string, platform:string|null, status:'pending'|'scanning'|'found'|'missing', offerCount:number, error:string|null}>} */
-  const marketplaceUrlStatuses = marketplaceUrls.map((url) => {
+  /** @type {Array<{id:string, name:string, url:string|null, kind:string, status:string, offerCount:number, error:string|null}>} */
+  const siteStatuses = [];
+
+  const pushSite = (entry) => {
+    siteStatuses.push({
+      id: entry.id,
+      name: entry.name || entry.id,
+      url: entry.url ?? null,
+      kind: entry.kind,
+      status: entry.status || "pending",
+      offerCount: entry.offerCount ?? 0,
+      error: entry.error ?? null,
+    });
+  };
+
+  for (const url of marketplaceUrls) {
     let host = url;
     try {
       host = new URL(url).hostname.replace(/^www\./, "");
     } catch {
-      /* keep raw */
+      /* keep */
     }
-    return {
-      url,
-      host,
-      platform: null,
+    pushSite({ id: `url:${url}`, name: host, url, kind: "marketplace-url", status: "pending" });
+  }
+  for (const agg of ["akakce", "cimri"]) {
+    pushSite({ id: agg, name: agg, url: null, kind: "aggregator", status: "pending" });
+  }
+  if (runDedicatedMp) {
+    for (const c of ["trendyol", "hepsiburada", "n11", "amazon_tr"]) {
+      pushSite({ id: c, name: c, url: null, kind: "marketplace", status: "pending" });
+    }
+  }
+  for (const source of genericPool) {
+    const searchUrl = source.searchUrl.replaceAll("{q}", encodeURIComponent(query));
+    pushSite({
+      id: source.id,
+      name: source.name || source.id,
+      url: searchUrl,
+      kind: "catalog",
       status: "pending",
-      offerCount: 0,
-      error: null,
-    };
-  });
+    });
+  }
 
-  const emitUrlProgress = () => {
+  const findSite = (id) => siteStatuses.find((s) => s.id === id);
+  const emitProgress = (currentId = null) => {
+    const current = currentId ? findSite(currentId) : siteStatuses.find((s) => s.status === "scanning") || null;
     onProgress?.({
-      marketplaceUrlStatuses: marketplaceUrlStatuses.map((e) => ({ ...e })),
+      siteStatuses: siteStatuses.map((e) => ({ ...e })),
+      marketplaceUrlStatuses: siteStatuses
+        .filter((e) => e.kind === "marketplace-url")
+        .map((e) => ({
+          url: e.url,
+          host: e.name,
+          platform: e.id.startsWith("url:") ? null : e.id,
+          status: e.status,
+          offerCount: e.offerCount,
+          error: e.error,
+        })),
+      currentSite: current
+        ? { id: current.id, name: current.name, url: current.url, status: current.status }
+        : null,
     });
   };
-  emitUrlProgress();
+  emitProgress();
 
-  const urlOffers = [];
   const warnings = [];
+  const urlOffers = [];
 
-  for (const entry of marketplaceUrlStatuses) {
+  for (const url of marketplaceUrls) {
     throwIfCancelled();
+    const entry = findSite(`url:${url}`);
+    if (!entry) continue;
     entry.status = "scanning";
-    emitUrlProgress();
+    emitProgress(entry.id);
 
-    const connector = getMarketplaceConnectorForUrl(entry.url);
+    const connector = getMarketplaceConnectorForUrl(url);
     if (!connector) {
       entry.status = "missing";
       entry.error = "bilinen connector yok";
-      warnings.push(`"${entry.host}" icin bilinen bir connector yok`);
-      emitUrlProgress();
+      warnings.push(`"${entry.name}" icin bilinen bir connector yok`);
+      emitProgress();
       continue;
     }
 
-    entry.platform = connector.platform;
     try {
-      const result = await connector.fetchOffers({ sku, url: entry.url });
+      const result = await connector.fetchOffers({ sku, url });
       urlOffers.push(...result);
       entry.offerCount = result.length;
       entry.status = result.length > 0 ? "found" : "missing";
@@ -196,35 +241,69 @@ export async function runSearchSession(input, hooks = {}) {
       entry.error = shortenBrowserError(err.message);
       warnings.push(`${connector.platform} cekilemedi: ${entry.error}`);
     }
-    emitUrlProgress();
+    emitProgress();
     await randomDelay();
   }
 
   const marketplaces = {};
-  for (const entry of marketplaceUrlStatuses) {
-    if (entry.platform) marketplaces[entry.platform] = entry.url;
+  for (const url of marketplaceUrls) {
+    const connector = getMarketplaceConnectorForUrl(url);
+    if (connector) marketplaces[connector.platform] = url;
   }
 
-  const product = {
-    sku,
-    name: query,
-    marketplaces: {},
-    // Aggregator'lar her zaman (kategori bagimsiz) — genis satici kapsami icin
-    aggregatorQuery: query,
-    standalone: [],
-  };
+  throwIfCancelled();
+  let fromAggregators = [];
+  try {
+    const { offers, errors } = await searchAllAggregators({
+      sku,
+      query,
+      onSource: (update) => {
+        const entry = findSite(update.id);
+        if (!entry) return;
+        entry.status = update.status;
+        entry.offerCount = update.offerCount ?? 0;
+        entry.error = update.error ?? null;
+        if (update.status === "scanning") emitProgress(entry.id);
+        else emitProgress();
+      },
+    });
+    fromAggregators = offers;
+    for (const err of errors ?? []) {
+      warnings.push(`${err.platform}: ${shortenBrowserError(err.message)}`);
+    }
+  } catch (err) {
+    if (err.code === "SEARCH_CANCELLED") throw err;
+    warnings.push(`aggregator aramasi: ${shortenBrowserError(err.message)}`);
+  }
 
-  const { offers: fromAggregators, warnings: moreWarnings } = await scrapeProduct(product);
-  warnings.push(...moreWarnings);
   throwIfCancelled();
 
-  // Dedicated pazaryeri connector'lari (Trendyol/HB/n11/Amazon) — pazaryeri kategorisi aciksa
   let marketplaceSearchOffers = [];
-  const runDedicatedMp = categories.includes("pazaryeri");
   if (runDedicatedMp) {
     const excludePlatforms = Object.keys(marketplaces);
+    for (const id of excludePlatforms) {
+      const entry = findSite(id);
+      if (entry && entry.kind === "marketplace") {
+        entry.status = "found";
+        entry.error = "ek URL ile tarandi";
+      }
+    }
     try {
-      const { offers, errors } = await searchAllMarketplaces({ sku, query, excludePlatforms });
+      const { offers, errors } = await searchAllMarketplaces({
+        sku,
+        query,
+        excludePlatforms,
+        onSource: (update) => {
+          const entry = findSite(update.id);
+          if (!entry) return;
+          entry.status = update.status;
+          entry.offerCount = update.offerCount ?? 0;
+          entry.error = update.error ?? null;
+          if (update.url) entry.url = update.url;
+          if (update.status === "scanning") emitProgress(entry.id);
+          else emitProgress();
+        },
+      });
       marketplaceSearchOffers = offers;
       for (const err of errors ?? []) {
         warnings.push(`${err.platform}: ${shortenBrowserError(err.message)}`);
@@ -237,14 +316,24 @@ export async function runSearchSession(input, hooks = {}) {
 
   throwIfCancelled();
 
-  // Katalogdaki generic siteler (secili kategoriler)
   let catalogOffers = [];
-  const genericPool = selectedSources
-    .filter((s) => s.mode === "generic" && s.searchUrl)
-    .slice(0, maxGeneric);
   if (genericPool.length) {
     try {
-      const { offers, errors } = await searchCatalogSources({ sku, query, sources: genericPool });
+      const { offers, errors } = await searchCatalogSources({
+        sku,
+        query,
+        sources: genericPool,
+        onSource: (update) => {
+          const entry = findSite(update.id);
+          if (!entry) return;
+          entry.status = update.status;
+          entry.offerCount = update.offerCount ?? 0;
+          entry.error = update.error ?? null;
+          if (update.url) entry.url = update.url;
+          if (update.status === "scanning") emitProgress(entry.id);
+          else emitProgress();
+        },
+      });
       catalogOffers = offers;
       for (const err of errors ?? []) {
         warnings.push(`${err.platform}: ${shortenBrowserError(err.message)}`);
@@ -272,6 +361,8 @@ export async function runSearchSession(input, hooks = {}) {
     .map(([platform, count]) => ({ platform, count }))
     .sort((a, b) => b.count - a.count);
 
+  emitProgress();
+
   return {
     id: `${todayDateString()}_${Date.now()}`,
     query,
@@ -281,7 +372,17 @@ export async function runSearchSession(input, hooks = {}) {
     generatedAt: new Date().toISOString(),
     date: todayDateString(),
     marketplaceUrls,
-    marketplaceUrlStatuses: marketplaceUrlStatuses.map((e) => ({ ...e })),
+    marketplaceUrlStatuses: siteStatuses
+      .filter((e) => e.kind === "marketplace-url")
+      .map((e) => ({
+        url: e.url,
+        host: e.name,
+        platform: null,
+        status: e.status,
+        offerCount: e.offerCount,
+        error: e.error,
+      })),
+    siteStatuses: siteStatuses.map((e) => ({ ...e })),
     categories,
     searchedSources: [
       ...selectedSources.filter((s) => s.mode === "dedicated").map((s) => s.id),

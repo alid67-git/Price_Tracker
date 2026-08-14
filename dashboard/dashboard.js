@@ -478,8 +478,9 @@ async function cancelActiveSearch() {
 }
 
 function applySearchOutcome(data, status) {
-  if (data?.marketplaceUrlStatuses?.length) {
-    renderMarketplaceUrlStatus(data.marketplaceUrlStatuses, { revealAll: true });
+  const sites = data?.siteStatuses?.length ? data.siteStatuses : data?.marketplaceUrlStatuses;
+  if (sites?.length) {
+    renderSiteStatus(sites, { revealAll: true, currentSite: null });
   }
   if (!data?.offers?.length) {
     const warn = data?.warnings?.length ? ` (${data.warnings.join("; ")})` : "";
@@ -503,15 +504,57 @@ const MP_STATUS_LABEL = {
   missing: "Yok",
 };
 
-function renderMarketplaceUrlStatus(entries, { revealAll = false } = {}) {
+function normalizeSiteEntry(entry) {
+  if (!entry) return null;
+  const url = entry.url || entry.href || null;
+  let name = entry.name || entry.host || entry.platform || entry.id || "site";
+  if (!entry.name && !entry.host && url) {
+    try {
+      name = new URL(url).hostname.replace(/^www\./, "");
+    } catch {
+      /* keep */
+    }
+  }
+  return {
+    id: entry.id || url || name,
+    name,
+    url,
+    status: entry.status || "pending",
+    offerCount: entry.offerCount ?? 0,
+    error: entry.error ?? null,
+  };
+}
+
+function renderSiteStatus(entries, { revealAll = false, currentSite = null } = {}) {
   const wrap = document.getElementById("marketplace-url-progress");
   const list = document.getElementById("marketplace-url-status");
+  const countEl = document.getElementById("site-progress-count");
+  const currentEl = document.getElementById("site-progress-current");
   if (!wrap || !list) return;
-  const rows = Array.isArray(entries) ? entries : [];
+  const rows = (Array.isArray(entries) ? entries : []).map(normalizeSiteEntry).filter(Boolean);
   if (!rows.length) {
     wrap.hidden = true;
     list.innerHTML = "";
+    if (countEl) countEl.textContent = "";
+    if (currentEl) {
+      currentEl.hidden = true;
+      currentEl.textContent = "";
+    }
     return;
+  }
+
+  const done = rows.filter((e) => e.status === "found" || e.status === "missing").length;
+  if (countEl) countEl.textContent = `(${done}/${rows.length})`;
+
+  const cur = currentSite ? normalizeSiteEntry(currentSite) : rows.find((e) => e.status === "scanning");
+  if (currentEl) {
+    if (cur && !revealAll) {
+      currentEl.hidden = false;
+      currentEl.textContent = `Şu an: ${cur.name}`;
+    } else {
+      currentEl.hidden = true;
+      currentEl.textContent = "";
+    }
   }
 
   const visible = [];
@@ -535,16 +578,18 @@ function renderMarketplaceUrlStatus(entries, { revealAll = false } = {}) {
 
     const host = document.createElement("div");
     host.className = "mp-url-host";
-    host.textContent = entry.host || entry.platform || "site";
+    host.textContent = entry.name;
 
-    const a = document.createElement("a");
-    a.className = "mp-url-link";
-    a.href = entry.url;
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.textContent = entry.url;
-
-    body.append(host, a);
+    body.appendChild(host);
+    if (entry.url) {
+      const a = document.createElement("a");
+      a.className = "mp-url-link";
+      a.href = entry.url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = entry.url;
+      body.appendChild(a);
+    }
     if (status === "found" && entry.offerCount) {
       const note = document.createElement("div");
       note.className = "mp-url-note";
@@ -568,6 +613,11 @@ function renderMarketplaceUrlStatus(entries, { revealAll = false } = {}) {
   wrap.hidden = false;
 }
 
+/** @deprecated alias */
+function renderMarketplaceUrlStatus(entries, opts) {
+  renderSiteStatus(entries, opts);
+}
+
 async function pollSearchJob(id, statusEl, signal) {
   const started = Date.now();
   while (true) {
@@ -575,8 +625,9 @@ async function pollSearchJob(id, statusEl, signal) {
     const res = await fetch(apiUrl(`/api/search/jobs/${encodeURIComponent(id)}`), { signal });
     const job = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(job.error || `HTTP ${res.status}`);
-    if (Array.isArray(job.marketplaceUrlStatuses) && job.marketplaceUrlStatuses.length) {
-      renderMarketplaceUrlStatus(job.marketplaceUrlStatuses, { revealAll: false });
+    const sites = job.siteStatuses?.length ? job.siteStatuses : job.marketplaceUrlStatuses;
+    if (Array.isArray(sites) && sites.length) {
+      renderSiteStatus(sites, { revealAll: job.status === "done", currentSite: job.currentSite });
     }
     if (job.status === "done") return job.result;
     if (job.status === "cancelled") {
@@ -586,11 +637,15 @@ async function pollSearchJob(id, statusEl, signal) {
     }
     if (job.status === "error") throw new Error(job.error || "Arama basarisiz");
     const sec = Math.round((Date.now() - started) / 1000);
-    const scanning = (job.marketplaceUrlStatuses || []).find((e) => e.status === "scanning");
-    statusEl.textContent = scanning
-      ? `Taranıyor… ${scanning.host || "pazaryeri"} · ${sec}s. İptal için tekrar Ara’ya basın.`
+    const scanning =
+      job.currentSite ||
+      (job.siteStatuses || []).find((e) => e.status === "scanning") ||
+      (job.marketplaceUrlStatuses || []).find((e) => e.status === "scanning");
+    const label = scanning?.name || scanning?.host || scanning?.id;
+    statusEl.textContent = label
+      ? `Taranıyor… ${label} · ${sec}s. İptal için tekrar Ara’ya basın.`
       : `Taranıyor… ${sec}s. İptal için tekrar Ara’ya basın.`;
-    await new Promise((r) => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1000));
   }
 }
 
@@ -672,21 +727,18 @@ async function runSearch(e) {
   status.classList.remove("status-error");
   btn.textContent = "İptal / Yeni ara";
 
-  if (marketplaceUrls.length) {
-    renderMarketplaceUrlStatus(
-      marketplaceUrls.map((url) => {
-        let host = url;
-        try {
-          host = new URL(url).hostname.replace(/^www\./, "");
-        } catch {
-          /* keep */
-        }
-        return { url, host, platform: null, status: "pending", offerCount: 0, error: null };
-      }),
-      { revealAll: false }
-    );
-  } else {
-    renderMarketplaceUrlStatus([]);
+  const wrap = document.getElementById("marketplace-url-progress");
+  const list = document.getElementById("marketplace-url-status");
+  const countEl = document.getElementById("site-progress-count");
+  const currentEl = document.getElementById("site-progress-current");
+  if (wrap && list) {
+    wrap.hidden = false;
+    if (countEl) countEl.textContent = "";
+    if (currentEl) {
+      currentEl.hidden = false;
+      currentEl.textContent = "Siteler hazırlanıyor…";
+    }
+    list.innerHTML = "";
   }
 
   searchAbort = new AbortController();
@@ -1215,8 +1267,10 @@ async function openSearchFromHistory(id) {
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
     activateTab("search");
     document.querySelector('input[name="research-mode"][value="tr"]')?.click();
-    if (data.marketplaceUrlStatuses?.length) {
-      renderMarketplaceUrlStatus(data.marketplaceUrlStatuses, { revealAll: true });
+    if (data.siteStatuses?.length) {
+      renderSiteStatus(data.siteStatuses, { revealAll: true });
+    } else if (data.marketplaceUrlStatuses?.length) {
+      renderSiteStatus(data.marketplaceUrlStatuses, { revealAll: true });
     }
     renderSearchResults(data);
     const status = document.getElementById("search-status");

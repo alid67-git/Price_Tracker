@@ -66,16 +66,20 @@
           <span>Ek pazaryeri URL’leri <span class="optional">(opsiyonel — belirli ürün sayfası zorlamak için)</span></span>
           <textarea id="search-urls" name="urls" rows="3" placeholder="https://www.trendyol.com/...&#10;https://www.n11.com/..."></textarea>
         </label>
-        <div id="marketplace-url-progress" class="mp-url-progress" hidden>
-          <div class="mp-url-progress-head">Ek pazaryeri taraması</div>
-          <ol id="marketplace-url-status" class="mp-url-status"></ol>
-        </div>
         <div class="search-actions">
           <button id="search-btn" type="submit" class="btn-primary">Türkiye’de ara</button>
           <button id="pdf-btn" type="button" class="btn-secondary" disabled>PDF rapor</button>
           <button id="save-tracked-btn" type="button" class="btn-secondary" disabled>Takibe kaydet</button>
         </div>
         <p id="search-status" class="muted search-status" hidden></p>
+        <div id="marketplace-url-progress" class="mp-url-progress" hidden>
+          <div class="mp-url-progress-head">
+            Taranan siteler
+            <span id="site-progress-count" class="optional"></span>
+          </div>
+          <p id="site-progress-current" class="mp-url-current" hidden></p>
+          <ol id="marketplace-url-status" class="mp-url-status"></ol>
+        </div>
       </form>
 
       <div id="search-results" hidden>

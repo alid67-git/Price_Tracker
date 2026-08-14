@@ -255,6 +255,8 @@ function publicJob(job) {
     query: job.query,
     error: job.error ?? null,
     marketplaceUrlStatuses: job.marketplaceUrlStatuses ?? [],
+    siteStatuses: job.siteStatuses ?? [],
+    currentSite: job.currentSite ?? null,
     result: job.status === "done" ? job.result : undefined,
   };
 }
@@ -275,13 +277,17 @@ async function executeSearchJob(job) {
         maxGeneric: job.maxGeneric,
       },
       {
-        onProgress: ({ marketplaceUrlStatuses }) => {
-          job.marketplaceUrlStatuses = marketplaceUrlStatuses;
+        onProgress: (progress) => {
+          if (progress.marketplaceUrlStatuses) job.marketplaceUrlStatuses = progress.marketplaceUrlStatuses;
+          if (progress.siteStatuses) job.siteStatuses = progress.siteStatuses;
+          job.currentSite = progress.currentSite ?? null;
         },
       }
     );
     result.id = job.id;
     job.marketplaceUrlStatuses = result.marketplaceUrlStatuses ?? job.marketplaceUrlStatuses ?? [];
+    job.siteStatuses = result.siteStatuses ?? job.siteStatuses ?? [];
+    job.currentSite = null;
     lastSearch = result;
     await persistSearch(result).catch((err) => {
       console.warn(`[web] arama kaydedilemedi: ${err.message}`);
@@ -360,6 +366,8 @@ app.post("/api/search", (req, res) => {
       }
       return { url, host, platform: null, status: "pending", offerCount: 0, error: null };
     }),
+    siteStatuses: [],
+    currentSite: null,
     categories,
     maxGeneric,
     startedAt: Date.now(),
