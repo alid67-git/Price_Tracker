@@ -254,6 +254,7 @@ function publicJob(job) {
     status: job.status,
     query: job.query,
     error: job.error ?? null,
+    marketplaceUrlStatuses: job.marketplaceUrlStatuses ?? [],
     result: job.status === "done" ? job.result : undefined,
   };
 }
@@ -265,14 +266,22 @@ async function executeSearchJob(job) {
   const started = Date.now();
   console.log(`[web] arama basladi: "${job.query}" id=${job.id}`);
   try {
-    const result = await runSearchSession({
-      query: job.query,
-      sku: job.sku,
-      marketplaceUrls: job.marketplaceUrls,
-      categories: job.categories,
-      maxGeneric: job.maxGeneric,
-    });
+    const result = await runSearchSession(
+      {
+        query: job.query,
+        sku: job.sku,
+        marketplaceUrls: job.marketplaceUrls,
+        categories: job.categories,
+        maxGeneric: job.maxGeneric,
+      },
+      {
+        onProgress: ({ marketplaceUrlStatuses }) => {
+          job.marketplaceUrlStatuses = marketplaceUrlStatuses;
+        },
+      }
+    );
     result.id = job.id;
+    job.marketplaceUrlStatuses = result.marketplaceUrlStatuses ?? job.marketplaceUrlStatuses ?? [];
     lastSearch = result;
     await persistSearch(result).catch((err) => {
       console.warn(`[web] arama kaydedilemedi: ${err.message}`);
@@ -342,6 +351,15 @@ app.post("/api/search", (req, res) => {
     query,
     sku: req.body?.sku,
     marketplaceUrls,
+    marketplaceUrlStatuses: marketplaceUrls.map((url) => {
+      let host = url;
+      try {
+        host = new URL(url).hostname.replace(/^www\./, "");
+      } catch {
+        /* keep */
+      }
+      return { url, host, platform: null, status: "pending", offerCount: 0, error: null };
+    }),
     categories,
     maxGeneric,
     startedAt: Date.now(),

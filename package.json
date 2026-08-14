@@ -1,6 +1,6 @@
 {
   "name": "fiyat-arastirma-sistemi",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Turkiye + (v2) uluslararasi fiyat arastirma ve rekabet takip sistemi",
   "type": "module",
   "private": true,

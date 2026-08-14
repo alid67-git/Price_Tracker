@@ -478,6 +478,9 @@ async function cancelActiveSearch() {
 }
 
 function applySearchOutcome(data, status) {
+  if (data?.marketplaceUrlStatuses?.length) {
+    renderMarketplaceUrlStatus(data.marketplaceUrlStatuses, { revealAll: true });
+  }
   if (!data?.offers?.length) {
     const warn = data?.warnings?.length ? ` (${data.warnings.join("; ")})` : "";
     status.textContent = `Sonuç bulunamadı.${warn}`;
@@ -493,6 +496,78 @@ function applySearchOutcome(data, status) {
   document.getElementById("save-tracked-btn").disabled = false;
 }
 
+const MP_STATUS_LABEL = {
+  pending: "Bekliyor",
+  scanning: "Taranıyor",
+  found: "Bulundu",
+  missing: "Yok",
+};
+
+function renderMarketplaceUrlStatus(entries, { revealAll = false } = {}) {
+  const wrap = document.getElementById("marketplace-url-progress");
+  const list = document.getElementById("marketplace-url-status");
+  if (!wrap || !list) return;
+  const rows = Array.isArray(entries) ? entries : [];
+  if (!rows.length) {
+    wrap.hidden = true;
+    list.innerHTML = "";
+    return;
+  }
+
+  const visible = [];
+  for (const entry of rows) {
+    visible.push(entry);
+    if (!revealAll && (entry.status === "pending" || entry.status === "scanning")) break;
+  }
+
+  list.innerHTML = "";
+  for (const entry of visible) {
+    const status = entry.status || "pending";
+    const li = document.createElement("li");
+    li.className = `mp-${status}`;
+
+    const badge = document.createElement("span");
+    badge.className = "mp-url-badge";
+    badge.textContent = MP_STATUS_LABEL[status] || status;
+
+    const body = document.createElement("div");
+    body.className = "mp-url-body";
+
+    const host = document.createElement("div");
+    host.className = "mp-url-host";
+    host.textContent = entry.host || entry.platform || "site";
+
+    const a = document.createElement("a");
+    a.className = "mp-url-link";
+    a.href = entry.url;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = entry.url;
+
+    body.append(host, a);
+    if (status === "found" && entry.offerCount) {
+      const note = document.createElement("div");
+      note.className = "mp-url-note";
+      note.textContent = `${entry.offerCount} teklif`;
+      body.appendChild(note);
+    } else if (status === "missing" && entry.error) {
+      const note = document.createElement("div");
+      note.className = "mp-url-note";
+      note.textContent = entry.error;
+      body.appendChild(note);
+    } else if (status === "scanning") {
+      const note = document.createElement("div");
+      note.className = "mp-url-note";
+      note.textContent = "Kontrol ediliyor…";
+      body.appendChild(note);
+    }
+
+    li.append(badge, body);
+    list.appendChild(li);
+  }
+  wrap.hidden = false;
+}
+
 async function pollSearchJob(id, statusEl, signal) {
   const started = Date.now();
   while (true) {
@@ -500,6 +575,9 @@ async function pollSearchJob(id, statusEl, signal) {
     const res = await fetch(apiUrl(`/api/search/jobs/${encodeURIComponent(id)}`), { signal });
     const job = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(job.error || `HTTP ${res.status}`);
+    if (Array.isArray(job.marketplaceUrlStatuses) && job.marketplaceUrlStatuses.length) {
+      renderMarketplaceUrlStatus(job.marketplaceUrlStatuses, { revealAll: false });
+    }
     if (job.status === "done") return job.result;
     if (job.status === "cancelled") {
       const err = new Error("Arama iptal edildi");
@@ -508,8 +586,11 @@ async function pollSearchJob(id, statusEl, signal) {
     }
     if (job.status === "error") throw new Error(job.error || "Arama basarisiz");
     const sec = Math.round((Date.now() - started) / 1000);
-    statusEl.textContent = `Taranıyor… ${sec}s. İptal için tekrar Ara’ya basın.`;
-    await new Promise((r) => setTimeout(r, 2000));
+    const scanning = (job.marketplaceUrlStatuses || []).find((e) => e.status === "scanning");
+    statusEl.textContent = scanning
+      ? `Taranıyor… ${scanning.host || "pazaryeri"} · ${sec}s. İptal için tekrar Ara’ya basın.`
+      : `Taranıyor… ${sec}s. İptal için tekrar Ara’ya basın.`;
+    await new Promise((r) => setTimeout(r, 1200));
   }
 }
 
@@ -590,6 +671,23 @@ async function runSearch(e) {
   status.textContent = `Taranıyor… ${categories.length} kategori. İptal için tekrar Ara’ya basın.`;
   status.classList.remove("status-error");
   btn.textContent = "İptal / Yeni ara";
+
+  if (marketplaceUrls.length) {
+    renderMarketplaceUrlStatus(
+      marketplaceUrls.map((url) => {
+        let host = url;
+        try {
+          host = new URL(url).hostname.replace(/^www\./, "");
+        } catch {
+          /* keep */
+        }
+        return { url, host, platform: null, status: "pending", offerCount: 0, error: null };
+      }),
+      { revealAll: false }
+    );
+  } else {
+    renderMarketplaceUrlStatus([]);
+  }
 
   searchAbort = new AbortController();
   searchInFlight = true;

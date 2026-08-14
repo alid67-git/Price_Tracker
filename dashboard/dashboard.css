@@ -107,6 +107,76 @@ body {
 .muted { color: var(--text-muted); font-size: 0.85rem; }
 .status-error { color: var(--status-critical) !important; }
 
+.mp-url-progress {
+  margin: 0.35rem 0 0.85rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-raised);
+}
+.mp-url-progress-head {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.45rem;
+}
+.mp-url-status {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.mp-url-status li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 0.55rem;
+  align-items: start;
+  font-size: 0.82rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--gridline);
+  background: var(--surface-1);
+}
+.mp-url-status li.mp-pending { opacity: 0.45; }
+.mp-url-status li.mp-scanning {
+  border-color: var(--border);
+}
+.mp-url-status li.mp-found {
+  border-color: var(--series-blue);
+  background: var(--series-blue-wash);
+}
+.mp-url-status li.mp-missing {
+  border-color: color-mix(in srgb, var(--status-critical) 45%, var(--border));
+  background: var(--status-critical-bg);
+}
+.mp-url-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.4rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.mp-pending .mp-url-badge { background: var(--surface-raised); color: var(--text-muted); }
+.mp-scanning .mp-url-badge { background: var(--surface-raised); color: var(--text-secondary); }
+.mp-found .mp-url-badge { background: var(--series-blue); color: #fff; }
+.mp-missing .mp-url-badge { background: var(--status-critical); color: #fff; }
+.mp-url-body { min-width: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+.mp-url-host { font-weight: 600; color: var(--text-primary); }
+.mp-url-link {
+  color: var(--series-blue);
+  text-decoration: none;
+  word-break: break-all;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+.mp-missing .mp-url-link { color: var(--status-critical); }
+.mp-url-link:hover { text-decoration: underline; }
+.mp-url-note { font-size: 0.72rem; color: var(--text-muted); }
+
 .research-modes {
   display: grid;
   grid-template-columns: 1fr 1fr;

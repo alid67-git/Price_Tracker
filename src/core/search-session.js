@@ -119,8 +119,10 @@ function shortenBrowserError(message) {
 /**
  * Manuel web aramasi: katalog kategorileri + dedicated connector'lar + istege bagli URL.
  * @param {{query: string, sku?: string, marketplaceUrls?: string[], categories?: string[], maxGeneric?: number}} input
+ * @param {{onProgress?: (p: {marketplaceUrlStatuses: object[]}) => void}} [hooks]
  */
-export async function runSearchSession(input) {
+export async function runSearchSession(input, hooks = {}) {
+  const onProgress = typeof hooks.onProgress === "function" ? hooks.onProgress : null;
   const query = String(input.query ?? "").trim();
   if (!query) {
     throw new Error("Arama sorgusu bos olamaz");
@@ -138,23 +140,82 @@ export async function runSearchSession(input) {
   const selectedSources = resolveSources(catalog, { categories });
   const maxGeneric = Number.isFinite(input.maxGeneric) ? input.maxGeneric : 25;
 
+  /** @type {Array<{url:string, host:string, platform:string|null, status:'pending'|'scanning'|'found'|'missing', offerCount:number, error:string|null}>} */
+  const marketplaceUrlStatuses = marketplaceUrls.map((url) => {
+    let host = url;
+    try {
+      host = new URL(url).hostname.replace(/^www\./, "");
+    } catch {
+      /* keep raw */
+    }
+    return {
+      url,
+      host,
+      platform: null,
+      status: "pending",
+      offerCount: 0,
+      error: null,
+    };
+  });
+
+  const emitUrlProgress = () => {
+    onProgress?.({
+      marketplaceUrlStatuses: marketplaceUrlStatuses.map((e) => ({ ...e })),
+    });
+  };
+  emitUrlProgress();
+
+  const urlOffers = [];
+  const warnings = [];
+
+  for (const entry of marketplaceUrlStatuses) {
+    throwIfCancelled();
+    entry.status = "scanning";
+    emitUrlProgress();
+
+    const connector = getMarketplaceConnectorForUrl(entry.url);
+    if (!connector) {
+      entry.status = "missing";
+      entry.error = "bilinen connector yok";
+      warnings.push(`"${entry.host}" icin bilinen bir connector yok`);
+      emitUrlProgress();
+      continue;
+    }
+
+    entry.platform = connector.platform;
+    try {
+      const result = await connector.fetchOffers({ sku, url: entry.url });
+      urlOffers.push(...result);
+      entry.offerCount = result.length;
+      entry.status = result.length > 0 ? "found" : "missing";
+      if (!result.length) entry.error = "teklif yok";
+    } catch (err) {
+      if (err.code === "SEARCH_CANCELLED") throw err;
+      entry.status = "missing";
+      entry.offerCount = 0;
+      entry.error = shortenBrowserError(err.message);
+      warnings.push(`${connector.platform} cekilemedi: ${entry.error}`);
+    }
+    emitUrlProgress();
+    await randomDelay();
+  }
+
   const marketplaces = {};
-  for (const url of marketplaceUrls) {
-    const connector = getMarketplaceConnectorForUrl(url);
-    const key = connector?.platform ?? new URL(url).hostname;
-    marketplaces[key] = url;
+  for (const entry of marketplaceUrlStatuses) {
+    if (entry.platform) marketplaces[entry.platform] = entry.url;
   }
 
   const product = {
     sku,
     name: query,
-    marketplaces,
+    marketplaces: {},
     // Aggregator'lar her zaman (kategori bagimsiz) — genis satici kapsami icin
     aggregatorQuery: query,
     standalone: [],
   };
 
-  const { offers: fromUrlsAndAggregators, warnings } = await scrapeProduct(product);
+  const { offers: fromAggregators, warnings: moreWarnings } = await scrapeProduct(product);
+  warnings.push(...moreWarnings);
   throwIfCancelled();
 
   // Dedicated pazaryeri connector'lari (Trendyol/HB/n11/Amazon) — pazaryeri kategorisi aciksa
@@ -199,7 +260,7 @@ export async function runSearchSession(input) {
     warnings.push(`Henuz otomatik degil (atlaniyor): ${plannedSkipped.slice(0, 8).join(", ")}${plannedSkipped.length > 8 ? "…" : ""}`);
   }
 
-  const rawOffers = [...fromUrlsAndAggregators, ...marketplaceSearchOffers, ...catalogOffers];
+  const rawOffers = [...urlOffers, ...fromAggregators, ...marketplaceSearchOffers, ...catalogOffers];
   const offers = markOutlierOffers(dedupeOffers(rawOffers)).sort((a, b) => a.price - b.price);
   const aggregate = computeAggregates(offers);
 
@@ -220,6 +281,7 @@ export async function runSearchSession(input) {
     generatedAt: new Date().toISOString(),
     date: todayDateString(),
     marketplaceUrls,
+    marketplaceUrlStatuses: marketplaceUrlStatuses.map((e) => ({ ...e })),
     categories,
     searchedSources: [
       ...selectedSources.filter((s) => s.mode === "dedicated").map((s) => s.id),
