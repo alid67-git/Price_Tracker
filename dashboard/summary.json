@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T07:40:21.931Z",
+  "generatedAt": "2026-08-14T07:39:51.426Z",
   "products": [
     {
       "sku": "SEARCH-844N",
@@ -1351,8 +1351,23 @@
     {
       "sku": "CUDY-WR300",
       "name": "Cudy WR300 300Mbps Router",
-      "latestDate": "2026-08-12",
+      "latestDate": "2026-08-14",
       "latestOffers": [
+        {
+          "sku": "CUDY-WR300",
+          "source_type": "marketplace",
+          "platform": "amazon_tr",
+          "seller_name": "Cudy Store",
+          "price": 579,
+          "currency": "TRY",
+          "stock_status": "in_stock",
+          "shipping_info": null,
+          "is_platform_official": false,
+          "product_url": "https://www.amazon.com.tr/Cudy-WR300-300Mbps-WireGuard-VPNClient/dp/B07QZXNCZK",
+          "date": "2026-08-14",
+          "scraped_at": "2026-08-14T07:37:35.012Z",
+          "is_outlier": false
+        },
         {
           "sku": "CUDY-WR300",
           "source_type": "marketplace",
@@ -1364,8 +1379,8 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-12",
-          "scraped_at": "2026-08-12T07:37:45.356Z",
+          "date": "2026-08-14",
+          "scraped_at": "2026-08-14T07:37:28.135Z",
           "is_outlier": false
         },
         {
@@ -1373,14 +1388,14 @@
           "source_type": "marketplace",
           "platform": "n11",
           "seller_name": "Netsiparis",
-          "price": 698.92,
+          "price": 699.38,
           "currency": "TRY",
           "stock_status": "unknown",
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-12",
-          "scraped_at": "2026-08-12T07:37:45.358Z",
+          "date": "2026-08-14",
+          "scraped_at": "2026-08-14T07:37:28.137Z",
           "is_outlier": false
         },
         {
@@ -1394,8 +1409,8 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-12",
-          "scraped_at": "2026-08-12T07:37:45.358Z",
+          "date": "2026-08-14",
+          "scraped_at": "2026-08-14T07:37:28.137Z",
           "is_outlier": false
         },
         {
@@ -1409,21 +1424,21 @@
           "shipping_info": "Ücretsiz Kargo",
           "is_platform_official": false,
           "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
-          "date": "2026-08-12",
-          "scraped_at": "2026-08-12T07:37:45.358Z",
+          "date": "2026-08-14",
+          "scraped_at": "2026-08-14T07:37:28.138Z",
           "is_outlier": false
         }
       ],
       "aggregate": {
-        "seller_count": 4,
-        "min_price": 634.8,
+        "seller_count": 5,
+        "min_price": 579,
         "max_price": 759.95,
-        "price_spread": 125.15,
-        "price_spread_pct": 19.71,
-        "median_price": 712.8599999999999,
+        "price_spread": 180.95,
+        "price_spread_pct": 31.25,
+        "median_price": 699.38,
         "outlier_count": 0
       },
-      "trend": "flat",
+      "trend": "down",
       "history": [
         {
           "date": "2026-08-03",
@@ -1514,18 +1529,34 @@
           "price_spread_pct": 19.71,
           "median_price": 712.8599999999999,
           "outlier_count": 0
+        },
+        {
+          "date": "2026-08-14",
+          "seller_count": 5,
+          "min_price": 579,
+          "max_price": 759.95,
+          "price_spread": 180.95,
+          "price_spread_pct": 31.25,
+          "median_price": 699.38,
+          "outlier_count": 0
         }
       ],
       "changes": {
-        "newSellers": [],
+        "newSellers": [
+          {
+            "seller_name": "Cudy Store",
+            "platform": "amazon_tr",
+            "price": 579
+          }
+        ],
         "removedSellers": [],
         "priceChanges": [
           {
             "platform": "n11",
             "seller_name": "Netsiparis",
-            "old_price": 698.74,
-            "new_price": 698.92,
-            "pct_change": 0.03
+            "old_price": 698.92,
+            "new_price": 699.38,
+            "pct_change": 0.07
           }
         ]
       }

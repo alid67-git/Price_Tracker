@@ -1,0 +1,76 @@
+{
+  "sku": "CUDY-WR300",
+  "date": "2026-08-14",
+  "offers": [
+    {
+      "sku": "CUDY-WR300",
+      "source_type": "marketplace",
+      "platform": "n11",
+      "seller_name": "TEKNO54",
+      "price": 634.8,
+      "currency": "TRY",
+      "stock_status": "in_stock",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+      "date": "2026-08-14",
+      "scraped_at": "2026-08-14T07:37:28.135Z"
+    },
+    {
+      "sku": "CUDY-WR300",
+      "source_type": "marketplace",
+      "platform": "n11",
+      "seller_name": "Netsiparis",
+      "price": 699.38,
+      "currency": "TRY",
+      "stock_status": "unknown",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+      "date": "2026-08-14",
+      "scraped_at": "2026-08-14T07:37:28.137Z"
+    },
+    {
+      "sku": "CUDY-WR300",
+      "source_type": "marketplace",
+      "platform": "n11",
+      "seller_name": "MyTechno",
+      "price": 726.8,
+      "currency": "TRY",
+      "stock_status": "unknown",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+      "date": "2026-08-14",
+      "scraped_at": "2026-08-14T07:37:28.137Z"
+    },
+    {
+      "sku": "CUDY-WR300",
+      "source_type": "marketplace",
+      "platform": "n11",
+      "seller_name": "onlinealisverisyap",
+      "price": 759.95,
+      "currency": "TRY",
+      "stock_status": "unknown",
+      "shipping_info": "Ücretsiz Kargo",
+      "is_platform_official": false,
+      "product_url": "https://www.n11.com/urun/cudy-wr300-24-ghz-300-mbps-router-50861672",
+      "date": "2026-08-14",
+      "scraped_at": "2026-08-14T07:37:28.138Z"
+    },
+    {
+      "sku": "CUDY-WR300",
+      "source_type": "marketplace",
+      "platform": "amazon_tr",
+      "seller_name": "Cudy Store",
+      "price": 579,
+      "currency": "TRY",
+      "stock_status": "in_stock",
+      "shipping_info": null,
+      "is_platform_official": false,
+      "product_url": "https://www.amazon.com.tr/Cudy-WR300-300Mbps-WireGuard-VPNClient/dp/B07QZXNCZK",
+      "date": "2026-08-14",
+      "scraped_at": "2026-08-14T07:37:35.012Z"
+    }
+  ]
+}
