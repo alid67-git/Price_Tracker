@@ -2,9 +2,23 @@ const GH_DEFAULTS = { owner: "alid67-git", repo: "Price_Tracker", branch: "main"
 const GH_LS_KEYS = { token: "pt_gh_token", owner: "pt_gh_owner", repo: "pt_gh_repo", branch: "pt_gh_branch" };
 const API_BASE_KEY = "pt_api_base";
 
-/** Opsiyonel uzak/tunnel API kok adresi. Bos = ayni origin. */
+let fileApiBase = "";
+
+function setFileApiBase(url) {
+  fileApiBase = String(url || "").replace(/\/$/, "");
+}
+
+function isLocalHost() {
+  const h = location.hostname;
+  return h === "localhost" || h === "127.0.0.1" || h === "[::1]";
+}
+
+/** Opsiyonel uzak API (Render). localhost'ta ayni origin. */
 function getApiBase() {
-  return (localStorage.getItem(API_BASE_KEY) || "").replace(/\/$/, "");
+  const ls = (localStorage.getItem(API_BASE_KEY) || "").replace(/\/$/, "");
+  if (ls) return ls;
+  if (isLocalHost()) return "";
+  return fileApiBase;
 }
 
 function apiUrl(path) {

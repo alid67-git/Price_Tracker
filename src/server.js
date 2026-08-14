@@ -9,6 +9,7 @@ import { buildPdfReport } from "./report/pdf-report.js";
 import { loadResearchCatalog, catalogSummary } from "./connectors/catalog-search.js";
 import { beginSearch, requestCancel, endSearch } from "./core/search-cancel.js";
 import { APP_VERSION, versionLabel } from "./core/version.js";
+import { todayDateString } from "./core/offer.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -19,6 +20,8 @@ const HISTORY_PATH = path.join(ROOT, "data", "product-history.json");
 const INTL_MARKETS_PATH = path.join(ROOT, "config", "international-markets.json");
 const MARKETPLACE_PLATFORMS = ["trendyol", "hepsiburada", "n11", "amazon_tr"];
 const PORT = Number(process.env.PORT) || 3456;
+const IS_RENDER = process.env.RENDER === "true";
+const DEFAULT_MAX_GENERIC = Number(process.env.MAX_GENERIC) || (IS_RENDER ? 12 : 25);
 
 const app = express();
 
@@ -40,6 +43,8 @@ app.use(express.static(DASHBOARD_DIR));
 /** Ayni anda tek arama — Playwright kaynaklarini korumak icin. */
 let searchLock = false;
 let activeGeneration = 0;
+let currentJobId = null;
+const searchJobs = new Map();
 /** Son basarili arama (PDF icin bellek onbellegi). */
 let lastSearch = null;
 
@@ -54,8 +59,10 @@ app.get("/api/health", (_req, res) => {
   res.json({
     ok: true,
     searching: searchLock,
+    jobId: currentJobId,
     version: APP_VERSION,
     label: versionLabel(),
+    cloud: IS_RENDER,
   });
 });
 
@@ -238,15 +245,76 @@ app.get("/api/sources", async (_req, res) => {
 app.post("/api/search/cancel", (_req, res) => {
   const state = requestCancel();
   console.log("[web] arama iptal istendi");
-  res.json({ ok: true, ...state, searching: searchLock });
+  res.json({ ok: true, ...state, searching: searchLock, jobId: currentJobId });
 });
 
-app.post("/api/search", async (req, res) => {
+function publicJob(job) {
+  return {
+    id: job.id,
+    status: job.status,
+    query: job.query,
+    error: job.error ?? null,
+    result: job.status === "done" ? job.result : undefined,
+  };
+}
+
+async function executeSearchJob(job) {
+  searchLock = true;
+  currentJobId = job.id;
+  activeGeneration = beginSearch();
+  const started = Date.now();
+  console.log(`[web] arama basladi: "${job.query}" id=${job.id}`);
+  try {
+    const result = await runSearchSession({
+      query: job.query,
+      sku: job.sku,
+      marketplaceUrls: job.marketplaceUrls,
+      categories: job.categories,
+      maxGeneric: job.maxGeneric,
+    });
+    result.id = job.id;
+    lastSearch = result;
+    await persistSearch(result).catch((err) => {
+      console.warn(`[web] arama kaydedilemedi: ${err.message}`);
+    });
+    job.status = "done";
+    job.result = result;
+    console.log(`[web] arama bitti: ${result.offers.length} teklif, ${Date.now() - started}ms`);
+  } catch (err) {
+    if (err.code === "SEARCH_CANCELLED") {
+      job.status = "cancelled";
+      job.error = "Arama iptal edildi";
+      console.log(`[web] arama iptal edildi (${Date.now() - started}ms)`);
+    } else {
+      job.status = "error";
+      job.error = err.message ?? "Arama basarisiz";
+      console.error("[web] arama hatasi:", err);
+    }
+  } finally {
+    endSearch(activeGeneration);
+    searchLock = false;
+    currentJobId = null;
+    await closeBrowser().catch(() => {});
+  }
+}
+
+app.get("/api/search/jobs/:id", (req, res) => {
+  const id = String(req.params.id || "").replace(/[^a-zA-Z0-9_\-]/g, "");
+  const job = searchJobs.get(id);
+  if (!job) {
+    res.status(404).json({ error: "Arama isi bulunamadi", status: "missing" });
+    return;
+  }
+  res.json(publicJob(job));
+});
+
+app.post("/api/search", (req, res) => {
   if (searchLock) {
     res.status(409).json({
       error: "Su anda baska bir arama devam ediyor.",
       code: "SEARCH_IN_PROGRESS",
       searching: true,
+      jobId: currentJobId,
     });
     return;
   }
@@ -265,49 +333,24 @@ app.post("/api/search", async (req, res) => {
         .filter(Boolean);
 
   const categories = Array.isArray(req.body?.categories) ? req.body.categories : undefined;
-  const maxGeneric = req.body?.maxGeneric;
+  const maxGeneric = Number.isFinite(req.body?.maxGeneric) ? req.body.maxGeneric : DEFAULT_MAX_GENERIC;
 
-  searchLock = true;
-  activeGeneration = beginSearch();
-  const started = Date.now();
-  console.log(`[web] arama basladi: "${query}" (+${marketplaceUrls.length} URL, cats=${(categories ?? ["default"]).join(",")})`);
-
-  // Istek iptal edilirse (AbortController) sunucu tarafinda da iptal bayragini kaldir
-  req.on("close", () => {
-    if (searchLock) {
-      requestCancel();
-      console.log("[web] istemci baglantisi kapandi — iptal bayragi set");
-    }
-  });
-
-  try {
-    const result = await runSearchSession({
-      query,
-      sku: req.body?.sku,
-      marketplaceUrls,
-      categories,
-      maxGeneric,
-    });
-    lastSearch = result;
-    const saved = await persistSearch(result).catch((err) => {
-      console.warn(`[web] arama kaydedilemedi: ${err.message}`);
-      return null;
-    });
-    console.log(`[web] arama bitti: ${result.offers.length} teklif, ${Date.now() - started}ms${saved ? ` -> ${path.relative(ROOT, saved)}` : ""}`);
-    if (!res.writableEnded) res.json(result);
-  } catch (err) {
-    if (err.code === "SEARCH_CANCELLED") {
-      console.log(`[web] arama iptal edildi (${Date.now() - started}ms)`);
-      if (!res.writableEnded) res.status(499).json({ error: "Arama iptal edildi", code: "SEARCH_CANCELLED" });
-    } else {
-      console.error("[web] arama hatasi:", err);
-      if (!res.writableEnded) res.status(500).json({ error: err.message ?? "Arama basarisiz" });
-    }
-  } finally {
-    endSearch(activeGeneration);
-    searchLock = false;
-    await closeBrowser().catch(() => {});
-  }
+  const id = `${todayDateString()}_${Date.now()}`;
+  const job = {
+    id,
+    status: "running",
+    query,
+    sku: req.body?.sku,
+    marketplaceUrls,
+    categories,
+    maxGeneric,
+    startedAt: Date.now(),
+    result: null,
+    error: null,
+  };
+  searchJobs.set(id, job);
+  executeSearchJob(job);
+  res.status(202).json({ id, status: "running", query });
 });
 
 app.post("/api/report.pdf", async (req, res) => {
@@ -353,7 +396,7 @@ app.listen(PORT, "0.0.0.0", () => {
   for (const url of lanListenUrls(PORT)) {
     console.log(`[web] Telefon: ${url}  (ayni WiFi)`);
   }
-  console.log(`[web] Not: github.io uzerinden arama YAPILAMAZ (HTTP 405). Telefonda yukaridaki adresi ac.`);
+  console.log(`[web] Not: Telefondan arama icin Render URL veya ayni WiFi LAN adresi kullan.`);
 }).on("error", (err) => {
   if (err.code === "EADDRINUSE") {
     console.error(`[web] Port ${PORT} dolu. Onceki sunucuyu kapatin veya PORT=3457 npm run web`);

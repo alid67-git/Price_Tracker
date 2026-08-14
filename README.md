@@ -1,6 +1,6 @@
 # Fiyat Araştırma Sistemi
 
-**Sürüm:** `1.2.1` — her gelişmede SemVer artar (`CHANGELOG.md`).
+**Sürüm:** `1.3.0` — her gelişmede SemVer artar (`CHANGELOG.md`).
 
 | Hat | Sürüm | İçerik |
 |-----|-------|--------|
@@ -16,12 +16,25 @@ rekabet yoğunluğu (satıcı sayısı, fiyat aralığı/spread, trend) analiz e
 
 İki ortam aynı GitHub reposunu paylaşır. Telefon yazarsa, PC `git pull` ile alır.
 
-| | Telefon (GitHub Pages) | PC (lokal) |
+| | Telefon (GitHub Pages + Render) | PC (lokal) |
 |---|---|---|
 | Adres | https://alid67-git.github.io/Price_Tracker/ | `pricetracker.bat` → [1] → `http://localhost:3456` |
-| Takip / grafikler | Evet (günlük Actions günceller) | Evet |
-| Ürün ekleme | Evet (token ile doğrudan commit) | Evet (yerel sunucu) |
-| Canlı araştırma + PDF | Hayır (sunucu gerekir) | Evet |
+| Takip / grafikler | Evet | Evet |
+| Canlı araştırma + PDF | Evet (Render API uyanıksa) | Evet |
+
+## Render (telefondan canlı arama)
+
+GitHub Pages sayfayı gösterir; aramayı Render’daki Node + Playwright yapar.
+
+1. https://dashboard.render.com → **New** → **Blueprint**
+2. Repo: `alid67-git/Price_Tracker` (`render.yaml` okunur)
+3. Servis adı `price-tracker-api` → URL: `https://price-tracker-api.onrender.com`
+4. Plan: **Starter** (Chromium RAM yer; takılırsa **Standard**)
+5. Deploy bitince tarayıcıda `https://price-tracker-api.onrender.com/api/health` aç — `{"ok":true,...}`
+6. URL farklıysa `dashboard/api-config.json` içindeki `apiBase`’i güncelleyip push et
+7. Telefonda https://alid67-git.github.io/Price_Tracker/ — üstte **Render hazır** görünmeli
+
+İlk istek 30–60 sn sürebilir (uyuyan servis). Windows firewall gerekmez.
 
 ### Telefondan ilk kurulum (bir kez)
 

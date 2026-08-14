@@ -446,6 +446,76 @@ async function cancelActiveSearch() {
   searchInFlight = false;
 }
 
+function applySearchOutcome(data, status) {
+  if (!data?.offers?.length) {
+    const warn = data?.warnings?.length ? ` (${data.warnings.join("; ")})` : "";
+    status.textContent = `Sonuç bulunamadı.${warn}`;
+    status.classList.add("status-error");
+    document.getElementById("search-results").hidden = true;
+    return;
+  }
+  status.classList.remove("status-error");
+  status.textContent = data.warnings?.length
+    ? `${data.offers.length} teklif · ${data.searchedSources?.length ?? "?"} kaynak. Uyarı: ${data.warnings.slice(0, 3).join("; ")}${data.warnings.length > 3 ? "…" : ""}`
+    : `${data.offers.length} teklif · ${data.searchedSources?.length ?? "?"} kaynak tarandı (fiyata göre sıralı).`;
+  renderSearchResults(data);
+  document.getElementById("save-tracked-btn").disabled = false;
+}
+
+async function pollSearchJob(id, statusEl, signal) {
+  const started = Date.now();
+  while (true) {
+    if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
+    const res = await fetch(apiUrl(`/api/search/jobs/${encodeURIComponent(id)}`), { signal });
+    const job = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(job.error || `HTTP ${res.status}`);
+    if (job.status === "done") return job.result;
+    if (job.status === "cancelled") {
+      const err = new Error("Arama iptal edildi");
+      err.code = "SEARCH_CANCELLED";
+      throw err;
+    }
+    if (job.status === "error") throw new Error(job.error || "Arama basarisiz");
+    const sec = Math.round((Date.now() - started) / 1000);
+    statusEl.textContent = `Taranıyor… ${sec}s. İptal için tekrar Ara’ya basın.`;
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+}
+
+async function startOrFollowSearch({ query, marketplaceUrls, categories }, status, signal) {
+  const res = await fetch(apiUrl("/api/search"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, marketplaceUrls, categories }),
+    signal,
+  });
+  if (res.status === 405) {
+    throw new Error("HTTP 405: Bu adres arama API’si sunmuyor. dashboard/api-config.json içindeki Render URL’sini kontrol et.");
+  }
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 409 || data.code === "SEARCH_IN_PROGRESS") {
+    const ok = window.confirm("Sunucuda hâlâ bir arama sürüyor. İptal edip tekrar deneyelim mi?");
+    if (!ok) {
+      if (data.jobId) return pollSearchJob(data.jobId, status, signal);
+      throw new Error(data.error || "Arama meşgul");
+    }
+    await cancelActiveSearch();
+    searchAbort = new AbortController();
+    searchInFlight = true;
+    return startOrFollowSearch({ query, marketplaceUrls, categories }, status, searchAbort.signal);
+  }
+  if (data.code === "SEARCH_CANCELLED" || res.status === 499) {
+    const err = new Error("Arama iptal edildi");
+    err.code = "SEARCH_CANCELLED";
+    throw err;
+  }
+  if (res.status === 202 && data.id) return pollSearchJob(data.id, status, signal);
+  if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+  if (data.offers) return data;
+  if (data.id) return pollSearchJob(data.id, status, signal);
+  throw new Error("Beklenmeyen arama yaniti");
+}
+
 async function runSearch(e) {
   e.preventDefault();
   e.stopPropagation?.();
@@ -454,19 +524,18 @@ async function runSearch(e) {
   if (!serverReady) {
     status.hidden = false;
     status.classList.add("status-error");
-    status.textContent = isGithubPagesHost()
-      ? "HTTP 405: GitHub Pages arama sunucusu değil. Telefonda PC ile aynı WiFi’de sunucu adresini aç (PC konsolunda ‘Telefon: http://…’ yazar)."
-      : "Arama sunucusu yok. PC’de pricetracker.bat → [1] çalıştır, sonra bu sayfayı yenile.";
+    status.textContent = getApiBase()
+      ? "Arama sunucusuna ulaşılamadı. Render servisi uyuyor olabilir — birkaç saniye sonra tekrar dene."
+      : "Arama sunucusu yok. PC’de pricetracker.bat veya Render URL (api-config.json).";
     return;
   }
 
   if (searchInFlight) {
     const ok = window.confirm("Devam eden bir arama var. İptal edip yenisini başlatalım mı?");
     if (!ok) return;
-    const statusEl = document.getElementById("search-status");
-    statusEl.hidden = false;
-    statusEl.classList.remove("status-error");
-    statusEl.textContent = "Önceki arama iptal ediliyor…";
+    status.hidden = false;
+    status.classList.remove("status-error");
+    status.textContent = "Önceki arama iptal ediliyor…";
     await cancelActiveSearch();
   }
 
@@ -495,62 +564,18 @@ async function runSearch(e) {
   searchInFlight = true;
 
   try {
-    const res = await fetch(apiUrl("/api/search"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, marketplaceUrls, categories }),
-      signal: searchAbort.signal,
-    });
-    if (res.status === 405) {
-      throw new Error(
-        "HTTP 405: Bu adres arama API’si sunmuyor (GitHub Pages). Telefonda PC’nin WiFi adresini aç."
-      );
-    }
-    const data = await res.json().catch(() => ({}));
-    if (res.status === 409 || data.code === "SEARCH_IN_PROGRESS") {
-      const ok = window.confirm("Sunucuda hâlâ bir arama sürüyor. İptal edip tekrar deneyelim mi?");
-      if (!ok) throw new Error(data.error || "Arama meşgul");
-      await cancelActiveSearch();
-      searchAbort = new AbortController();
-      searchInFlight = true;
-      const retry = await fetch(apiUrl("/api/search"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, marketplaceUrls, categories }),
-        signal: searchAbort.signal,
-      });
-      const retryData = await retry.json().catch(() => ({}));
-      if (!retry.ok) throw new Error(retryData.error || `HTTP ${retry.status}`);
-      if (!retryData.offers?.length) {
-        status.textContent = `Sonuç bulunamadı.${retryData.warnings?.length ? ` (${retryData.warnings.join("; ")})` : ""}`;
-        status.classList.add("status-error");
-        document.getElementById("search-results").hidden = true;
-        return;
-      }
-      status.textContent = `${retryData.offers.length} teklif · ${retryData.searchedSources?.length ?? "?"} kaynak tarandı (fiyata göre sıralı).`;
-      renderSearchResults(retryData);
-      document.getElementById("save-tracked-btn").disabled = false;
-      return;
-    }
-    if (data.code === "SEARCH_CANCELLED" || res.status === 499) {
+    const result = await startOrFollowSearch(
+      { query, marketplaceUrls, categories },
+      status,
+      searchAbort.signal
+    );
+    if (result?.code === "SEARCH_CANCELLED") {
       status.textContent = "Arama iptal edildi.";
       return;
     }
-    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-    if (!data.offers?.length) {
-      const warn = data.warnings?.length ? ` (${data.warnings.join("; ")})` : "";
-      status.textContent = `Sonuç bulunamadı.${warn}`;
-      status.classList.add("status-error");
-      document.getElementById("search-results").hidden = true;
-      return;
-    }
-    status.textContent = data.warnings?.length
-      ? `${data.offers.length} teklif · ${data.searchedSources?.length ?? "?"} kaynak. Uyarı: ${data.warnings.slice(0, 3).join("; ")}${data.warnings.length > 3 ? "…" : ""}`
-      : `${data.offers.length} teklif · ${data.searchedSources?.length ?? "?"} kaynak tarandı (fiyata göre sıralı).`;
-    renderSearchResults(data);
-    document.getElementById("save-tracked-btn").disabled = false;
+    applySearchOutcome(result, status);
   } catch (err) {
-    if (err.name === "AbortError") {
+    if (err.name === "AbortError" || err.code === "SEARCH_CANCELLED") {
       status.textContent = "Arama iptal edildi.";
       status.classList.remove("status-error");
     } else {
@@ -1073,8 +1098,15 @@ async function openSearchFromHistory(id) {
   }
 }
 
-function isGithubPagesHost() {
-  return /\.github\.io$/i.test(location.hostname);
+async function loadApiConfig() {
+  try {
+    const res = await fetch("api-config.json", { cache: "no-store" });
+    if (!res.ok) return;
+    const cfg = await res.json();
+    if (cfg.apiBase) setFileApiBase(cfg.apiBase);
+  } catch {
+    /* ignore */
+  }
 }
 
 let serverReady = false;
@@ -1083,37 +1115,49 @@ async function checkServer() {
   const el = document.getElementById("server-status");
   const verEl = document.getElementById("app-version");
   const searchBtn = document.getElementById("search-btn");
-  try {
-    const res = await fetch(apiUrl("/api/health"), { signal: AbortSignal.timeout(2500) });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const health = await res.json();
-    if (verEl && health.label) verEl.textContent = health.label;
-    el.textContent = `Sunucu hazır ${health.label || ""}`;
-    el.classList.remove("status-error");
-    serverReady = true;
-    if (searchBtn) searchBtn.disabled = false;
-    return true;
-  } catch {
-    serverReady = false;
+  const remote = Boolean(getApiBase());
+  const attempts = remote ? 8 : 1;
+  const timeoutMs = remote ? 15000 : 2500;
+
+  for (let i = 1; i <= attempts; i++) {
     try {
-      const pkgRes = await fetch("https://raw.githubusercontent.com/alid67-git/Price_Tracker/main/package.json", {
-        signal: AbortSignal.timeout(2000),
-      }).catch(() => null);
-      if (pkgRes?.ok && verEl) {
-        const pkg = await pkgRes.json();
-        verEl.textContent = `v${pkg.version}`;
-      } else if (verEl) verEl.textContent = "v—";
+      const res = await fetch(apiUrl("/api/health"), { signal: AbortSignal.timeout(timeoutMs) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const health = await res.json();
+      if (verEl && health.label) verEl.textContent = health.label;
+      el.textContent = health.cloud
+        ? `Render hazır ${health.label || ""}`
+        : `Sunucu hazır ${health.label || ""}`;
+      el.classList.remove("status-error");
+      serverReady = true;
+      if (searchBtn) searchBtn.disabled = false;
+      return true;
     } catch {
-      if (verEl) verEl.textContent = "v—";
+      if (i < attempts) {
+        el.textContent = `Arama sunucusu uyanıyor… (${i}/${attempts})`;
+        el.classList.remove("status-error");
+        await new Promise((r) => setTimeout(r, 4000));
+      }
     }
-    if (isGithubPagesHost()) {
-      el.textContent = "Pages: sadece takip. Arama için PC WiFi adresini aç";
-    } else {
-      el.textContent = "Arama için pricetracker.bat ile sunucuyu başlat";
-    }
-    el.classList.add("status-error");
-    return false;
   }
+
+  serverReady = false;
+  try {
+    const pkgRes = await fetch("https://raw.githubusercontent.com/alid67-git/Price_Tracker/main/package.json", {
+      signal: AbortSignal.timeout(2000),
+    }).catch(() => null);
+    if (pkgRes?.ok && verEl) {
+      const pkg = await pkgRes.json();
+      verEl.textContent = `v${pkg.version}`;
+    } else if (verEl) verEl.textContent = "v—";
+  } catch {
+    if (verEl) verEl.textContent = "v—";
+  }
+  el.textContent = remote
+    ? "Render’a bağlanılamadı — servis kapalı veya URL yanlış (api-config.json)"
+    : "Arama için pricetracker.bat ile sunucuyu başlat";
+  el.classList.add("status-error");
+  return false;
 }
 
 async function init() {
@@ -1131,6 +1175,7 @@ async function init() {
     toggleAllCategories();
   });
   document.getElementById("summary-filter")?.addEventListener("input", applySummaryFilter);
+  await loadApiConfig();
   await checkServer();
   await loadSources();
   await loadTracked();

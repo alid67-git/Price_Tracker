@@ -1,0 +1,9 @@
+node_modules
+.git
+.github
+data
+*.log
+.env
+.claude
+agent-transcripts
+dashboard/summary.json.bak

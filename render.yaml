@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: price-tracker-api
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MAX_GENERIC
+        value: "12"

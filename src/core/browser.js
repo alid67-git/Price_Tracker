@@ -7,9 +7,15 @@ let sharedBrowser = null;
 
 export async function getBrowser() {
   if (!sharedBrowser) {
+    const cloud = process.env.RENDER === "true" || process.env.PLAYWRIGHT_CLOUD === "1";
     sharedBrowser = await chromium.launch({
       headless: true,
-      args: ["--disable-blink-features=AutomationControlled"],
+      args: [
+        "--disable-blink-features=AutomationControlled",
+        ...(cloud
+          ? ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
+          : []),
+      ],
     });
   }
   return sharedBrowser;
