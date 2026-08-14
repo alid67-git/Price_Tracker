@@ -1,6 +1,6 @@
 # Fiyat Araştırma Sistemi
 
-**Sürüm:** `1.3.0` — her gelişmede SemVer artar (`CHANGELOG.md`).
+**Sürüm:** `1.3.1` — her gelişmede SemVer artar (`CHANGELOG.md`).
 
 | Hat | Sürüm | İçerik |
 |-----|-------|--------|
@@ -28,11 +28,12 @@ GitHub Pages sayfayı gösterir; aramayı Render’daki Node + Playwright yapar.
 
 1. https://dashboard.render.com → **New** → **Blueprint**
 2. Repo: `alid67-git/Price_Tracker` (`render.yaml` okunur)
-3. Servis adı `price-tracker-api` → URL: `https://price-tracker-api.onrender.com`
+3. Servis adı `price-tracker-api` (Render bazen `-xxxx` ekler) → örn. `https://price-tracker-api-leyb.onrender.com`
 4. Plan: **Starter** (Chromium RAM yer; takılırsa **Standard**)
-5. Deploy bitince tarayıcıda `https://price-tracker-api.onrender.com/api/health` aç — `{"ok":true,...}`
+5. Deploy bitince tarayıcıda `https://<servis-adin>.onrender.com/api/health` aç — `{"ok":true,...}`
 6. URL farklıysa `dashboard/api-config.json` içindeki `apiBase`’i güncelleyip push et
 7. Telefonda https://alid67-git.github.io/Price_Tracker/ — üstte **Render hazır** görünmeli
+8. Render URL’sini doğrudan açarsan arama aynı sunucuya gider; GitHub Pages ise `api-config.json` kullanır
 
 İlk istek 30–60 sn sürebilir (uyuyan servis). Windows firewall gerekmez.
 

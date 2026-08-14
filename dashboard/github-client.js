@@ -13,11 +13,16 @@ function isLocalHost() {
   return h === "localhost" || h === "127.0.0.1" || h === "[::1]";
 }
 
-/** Opsiyonel uzak API (Render). localhost'ta ayni origin. */
+/** Render uzerinden acildiysa ayni origin (api-config'teki eski URL'yi ezme). */
+function isRenderHost() {
+  return /\.onrender\.com$/i.test(location.hostname);
+}
+
+/** Opsiyonel uzak API (Render). localhost / Render'da ayni origin. */
 function getApiBase() {
   const ls = (localStorage.getItem(API_BASE_KEY) || "").replace(/\/$/, "");
   if (ls) return ls;
-  if (isLocalHost()) return "";
+  if (isLocalHost() || isRenderHost()) return "";
   return fileApiBase;
 }
 

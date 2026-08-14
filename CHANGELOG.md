@@ -11,6 +11,12 @@ SemVer: `MAJOR.MINOR.PATCH`
 Her anlamlı gelişmede `package.json` → `version` güncellenir, bu dosyaya satır eklenir,
 dashboard üstünde görünür. Uluslararası fiyat modu hedefi: **2.0.0**.
 
+## [1.3.1] — 2026-08-14
+
+### Fixed
+- `api-config.json` güncel Render URL: `price-tracker-api-leyb.onrender.com`
+- Render host’unda arama aynı origin’e gider (eski askıdaki URL’ye kaçmaz)
+
 ## [1.3.0] — 2026-08-14
 
 ### Added
