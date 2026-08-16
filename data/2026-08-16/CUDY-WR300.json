@@ -1,0 +1,20 @@
+{
+  "sku": "CUDY-WR300",
+  "date": "2026-08-16",
+  "offers": [
+    {
+      "sku": "CUDY-WR300",
+      "source_type": "marketplace",
+      "platform": "amazon_tr",
+      "seller_name": "Cudy Store",
+      "price": 579,
+      "currency": "TRY",
+      "stock_status": "in_stock",
+      "shipping_info": null,
+      "is_platform_official": false,
+      "product_url": "https://www.amazon.com.tr/Cudy-WR300-300Mbps-WireGuard-VPNClient/dp/B07QZXNCZK",
+      "date": "2026-08-16",
+      "scraped_at": "2026-08-16T06:43:51.439Z"
+    }
+  ]
+}
